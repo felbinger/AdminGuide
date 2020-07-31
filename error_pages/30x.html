@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>30x Moved</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
+
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            user-select: none;
+            font-family: 'Cabin', sans-serif;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: #181a1b;
+            color: #e8e6e3;
+        }
+
+        #moved {
+            position: relative;
+            height: 100vh;
+        }
+
+        #moved .moved {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .moved {
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .moved .moved-30x {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 50px;
+        }
+
+        .moved .moved-30x > div:first-child {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: #cc8200;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+            border: 5px solid #b77500;
+            border-radius: 5px;
+        }
+
+        .moved .moved-30x > div:first-child:before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            top: -5px;
+            -webkit-box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1) inset;
+            box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1) inset;
+            border-radius: 5px;
+        }
+
+        .moved .moved-30x h1 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 80px;
+            position: absolute;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            left: 50%;
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .moved h1 {
+            font-weight: 700;
+            letter-spacing: 7px;
+        }
+
+        .moved p {
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        /*.moved a {*/
+        /*    font-family: 'Cabin', sans-serif;*/
+        /*    display: inline-block;*/
+        /*    padding: 10px 25px;*/
+        /*    background-color: #8f8f8f;*/
+        /*    border: none;*/
+        /*    border-radius: 40px;*/
+        /*    font-size: 14px;*/
+        /*    font-weight: 700;*/
+        /*    text-transform: uppercase;*/
+        /*    text-decoration: none;*/
+        /*    -webkit-transition: 0.2s all;*/
+        /*    transition: 0.2s all;*/
+        /*}*/
+
+        /*.moved a:hover {*/
+        /*    background-color: #2c2c2c;*/
+        /*}*/
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="moved">
+    <div class="moved">
+        <div class="moved-30x">
+            <div></div>
+            <h1>30x</h1>
+        </div>
+        <h1 style="text-transform: uppercase;">Moved</h1>
+        <p>
+            The page you're looking for was moved.
+        </p>
+    </div>
+</div>
+</body>
+</html>
