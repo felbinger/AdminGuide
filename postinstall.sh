@@ -38,16 +38,10 @@ function install_docker_compose {
 }
 
 function install_python3.8 {
-  # alternativ: https://tecadmin.net/install-python-3-8-ubuntu/
-  apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-    libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
-    libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
-  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-  echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
-  echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
-  source ~/.profile
-  pyenv install 3.8.0
-  apt-get install -y python3-pip
+  echo "\n# python3\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main" | tee -a /etc/apt/sources.list
+  echo 'APT::Default-Release "stable";' | tee /etc/apt/apt.conf.d/99defaultrelease
+  apt-get update
+  apt-get install -y python3.8 python3-pip
 }
 
 function install_pybackup {
