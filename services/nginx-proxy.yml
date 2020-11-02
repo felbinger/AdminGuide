@@ -7,13 +7,15 @@
     volumes:
       - 'nginx-certs:/etc/nginx/certs'
       - 'nginx-vhosts:/etc/nginx/vhost.d'
-      - 'nginx-webroot:/usr/share/nginx/html'
-      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+      - '/srv/main/nginx/conf.d:/etc/nginx/conf.d'
+      - '/srv/main/nginx/acl:/etc/nginx/acl'
+      - '/srv/main/nginx/webroot:/usr/share/nginx/html'
       - '/srv/main/nginx/nginx.tmpl:/app/nginx.tmpl'
+      - '/var/run/docker.sock:/tmp/docker.sock:ro
     labels:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     environment:
-      - 'DEFAULT_HOST=domain.tld'
+      DEFAULT_HOST: domain.tld
     networks:
       - proxy
 
@@ -21,12 +23,13 @@
     image: jrcs/letsencrypt-nginx-proxy-companion
     restart: always
     environment:
-      - 'NGINX_PROXY_CONTAINER=main_nginx_1'
-      - 'DEFAULT_EMAIL=monitoring@domain.tld'
+      NGINX_PROXY_CONTAINER: main_nginx_1
+      DEFAULT_EMAIL: monitoring@domain.tld
     volumes:
       - 'nginx-certs:/etc/nginx/certs'
       - 'nginx-vhosts:/etc/nginx/vhost.d'
-      - 'nginx-webroot:/usr/share/nginx/html'
+      - '/srv/main/nginx/conf.d:/etc/nginx/conf.d'
+      - '/srv/main/nginx/webroot:/usr/share/nginx/html'
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     networks:
       - proxy

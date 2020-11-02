@@ -16,44 +16,12 @@ declare -A HELPER=(\
   ["monitoring"]="192.168.2.0/24"
 )
 
-SERVICES=('nginx-proxy' 'mariadb')
+SERVICES=('traefik' 'mariadb' 'phpmyadmin')
 ### END of CONFIGURATION ###
-
-function install_docker {
-  apt-get remove -y --purge docker docker-engine docker.io containerd runc
-  apt-get update
-  apt-get install -y apt-transport-https ca-certificates curl \
-    gnupg-agent software-properties-common
-  curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-  add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/debian \
-    $(lsb_release -cs) stable"
-  apt-get update
-  apt-get install -y docker-ce docker-ce-cli containerd.io
-}
 
 function install_docker_compose {
   curl -L "https://github.com/docker/compose/releases/download/1.26.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
-}
-
-function install_python3.8 {
-  echo "\n# python3\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main" | tee -a /etc/apt/sources.list
-  echo 'APT::Default-Release "stable";' | tee /etc/apt/apt.conf.d/99defaultrelease
-  apt-get update
-  apt-get install -y python3.8 python3-pip
-}
-
-function install_pybackup {
-  install_python3.8
-  apt-get install -y git jq
-  git clone https://github.com/felbinger/pybackup /root/pybackup
-  python3 -m pip install -r /root/pybackup/requirements.txt
-  # adjust config
-  conf='/root/pybackup/.config.json'
-  echo $(jq '.backup_dir = "/home/backups/"' < $conf) > $conf
-  echo $(jq ".files.path = [\"/srv/\",\"$ADM_HOME\",\"/root\"]" < $conf) > $conf
-done
 }
 
 function docker_network_create {
@@ -107,7 +75,10 @@ fi
 
 # install docker if not already installed
 if [[ -z $(which docker) ]]; then
-  install_docker
+  if [[ -z $(which docker) ]]; then
+    apt-get install curl
+  fi
+  curl https://get.docker.com | bash
 fi
 
 # install docker-compose if not already installed
@@ -147,9 +118,6 @@ for name in ${!STACKS[@]}; do
   compose="${ADM_HOME}/services/${name}/docker-compose.yml"
   create_compose ${compose}
 done
-
-# install pybackup
-install_pybackup
 
 # install ctop
 if [[ -z $(which wget) ]]; then
