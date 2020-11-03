@@ -44,11 +44,6 @@ function create_compose {
     echo -e "    image: hello-world\n" >> ${compose}
   fi
 
-  # add services
-  for service in ${SERVICES[@]}; do
-    cat "postinstall-services/${service}.yml" >> ${compose}
-  done
-
   echo -e "\n" >> ${compose}
 
   # define networks
