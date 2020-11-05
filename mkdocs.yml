@@ -54,4 +54,4 @@ nav:
     - 'Redis': services/redis.md
     - 'Monitoring': services/monitoring.md
     - 'Minecraft': services/minecraft.md
-    - 'Arma 3 server': services/arma3.md
+    - 'Arma 3 Server': services/arma3.md
