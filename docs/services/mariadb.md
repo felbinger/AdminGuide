@@ -1,5 +1,5 @@
-## MariaDB
-Checkout the [documentation](https://hub.docker.com/_/mariadb/)
+[phpmyadmin documentation](https://hub.docker.com/_/phpmyadmin)    
+[mariadb documentation](https://hub.docker.com/_/mariadb/)  
 ```yaml
   mariadb:
     image: mariadb
@@ -10,11 +10,7 @@ Checkout the [documentation](https://hub.docker.com/_/mariadb/)
       - "/srv/main/mariadb/data:/var/lib/mysql"
     networks:
       - database
-```
 
-## PHPmyAdmin
-Checkout the [documentation](https://hub.docker.com/_/phpmyadmin)
-```yaml
   phpmyadmin:
     image: phpmyadmin
     restart: "no"

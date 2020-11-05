@@ -83,8 +83,8 @@ I suggest you create a new account for this:
   ./arma3server install
   ```
 
-  ![first picture of the installation process](./img/arma3_install_1.png)
-  ![second picture of the installation process](./img/arma3_install_2.png)
+  ![first picture of the installation process](../img/arma3_install_1.png)
+  ![second picture of the installation process](../img/arma3_install_2.png)
 
 
 ### Importent configuration files

@@ -1,5 +1,5 @@
 ## Minecraft Server
-Checkout the [documentation](https://github.com/itzg/docker-minecraft-server/blob/master/README.md)
+[itzg/minecraft documentation](https://github.com/itzg/docker-minecraft-server/blob/master/README.md)
 ```yaml
   minecraft:
     image: itzg/minecraft-server

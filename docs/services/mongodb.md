@@ -1,5 +1,4 @@
-## MongoDB
-Checkout the [documentation](https://hub.docker.com/_/mongo)
+[mongodb documentation](https://hub.docker.com/_/mongo)
 ```yaml
   mongodb:
     image: mongo

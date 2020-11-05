@@ -1,5 +1,4 @@
-## nginx
-Checkout the [documentation]()
+[nginx documentation](https://hub.docker.com/_/nginx)
 ```yaml
   homepage:
     image: nginx

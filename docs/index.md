@@ -186,7 +186,6 @@ Afterwards you can add your services to the `docker-compose.yml`
 * [MongoDB](./services/mongodb.md)
 * [PostgreSQL + pgAdmin 4](./services/postgresql.md)
 * [Redis](./services/redis.md)
-* [Elasticsearch](./services/elasticsearch.md)
 
 I suggest you to stop administrative services over the night. They shouln't be online for longer then needed, you can do this using a cronjob:
 ```bash

@@ -1,5 +1,5 @@
 ## httpd with php
-Checkout the [documentation](https://hub.docker.com/_/php)
+[php documentation](https://hub.docker.com/_/php)
 ```yaml
   homepage:
     image: php:apache2

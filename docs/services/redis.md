@@ -1,5 +1,4 @@
-## Redis
-Checkout the [documentation](https://hub.docker.com/_/redis)
+[redis documentation](https://hub.docker.com/_/redis)
 ```yaml
   redis:
     image: redis

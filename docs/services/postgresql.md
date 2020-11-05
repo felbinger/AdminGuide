@@ -1,5 +1,5 @@
 ## PostgreSQL
-Checkout the [documentation](https://hub.docker.com/_/postgres)
+[postgres documentation](https://hub.docker.com/_/postgres)
 ```yaml
   postgresql:
     image: postgres
