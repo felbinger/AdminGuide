@@ -41,14 +41,14 @@ nav:
   - 'Overview': index.md
   - 'OpenLDAP': OpenLDAP.md
   - 'Services':
-    - 'Traefik' traefik.md
-    - 'nginx/proxy' nginx-proxy.md
-    - 'nginx' nginx.md
-    - 'httpd with php' httpd.md
-    - 'MariaDB' mariadb.md
-    - 'MongoDB' mongodb.md
-    - 'PostgreSQL' postgresql.md
-    - 'Redis' redis.md
-    - 'Monitoring' monitoring.md
-    - 'Minecraft' minecraft.md
-    - 'Arma 3 server' arma3.md
+    - 'Traefik': traefik.md
+    - 'nginx/proxy': nginx-proxy.md
+    - 'nginx': nginx.md
+    - 'httpd with php': httpd.md
+    - 'MariaDB': mariadb.md
+    - 'MongoDB': mongodb.md
+    - 'PostgreSQL': postgresql.md
+    - 'Redis': redis.md
+    - 'Monitoring': monitoring.md
+    - 'Minecraft': minecraft.md
+    - 'Arma 3 server': arma3.md
