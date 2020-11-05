@@ -15,8 +15,6 @@ declare -A HELPER=(\
   ["database"]="192.168.1.0/24" \
   ["monitoring"]="192.168.2.0/24"
 )
-
-SERVICES=('traefik' 'mariadb' 'phpmyadmin')
 ### END of CONFIGURATION ###
 
 function install_docker_compose {
@@ -30,7 +28,6 @@ function docker_network_create {
   docker network inspect ${name} >/dev/null 2>&1 || \
     docker network create --subnet ${subnet} ${name}
 }
-
 
 function create_compose {
   compose=${1}
@@ -125,5 +122,5 @@ chmod +x /usr/local/bin/ctop
 if [[ -z $(which wget) ]]; then
   apt-get install -y wget
 fi
-wget https://raw.githubusercontent.com/felbinger/scripts/master/docker-networks.py -O /home/admin/tools/networks.py
-chmod +x /home/admin/tools/networks.py
+wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv -O /usr/local/bin/dnv
+chmod +x /usr/local/bin/dnv

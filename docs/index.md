@@ -196,14 +196,16 @@ I suggest you to stop administrative services over the night. They shouln't be o
 ### [ctop](https://ctop.sh/)
 Simple commandline monitoring tool for docker containers:
 ```
-sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 -O /usr/local/bin/ctop
+sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 \
+  -O /usr/local/bin/ctop
 sudo chmod +x /usr/local/bin/ctop
 ```
 
 ### Docker Network Viewer
 A simple tool to show docker networks:
 ```
-sudo wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv -O /home/admin/tools/dnv
+sudo wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv \
+  -O /home/admin/tools/dnv
 sudo chmod +x /home/admin/tools/dnv
 ```
 
@@ -229,8 +231,9 @@ sudo apt install -y -t testing python3.8 python3-pip
 </details>
 
 ```bash
-sudo apt-get install build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev \
-  libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
+sudo apt-get install build-essential checkinstall libreadline-gplv2-dev \
+  libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev \
+  libc6-dev libbz2-dev libffi-dev zlib1g-dev
   
 wget https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tgz
 tar xzf Python-3.8.6.tgz
