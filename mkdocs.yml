@@ -55,3 +55,4 @@ nav:
     - 'Monitoring': services/monitoring.md
     - 'Minecraft': services/minecraft.md
     - 'Arma 3 Server': services/arma3.md
+    - 'Teamspeak 3 + Sinusbot': services/teamspeak.md

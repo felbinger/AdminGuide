@@ -1,24 +1,20 @@
 # OpenLDAP
 
 ## Install:
-* Install docker and docker-compose
-* Create the `docker-compose.yml` file:
-    ```yaml
-    version: '3.2'
+Create you openldap service in the main `docker-compose.yml` file:
+```yaml
+  ldap:
+    image: osixia/openldap:1.4.0
+    environment:
+      - 'LDAP_DOMAIN=demo.de'
+      - 'LDAP_ADMIN_PASSWORD=admin'
+```
 
-    services:
-      ldap:
-        image: osixia/openldap:1.4.0
-        environment:
-          - 'LDAP_DOMAIN=demo.de'
-          - 'LDAP_ADMIN_PASSWORD=admin'
-    ```
-
-* Start the LDAP server and open a shell:
-  ```
-  > docker-compose up -d ldap
-  > docker-compose exec ldap /bin/bash
-  ```
+Start the OpenLDAP server and open a shell to configure it:
+```sh
+docker-compose up -d ldap
+docker-compose exec ldap /bin/bash
+```
 
 
 ## Basics:
@@ -118,6 +114,39 @@ result: 0 Success
     ```
 
 ## Custom Schemas:
+
+### BCrypt Password Hashing Algorithm
+TODO: find new interface which supports bcrypt for password 
+
+Resources:  
+* [https://github.com/wclarie/openldap-bcrypt](https://github.com/wclarie/openldap-bcrypt)
+* [https://github.com/howardlau1999/openldap-bcrypt-docker](https://github.com/howardlau1999/openldap-bcrypt-docker)
+
+Build the docker image with openldap support:
+```sh
+git clone https://github.com/howardlau1999/openldap-bcrypt-docker /home/admin/images/main/openldap/
+sudo docker build -t howardlau1999/openldap /home/admin/images/main/openldap/
+```
+
+If you want to reuse your existing data (without the bcrypt schema) you need to enable it:
+```sh
+$ cat << EOF > enable-bcrypt.ldif
+# Add bcrypt support
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: pw-bcrypt
+EOF
+
+$ ldapadd -Y EXTERNAL -H ldapi:/// -f enable-bcrypt.ldif
+```
+
+Afterwards you can test it:
+```bash
+$ slappasswd -h '{BCRYPT}' -o module-load="/usr/lib/ldap/pw-bcrypt.so" -s randompassword
+{BCRYPT}$2b$08$WQdWtD5L9LqIxcGG0xjiieM6./BAv/fbQOvSFnbF/REiLW6kg4eqq
+```
+
 ### SSH Public Key
 * Create the ldif file (do not try to refactor this...):
     ```ldif
@@ -136,7 +165,7 @@ result: 0 Success
     ```
 * Add the ldif file:
     ```
-    > ldapadd -Y EXTERNAL -H ldapi:/// -f openssh-lpk.ldif
+    $ ldapadd -Y EXTERNAL -H ldapi:/// -f openssh-lpk.ldif
     SASL/EXTERNAL authentication started
     SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
     SASL SSF: 0
