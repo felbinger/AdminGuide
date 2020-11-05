@@ -42,7 +42,6 @@ plugins:
 
 nav:
   - 'Overview': index.md
-  - 'OpenLDAP': OpenLDAP.md
   - 'Services':
     - 'Traefik': services/traefik.md
     - 'nginx/proxy': services/nginx-proxy.md
@@ -56,3 +55,4 @@ nav:
     - 'Minecraft': services/minecraft.md
     - 'Arma 3 Server': services/arma3.md
     - 'Teamspeak 3 + Sinusbot': services/teamspeak.md
+  - 'OpenLDAP': OpenLDAP.md
