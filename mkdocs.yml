@@ -26,10 +26,13 @@ theme:
   features:
     - search.suggest
     - search.highlight
+    - navigation.expand
 
 markdown_extensions:
   - toc:
       permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
 
 plugins:
   - git-revision-date
