@@ -10,8 +10,9 @@ edit_uri: edit/master/docs
 theme:
   name: 'material'
   palette:
-    primary: 'teal'
-    accent: 'white'
+    scheme: preference
+    primary: 'green'
+    accent: 'lime'
 
   font:
     text: Roboto
@@ -33,6 +34,11 @@ markdown_extensions:
       permalink: true
   - pymdownx.highlight
   - pymdownx.superfences
+  - admonition
+  - pymdownx.tabbed
+  - attr_list
+  - pymdownx.arithmatex:
+      generic: true
 
 plugins:
   - git-revision-date
@@ -42,6 +48,11 @@ plugins:
 
 nav:
   - 'Overview': index.md
+  - 'Installation':
+    - 'Base': 'installation/index.md'
+    - 'Configure DNS': 'installation/dns.md'
+    - 'Docker': 'installation/docker.md'
+    - 'Stack Logic': 'installation/stack-logic.md'
   - 'Services':
       - 'Traefik': services/traefik.md
       - 'nginx/proxy': services/nginx-proxy.md
@@ -56,3 +67,8 @@ nav:
       - 'Arma 3 Server': services/arma3.md
       - 'Teamspeak 3 + Sinusbot': services/teamspeak.md
   - 'OpenLDAP': OpenLDAP.md
+
+extra_javascript:
+  - js/config.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
