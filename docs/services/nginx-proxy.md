@@ -392,7 +392,7 @@ server {
 ```
 </details>
 
-```yml
+```yaml
   nginx:
     image: jwilder/nginx-proxy
     restart: always
@@ -432,7 +432,7 @@ server {
 ```
 
 We also need to specify the three used volumes at the end of the `docker-compose.yml`
-```yml
+```yaml
 volumes:
   nginx-certs:
   nginx-vhosts:

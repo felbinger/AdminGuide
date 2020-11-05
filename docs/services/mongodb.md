@@ -1,6 +1,6 @@
 ## MongoDB
 Checkout the [documentation](https://hub.docker.com/_/mongo)
-```yml
+```yaml
   mongodb:
     image: mongo
     restart: always

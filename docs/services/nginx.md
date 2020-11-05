@@ -1,6 +1,6 @@
 ## nginx
 Checkout the [documentation]()
-```yml
+```yaml
   homepage:
     image: nginx
     restart: always

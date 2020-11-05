@@ -149,7 +149,7 @@ sudo docker network create --subnet 192.168.2.0/24 monitoring
 ```
 
 Lastly we are going to create a `docker-compose.yml` which we will use to define our networks.
-```yml
+```yaml
 version: '3'
 services:
   ...
@@ -184,7 +184,7 @@ Afterwards you can add your services to the `docker-compose.yml`
 * Databases
 * [MariaDB + phpMyAdmin](./services/mariadb.md)
 * [MongoDB](./services/mongodb.md)
-* [PostgreSQL + pgAdmin 4](./services/postgres.md)
+* [PostgreSQL + pgAdmin 4](./services/postgresql.md)
 * [Redis](./services/redis.md)
 * [Elasticsearch](./services/elasticsearch.md)
 

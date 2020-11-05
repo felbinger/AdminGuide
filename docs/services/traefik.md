@@ -1,6 +1,6 @@
 # Traefik
 Add the following configuration to your `docker-compose.yml` in the main stack:
-```yml
+```yaml
   traefik:
     image: "traefik:v2.3"
     command:
@@ -43,7 +43,7 @@ Add the following configuration to your `docker-compose.yml` in the main stack:
 ```
 
 Create the file `/srv/main/traefik/dynamic.yml` to require TLS version 1.2 or higher (currently only TLS 1.3):
-```yml
+```yaml
 tls:
   options:
     default:
@@ -67,7 +67,7 @@ tls:
 ```
 
 You also need a webserver for static content e.g. your error pages: 
-```yml
+```yaml
   static:
     image: nginx
     restart: always
@@ -112,7 +112,7 @@ Let's do a [ssltest](https://www.ssllabs.com/ssltest) to see how good we are:
 
 ### Wildcard Certificates
 1. Modify the command section of your traefik, to setup dnschallenge (remove `....tlschallenge=true`):
-   ```yml
+   ```yaml
          # e.g. for cloudflare
          - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
          - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
@@ -120,7 +120,7 @@ Let's do a [ssltest](https://www.ssllabs.com/ssltest) to see how good we are:
    ```
 2. Modify the environment section ([you can also use docker secrets](https://doc.traefik.io/traefik/user-guides/docker-compose/acme-dns/#use-secrets)) of your traefik, to provide the required credentials for you dns api (checkout [the list of providers](https://doc.traefik.io/traefik/https/acme/#providers)).
 3. Configure the wildcard certificate for your services (e.g. the traefik dashboard in the labels section of the traefik service):
-   ```yml
+   ```yaml
          - "traefik.http.routers.r_traefik.tls.domains[0].main=domain.de"
          - "traefik.http.routers.r_traefik.tls.domains[0].sans=*.domain.de"
    ```
@@ -130,7 +130,7 @@ Traefik offers a lot of authentication middlewares (e.g. [BasicAuth](https://doc
 
 ### Redirect Middleware
 You can also redirect a domain directly to another resource (e.g. your external webinterface of your mailserver):
-```yml
+```yaml
       - "traefik.http.routers.r_redirect.rule=Host(`domain.de`)"
       - "traefik.http.routers.r_redirect.entrypoints=websecure"
       - "traefik.http.routers.r_redirect.tls=true"

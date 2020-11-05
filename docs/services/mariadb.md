@@ -1,6 +1,6 @@
 ## MariaDB
 Checkout the [documentation](https://hub.docker.com/_/mariadb/)
-```yml
+```yaml
   mariadb:
     image: mariadb
     restart: always
@@ -14,7 +14,7 @@ Checkout the [documentation](https://hub.docker.com/_/mariadb/)
 
 ## PHPmyAdmin
 Checkout the [documentation](https://hub.docker.com/_/phpmyadmin)
-```yml
+```yaml
   phpmyadmin:
     image: phpmyadmin
     restart: "no"

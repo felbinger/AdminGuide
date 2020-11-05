@@ -49,7 +49,7 @@
 
 ### Start the arma3 server
 * Create your service definition in the `docker-compose.yml` of you games stack:
-  ```yml
+  ```yaml
   arma3:
     image: arma3server
     restart: always

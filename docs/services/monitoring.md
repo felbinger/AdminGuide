@@ -2,7 +2,7 @@
 I'm using [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/), [InfluxDB](https://www.influxdata.com/products/influxdb-overview/) and [Grafana](https://grafana.com/) as frontend to monitor my server resources.
 
 ![Grafana Dashboard](./img/services_grafana_dashboard.png?raw=true)
-```yml
+```yaml
   # shell: docker-compose exec influxdb influx -precision rfc3339
   influxdb:
     image: influxdb
@@ -119,7 +119,7 @@ sudo systemctl restart telegraf
 
 ### Monitoring docker instances from the host
 You can monitor your docker instances using the on the host running telegraf instance if you assign these docker containers a static ip address, like in influxdb:
-```yml
+```yaml
 ...
 networks:
   database:

@@ -1,6 +1,6 @@
 ## Redis
 Checkout the [documentation](https://hub.docker.com/_/redis)
-```yml
+```yaml
   redis:
     image: redis
     restart: always

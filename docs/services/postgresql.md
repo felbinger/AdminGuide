@@ -1,6 +1,6 @@
 ## PostgreSQL
 Checkout the [documentation](https://hub.docker.com/_/postgres)
-```yml
+```yaml
   postgresql:
     image: postgres
     restart: always
@@ -14,7 +14,7 @@ Checkout the [documentation](https://hub.docker.com/_/postgres)
 ```
 
 ## pgAdmin 4
-```yml
+```yaml
   pgadmin:
     image: dpage/pgadmin4
     restart: always

@@ -1,6 +1,6 @@
 ## httpd with php
 Checkout the [documentation](https://hub.docker.com/_/php)
-```yml
+```yaml
   homepage:
     image: php:apache2
     restart: always

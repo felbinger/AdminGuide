@@ -1,6 +1,6 @@
 ## Minecraft Server
 Checkout the [documentation](https://github.com/itzg/docker-minecraft-server/blob/master/README.md)
-```yml
+```yaml
   minecraft:
     image: itzg/minecraft-server
     restart: always
