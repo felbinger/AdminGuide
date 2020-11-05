@@ -1,3 +1,54 @@
-site_name: "Admin Guide"
+site_name: Admin Guide
+site_url: https://felbinger.github.io/AdminGuide/
+repo_name: felbinger/AdminGuide
+repo_url: https://github.com/felbinger/AdminGuide/
+site_description: "Linux Server Administrator Guide"
+site_author: https://github.com/felbinger
+remote_branch: gh-pages
+edit_uri: edit/master/docs
+
 theme:
-  name: material
+  name: 'material'
+  palette:
+    primary: 'teal'
+    accent: 'white'
+
+  font:
+    text: Roboto  
+    code: Roboto Mono
+
+  language: en
+  direction: ltr
+  icon:
+    repo: fontawesome/brands/github
+  
+  theme:
+  features:
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - toc:
+      permalink: true
+
+plugins:
+  - git-revision-date
+  - git-revision-date-localized
+  - search:
+      lang: en
+
+nav:
+  - 'Overview': index.md
+  - 'OpenLDAP': OpenLDAP.md
+  - 'Services':
+    - 'Traefik' traefik.md
+    - 'nginx/proxy' nginx-proxy.md
+    - 'nginx' nginx.md
+    - 'httpd with php' httpd.md
+    - 'MariaDB' mariadb.md
+    - 'MongoDB' mongodb.md
+    - 'PostgreSQL' postgresql.md
+    - 'Redis' redis.md
+    - 'Monitoring' monitoring.md
+    - 'Minecraft' minecraft.md
+    - 'Arma 3 server' arma3.md

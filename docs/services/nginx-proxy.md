@@ -1,5 +1,7 @@
 ## jwilder/nginx-proxy + letsencrypt
 
+As far as I know, the development of the [jwilder/nginx-proxy](https://github.com/nginx-proxy/nginx-proxy) has been abandoned!
+
 But one thing should be noted: This proxy is not able to bind two diffrent subdomains on two diffrent ports of the same container. So for example: `a.domain.tld` to port 80 and `b.domain.tld` to port 8080.
 But I found a solution for this issue: There is a `nginx.tmpl` with exactly this feature online available.
 

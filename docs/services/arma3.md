@@ -1,32 +1,6 @@
-# Minecraft Server
-```yml
-  minecraft:
-    image: itzg/minecraft-server
-    restart: always
-    ports:
-      - '25565:25565'
-    volumes:
-      - '/srv/games/minecraft:/data'
-    environment:
-      - 'TYPE=SPIGOT'
-      - 'SPIGOT_DOWNLOAD_URL=https://cdn.getbukkit.org/spigot/spigot-1.16.3.jar'
-      - 'OVERRIDE_SERVER_PROPERTIES=true'
-      - 'EULA=TRUE'
-      - 'MAX_PLAYERS=50'
-      - 'TZ=Europe/Berlin'
-      - 'MAX_MEMORY=8G'
-      - 'MAX_RAM=8G'
-      - 'MIN_RAM=4G'
-      - 'ENABLE_AUTOPAUSE=TRUE'
-      - 'MOTD=checkout https://github.com/felbinger/AdminGuide/wiki'
-      - 'SPAWN_PROTECTION=0'
-      - 'SEED=2303273916051849791'
-```
-
-# Linux Game Server Manager: Arma 3 Server
-
-## Create the custom lgsm arma 3 server image
-* create `entrypoint.sh`, to start the arma 3 server automaticly:
+## Linux Game Server Manager: Arma 3 Server
+### Customize your image
+* Create a custom `entrypoint.sh`, to start the arma 3 server automaticly:
   ```bash
   #!/bin/bash
 
@@ -48,7 +22,7 @@
   exit 0
   ```
 
-* create custom `Dockerfile`, which extends the lgsm image:
+* Create a custom `Dockerfile`, which extends the lgsm image:
   ```Dockerfile
   FROM gameservermanagers/linuxgsm-docker
 
@@ -68,13 +42,13 @@
   USER linuxgsm
   ```
 
-* build the custom docker image:
+* Build your customized lgsm image:
   ```
   sudo docker build -t arma3server .
   ```
 
-## Start the arma3 server
-* create service in `docker-compose.yml`:
+### Start the arma3 server
+* Create your service definition in the `docker-compose.yml` of you games stack:
   ```yml
   arma3:
     image: arma3server
@@ -89,13 +63,14 @@
       - '/srv/games/arma3:/home/lgsm'
   ```
 
-* start the service and execute a shell:
+* Start the service and execute a shell:
   ```
   sudo docker-compose up -d arma3
   sudo docker-compose exec arma3 bash
   ```
 
-* add credentials for a steam account (you should create a new one):
+* Add your steam account credentials to download the files of the gameserver.  
+I suggest you create a new account for this:
   ```
   cat <<EOF >> ~/lgsm/config-lgsm/arma3server/arma3server.cfg
   steamuser="YOUR_USERNMAE"
@@ -103,16 +78,16 @@
   EOF
   ```
 
-* start the installation process:
+* Afterwards you can start the installation process:
   ```
   ./arma3server install
   ```
 
-  ![first picture of the installation process](./../blob/master/img/arma3_install_1.png?raw=true)
-  ![second picture of the installation process](./../blob/master/img/arma3_install_2.png?raw=true)
+  ![first picture of the installation process](./img/arma3_install_1.png)
+  ![second picture of the installation process](./img/arma3_install_2.png)
 
 
-## configurations
+### Importent configuration files
 ```bash
 # things that need to be done to start the server (e. g. mods)
 /srv/games/arma3/lgsm/config-lgsm/arma3server/arma3server.cfg

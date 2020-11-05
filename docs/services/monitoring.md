@@ -1,136 +1,3 @@
-## Reverse Proxy
-* [jwilder/nginx-proxy](./services_nginx-proxy.md)
-* [Traefik](./services_traefik.md)
-
-## Databases
-Next, let's set up some database management systems and administrative web portals for them:
-```yml
-  mariadb:
-    image: mariadb
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: SECRET_PASSWORD
-    volumes:
-      - "/srv/main/mariadb/data:/var/lib/mysql"
-      - "/srv/main/mariadb/transfer:/transfer"
-    networks:
-      - database
-
-  mongodb:
-    image: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: SECRET_PASSWORD
-    volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/srv/main/mongodb/transfer:/data/transfer"
-      - "/srv/main/mongodb/data:/data/db"
-    networks:
-      - database
-
-  postgresql:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: SECRET_PASSWORD
-    volumes:
-      - "/srv/main/postgres/transfer:/transfer"
-      - "/srv/main/postgres/data:/var/lib/postgresql/data"
-    networks:
-      - database
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    restart: "no"
-    depends_on:
-      - mariadb
-    environment:
-      PMA_HOST: mariadb
-      PMA_PORT: 3306
-      PMA_ABSOLUTE_URI: https://phpmyadmin.domain.tld/
-      VIRTUAL_HOST: phpmyadmin.domain.tld:80
-      LETSENCRYPT_HOST: phpmyadmin.domain.tld
-    volumes:
-      - '/srv/main/phpmyadmin/php.ini:/usr/local/etc/php/php.ini'
-    networks:
-      - proxy
-      - database
-
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      VIRTUAL_HOST: pgadmin.domain.tld:80
-      LETSENCRYPT_HOST: pgadmin.domain.tld
-      PGADMIN_DEFAULT_EMAIL: admin@domain.tld
-      PGADMIN_DEFAULT_PASSWORD: SECRET_PASSWORD
-    networks:
-      - database
-      - proxy
-```
-
-Don't forget to create your custom `/srv/main/phpmyadmin/php.ini` for phpmyadmin to increase the upload size of database imports. 
-```
-upload_max_filesize = 512M
-post_max_size = 512M
-memory_limit = 512M
-max_execution_time = 300
-```
-
-
-Actually, let's add `redis` as key value store and `elasticsearch` too:
-```yml
-  redis:
-    image: redis
-    restart: always
-    command: "redis-server --appendonly yes"
-    volumes:
-      - "/srv/main/redis:/data"
-    networks:
-      - database
-
-  elasticsearch:
-    image: elasticsearch:7.6.2
-    restart: always
-    environment:
-      node.name: elasticsearch
-      discovery.type: single-node
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
-    volumes:
-      - "/srv/main/elasticsearch:/usr/share/elasticsearch/data"
-    networks:
-      - database
-```
-
-I would suggest to stop administrative services over the night. They shouln't be online for longer then needed, you can do this using a cronjob:
-```bash
-# stop administrative services at 5 am during the week
-00 05 * * 1-5 /usr/local/bin/docker-compose -f /home/admin/services/main/docker-compose.yml rm -fs phpmyadmin pgadmin 2>&1
-```
-
-### pgAdmin4 automatic login
-* Make `/pgadmin4/servers.json` persistent, by adding a volume to this file
-* Make the whole `storage` directory in `/var/lib/pgadmin/storage` persistent, and add this structure: `storage/admin_domain.tld/.pgpass`. Don't forget to adjust the permissions: `chown -R 5050:5050 /srv/main/pgadmin/`
-
-## Portainer
-
-![Portainer Dashboard](./img/services_portainer_dashboard.png?raw=true)
-```yml
-  portainer:
-    image: portainer/portainer
-    restart: always
-    command: -H unix:///var/run/docker.sock
-    environment:
-      VIRTUAL_HOST: portainer.domain.tld:9000
-      LETSENCRYPT_HOST: portainer.domain.tld
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /srv/main/portainer:/data
-    networks:
-      - proxy
-```
-
 ## Resource Monitoring
 I'm using [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/), [InfluxDB](https://www.influxdata.com/products/influxdb-overview/) and [Grafana](https://grafana.com/) as frontend to monitor my server resources.
 
@@ -168,19 +35,24 @@ I'm using [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/),
 
 Unfortunately you need to copy the three volumes out of grafana before starting it up:
 ```bash
-$ mkdir -p /srv/main/{grafana,influxdb}
+mkdir -p /srv/main/{grafana,influxdb}
 # copy data directory
-$ sudo docker cp main_grafana_1:/var/lib/grafana /srv/main/grafana/lib
+sudo docker cp main_grafana_1:/var/lib/grafana \
+  /srv/main/grafana/lib
 # copy config directory
-$ sudo docker cp main_grafana_1:/etc/grafana /srv/main/grafana/etc
+sudo docker cp main_grafana_1:/etc/grafana \
+  /srv/main/grafana/etc
 # copy log directory
-$ sudo docker cp main_grafana_1:/var/log/grafana /srv/main/grafana/log
+sudo docker cp main_grafana_1:/var/log/grafana \
+  /srv/main/grafana/log
 # adjust permissions
-$ sudo chown -R 472:472 /srv/main/grafana/
+sudo chown -R 472:472 /srv/main/grafana/
 
 # influxdb
-$ sudo docker cp main_influxdb_1:/var/lib/influxdb /srv/main/influxdb/lib
-$ sudo docker cp main_influxdb_1:/etc/influxdb/influxdb.conf /srv/main/influxdb/influxdb.conf
+sudo docker cp main_influxdb_1:/var/lib/influxdb \
+  /srv/main/influxdb/lib
+sudo docker cp main_influxdb_1:/etc/influxdb/influxdb.conf \
+  /srv/main/influxdb/influxdb.conf
 ```
 
 Afterwards you can remove the comments in front of the volumes and start up the container. The default login for grafana is `admin`:`admin`.
@@ -240,9 +112,9 @@ Afterwards we are going to edit the copied telegraf configuration (`/etc/telegra
 
 ```bash
 # configure telegraf (hostname.conf should match your hostname)
-$ sudo cp /etc/telegraf/telegraf.{conf,d/hostname.conf}
-$ sudo nano /etc/telegraf/telegraf.{conf,d/hostname.conf}
-$ sudo systemctl restart telegraf
+sudo cp /etc/telegraf/telegraf.{conf,d/hostname.conf}
+sudo nano /etc/telegraf/telegraf.{conf,d/hostname.conf}
+sudo systemctl restart telegraf
 ```
 
 ### Monitoring docker instances from the host

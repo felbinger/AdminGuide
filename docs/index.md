@@ -2,25 +2,25 @@
 
 ## Install Basic Software
 ```bash
-$ apt-get update
-$ apt-get -y dist-upgrade
-$ apt-get -y install apt sudo curl nano
+apt-get update
+apt-get -y dist-upgrade
+apt-get -y install apt sudo curl nano
 ```
 
 ## Create `admin` group
 ```bash
-$ groupadd -g 997 admin
-$ mkdir /home/admin
-$ chown -R root:admin /home/admin
-$ chmod -R 775 /home/admin
+groupadd -g 997 admin
+mkdir /home/admin
+chown -R root:admin /home/admin
+chmod -R 775 /home/admin
 ```
 
 ## Create Users
 You should create at least one user account, and use it instead of the `root` user.
 Let's create a new user called `user` add add him to the groups `sudo` and `admin`.
 ```bash
-$ adduser user
-$ usermod -aG sudo,admin user
+adduser user
+usermod -aG sudo,admin user
 ```
 
 ### Add SSH Public Key's of the users to there home directories
@@ -49,7 +49,7 @@ You can do this in the server control panel.
 
 ### Validate DNS updates
 DNS Updates can take quiet some time!
-```bash
+```sh
 $ dig A domain.tld @1.1.1.1
 ...
 ;; ANSWER SECTION:
@@ -98,9 +98,10 @@ After we successfully logged in using one of our user accounts, we can reconfigu
 
 ## Install Docker
 ```bash
-$ curl https://get.docker.com | sudo bash
-$ sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-$ sudo chmod +x /usr/local/bin/docker-compose
+curl https://get.docker.com | sudo bash
+sudo curl -L -o /usr/local/bin/docker-compose \
+  "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" 
+sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 ## Create Stack Logic
@@ -108,7 +109,7 @@ We will group the services in different "stacks" to manage them, this way we can
 
 First, let's add the default directories into the admin directory:
 ```bash
-$ mkdir -p /home/admin/{services,images,tools,docs}/
+mkdir -p /home/admin/{services,images,tools,docs}/
 ```
 
 For each stack we will create, we want to have a directory in `/home/admin/services/`, `/home/admin/images/` and `/srv/`:
@@ -136,15 +137,15 @@ Remember the formular: `2^(32−x)−2` where `x` is your submask in cidr notati
 
 ```bash
 # create main stack
-$ name='main'
-$ mkdir -p "/home/admin/{services,images}/${name}/"
-$ sudo mkdir -p "/srv/${name}/"
-$ sudo docker network create --subnet 192.168.100.0/24 ${name}
+name='main'
+mkdir -p "/home/admin/{services,images}/${name}/"
+sudo mkdir -p "/srv/${name}/"
+sudo docker network create --subnet 192.168.100.0/24 ${name}
 
 # create helper networks (we will need them in the next chapter)
-$ sudo docker network create --subnet 192.168.0.0/24 proxy
-$ sudo docker network create --subnet 192.168.1.0/24 database
-$ sudo docker network create --subnet 192.168.2.0/24 monitoring
+sudo docker network create --subnet 192.168.0.0/24 proxy
+sudo docker network create --subnet 192.168.1.0/24 database
+sudo docker network create --subnet 192.168.2.0/24 monitoring
 ```
 
 Lastly we are going to create a `docker-compose.yml` which we will use to define our networks.
@@ -170,20 +171,41 @@ networks:
 The network created for a particular stack will be called `default` in the matching `docker-compose.yml`.
 This will help us, because if we do not specify a network in the service sections of the `docker-compose.yml`, these services will automatically connectto network `defalut`.
 
-Afterwards you can add your [services](./services.md) to the `docker-compose.yml`
+Afterwards you can add your services to the `docker-compose.yml`
+
+* Reverse Proxy
+  * [jwilder/nginx-proxy](./services/nginx-proxy.md)
+  * [Traefik](./services/traefik.md)
+
+* Webserver
+  * [nginx](./services/nginx.md)
+  * [httpd with php](./services/httpd.md)
+
+* Databases
+* [MariaDB + phpMyAdmin](./services/mariadb.md)
+* [MongoDB](./services/mongodb.md)
+* [PostgreSQL + pgAdmin 4](./services/postgres.md)
+* [Redis](./services/redis.md)
+* [Elasticsearch](./services/elasticsearch.md)
+
+I suggest you to stop administrative services over the night. They shouln't be online for longer then needed, you can do this using a cronjob:
+```bash
+# stop administrative services at 5 am during the week
+00 05 * * 1-5 /usr/local/bin/docker-compose -f /home/admin/services/main/docker-compose.yml rm -fs phpmyadmin pgadmin 2>&1
+```
 
 ### [ctop](https://ctop.sh/)
 Simple commandline monitoring tool for docker containers:
 ```
-$ sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 -O /usr/local/bin/ctop
-$ sudo chmod +x /usr/local/bin/ctop
+sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 -O /usr/local/bin/ctop
+sudo chmod +x /usr/local/bin/ctop
 ```
 
 ### Docker Network Viewer
 A simple tool to show docker networks:
 ```
-$ sudo wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv -O /home/admin/tools/dnv
-$ sudo chmod +x /home/admin/tools/dnv
+sudo wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv -O /home/admin/tools/dnv
+sudo chmod +x /home/admin/tools/dnv
 ```
 
 ## Backup
@@ -199,41 +221,41 @@ I wrote [my own backup script in python](https://github.com/felbinger/pybackup).
 
 ```bash
 # install python3.8 from debian/testing - WARNING: this might break your system (use with caution!)
-$ echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' | sudo tee -a /etc/apt/sources.list
-$ echo 'APT::Default-Release "stable";' | sudo tee /etc/apt/apt.conf.d/99defaultrelease
-$ sudo apt update
-$ sudo apt install -y -t testing python3.8 python3-pip
+echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' | sudo tee -a /etc/apt/sources.list
+echo 'APT::Default-Release "stable";' | sudo tee /etc/apt/apt.conf.d/99defaultrelease
+sudo apt update
+sudo apt install -y -t testing python3.8 python3-pip
 ```
 
 </details>
 
 ```bash
-$ sudo apt-get install build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev \
+sudo apt-get install build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev \
   libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
   
-$ wget https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tgz
-$ tar xzf Python-3.8.6.tgz
+wget https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tgz
+tar xzf Python-3.8.6.tgz
 
-$ cd Python-3.8.6
-$ ./configure --enable-optimizations --prefix=/opt/python/3.8
-$ make -j$(nproc)
-$ sudo make altinstall
+cd Python-3.8.6
+./configure --enable-optimizations --prefix=/opt/python/3.8
+make -j$(nproc)
+sudo make altinstall
  
-$ echo "export PATH=/opt/python/3.8/bin:$PATH" >> /etc/profile.d/python3.8.sh
-$ bash /etc/profile.d/python3.8.sh
+echo "export PATH=/opt/python/3.8/bin:$PATH" >> /etc/profile.d/python3.8.sh
+bash /etc/profile.d/python3.8.sh
 ```
 
 ```bash
 # install git and clone repository
-$ sudo apt install -y git
-$ sudo git clone https://github.com/felbinger/pybackup /root/pybackup/
-$ sudo pip3 install -r /root/pybackup/requirements.txt
+sudo apt install -y git
+sudo git clone https://github.com/felbinger/pybackup /root/pybackup/
+sudo pip3 install -r /root/pybackup/requirements.txt
 
 # delete offside backup cause we don't need it on the server
-$ rm -r /root/pybackup/OffsideBackup
+rm -r /root/pybackup/OffsideBackup
 
 # configure pybackup
-$ nano /root/pybackup/.config.json
+nano /root/pybackup/.config.json
 
 # run backup
 $ python3.8 backup.py -df
