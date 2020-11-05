@@ -1,2 +1,1 @@
-# AdminGuide
-Checkout the [Wiki](../../wiki)
+# Admin Guide
