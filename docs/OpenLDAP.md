@@ -3,7 +3,7 @@
 ## Install:
 * Install docker and docker-compose
 * Create the `docker-compose.yml` file:
-    ```yml
+    ```yaml
     version: '3.2'
 
     services:
