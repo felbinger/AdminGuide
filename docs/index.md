@@ -20,6 +20,10 @@ You can basicly skip most of the installation section, but there are some except
 
 * You need to setup your DNS, consider to change the name servers to cloudflare if you have trouble with the dns challenge for wildcard certificate later on.
 
+```
+curl -fsSL https://raw.githubusercontent.com/felbinger/AdminGuide/master/postinstall.sh | sudo bash
+```
+
 </details>
 
 
@@ -75,8 +79,8 @@ sudo chmod +x /usr/local/bin/ctop
 A simple tool to show docker networks:
 ```bash
 sudo wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv \
-  -O /home/admin/tools/dnv
-sudo chmod +x /home/admin/tools/dnv
+  -O /usr/local/bin/dnv
+sudo chmod +x /usr/local/bin/dnv
 ```
 
 ```sh

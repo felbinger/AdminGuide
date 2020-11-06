@@ -77,3 +77,100 @@ networks:
 
 The network created for a particular stack will be called `default` in the matching `docker-compose.yml`.
 This will help us, because if we do not specify a network in the service sections of the `docker-compose.yml`, these services will automatically connect network `defalut`.
+
+
+<details>
+  <summary>Parts of the PostInstall script covered in this chapter</summary>
+
+```bash
+#!/bin/bash
+
+## CONFIGURATION ###
+ADM_NAME='admin'
+ADM_GID=997
+ADM_HOME='/home/admin'
+ADM_USERS=('user')
+
+declare -A STACKS=(\
+  ["main"]="192.168.100.0/24"
+)
+
+declare -A HELPER=(\
+  ["proxy"]="192.168.0.0/24" \
+  ["database"]="192.168.1.0/24" \
+  ["monitoring"]="192.168.2.0/24"
+)
+### END of CONFIGURATION ###
+
+function docker_network_create() {
+  name=${1}
+  subnet=${2}
+  docker network inspect ${name} >/dev/null 2>&1 || \
+  docker network create --subnet ${subnet} ${name}
+}
+
+function create_compose() {
+  compose=${1}
+  touch ${compose}
+  echo -e "version: '3.8'\n" >${compose}
+
+  # define services
+  echo -e "services:\n" >>${compose}
+  if [[ ${#SERVICES} == 0 ]]; then
+    echo -e "  test:" >>${compose}
+    echo -e "    image: hello-world\n" >>${compose}
+  fi
+
+  echo -e "\n" >>${compose}
+
+  # define networks
+  echo -e "networks:" >>${compose}
+
+  # define stack network
+  echo -e "  default:" >>${compose}
+  echo -e "    external:" >>${compose}
+  echo -e "      name: ${name}" >>${compose}
+
+  # define helper networks
+  for helper_name in ${!HELPER[@]}; do
+    echo -e "  ${helper_name}:" >>${compose}
+    echo -e "    external:" >>${compose}
+    echo -e "      name: ${helper_name}" >>${compose}
+  done
+}
+
+# remove trailing slash from ADM_HOME
+[[ "${ADM_HOME}" == */ ]] && ADM_HOME="${ADM_HOME::-1}"
+
+# create admin group, add members to group and set permissions
+groupadd -g ${ADM_GID} ${ADM_NAME}
+mkdir ${ADM_HOME}
+chown -R root:${ADM_NAME} ${ADM_HOME}
+chmod -R 775 ${ADM_HOME}
+for user in ${ADM_USERS}; do
+  adduser ${user} ${ADM_NAME}
+done
+
+# create helper networks
+for name in ${!HELPER[@]}; do
+  subnet=${HELPER[${name}]}
+  docker_network_create ${name} ${subnet}
+done
+
+# create stack logic
+mkdir -p ${ADM_HOME}/{services,images,tools,docs}/
+for name in ${!STACKS[@]}; do
+  subnet=${STACKS[${name}]}
+  mkdir -p ${ADM_HOME}/{services,images}/${name}/
+  mkdir -p "/srv/${name}/"
+
+  # create stack network
+  docker_network_create ${name} ${subnet}
+
+  # create docker-compose.yml
+  compose="${ADM_HOME}/services/${name}/docker-compose.yml"
+  create_compose ${compose}
+done
+```
+
+</details>
