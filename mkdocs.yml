@@ -28,6 +28,7 @@ theme:
     - search.suggest
     - search.highlight
     - navigation.expand
+    - navigation.instant
 
 markdown_extensions:
   - toc:
