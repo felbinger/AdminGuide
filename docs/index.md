@@ -1,4 +1,3 @@
-
 This Admin Guide describes how I setup my servers using docker. 
 
 ### Installation
@@ -36,10 +35,9 @@ The following list contains a list of services that might come in handy. Simply 
 You can find all services (e.g. Gameserver, Teamspeak, Sinusbot, ...) in the navigation bar on the left side of your page. 
 
 #### Reverse Proxy's
-
-A reverse proxy is a router which binds to the ports 80 (http) and 443 (https).  
-You can access the configured services by connecting to the proxy (https://domain.tld) with a specific host header, which is going to be evaluated by the proxy.  
-But how do you connect to your proxy with this specific host header? Due to the fact that you configured your dns to redirect all subdomains to your server you can simply access https://phpmyadmin.domain.tld. You will reach the reverse proxy on port 443 with the host header `phpmyadmin.domain.tld`, after evaluation the proxy will redirect the incomming request to the configured service.  
+A reverse proxy is a router which binds to the ports `80` (http) and `443` (https).  
+You can access the configured services by connecting to the proxy (`https://domain.tld`) with a specific host header, which is going to be evaluated by the proxy.  
+But how do you connect to your proxy with this specific host header? Due to the fact that you configured your dns to redirect all subdomains to your server you can simply access `https://phpmyadmin.domain.tld`. You will reach the reverse proxy on port 443 with the host header `phpmyadmin.domain.tld`, after evaluation the proxy will redirect the incomming request to the configured service.  
  
 * [Traefik](./services/traefik.md)
 * [jwilder/nginx-proxy](./services/nginx-proxy.md) is no longer being maintained.
@@ -121,8 +119,8 @@ First you need to install python3.8, because the latest version in the default r
     bash /etc/profile.d/python3.8.sh
     ```
 === "install python3.8 from debian/testing"
-    !!! warning ""
-        **Warning**: Due to the fact that this will add the debian/testing repositories to your system, this might break your system. Do **not** execute this on a productive system!
+    !!! warning "Warning"
+        Due to the fact that this will add the debian/testing repositories to your system, this might break your system. Do **not** execute this on a productive system!
     ```bash
     echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' \
       | sudo tee -a /etc/apt/sources.list
@@ -134,8 +132,8 @@ First you need to install python3.8, because the latest version in the default r
 
 Afterwards you can clone the [pybackup repository](https://github.com/felbinger/pybackup) to a place which is only writeable by root (I recommend `/root/`) and install the reqirements from the `requirements.txt`:
 
-!!! warning ""
-    **Security Warning**: Due to the fact that the backup.py will be executed by root cronjob, the file should be only editable by root. Otherwise a lower privileged user, might exchange the python file or add a path (e.g. `/etc/shadow`) to the backup configuration to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).
+!!! warning "Security Warning"
+    Due to the fact that the backup.py will be executed by root cronjob, the file should be only editable by root. Otherwise a lower privileged user, might exchange the python file or add a path (e.g. `/etc/shadow`) to the backup configuration to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).
 
 ```bash
 # install git and clone repository
