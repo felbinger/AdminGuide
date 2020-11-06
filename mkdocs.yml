@@ -57,7 +57,8 @@ nav:
       - 'Traefik': services/traefik.md
       - 'nginx/proxy': services/nginx-proxy.md
       - 'nginx': services/nginx.md
-      - 'httpd with php': services/httpd.md
+      - 'httpd': services/httpd.md
+      - 'httpd with php': services/httpd-php.md
       - 'MariaDB': services/mariadb.md
       - 'MongoDB': services/mongodb.md
       - 'PostgreSQL': services/postgresql.md
