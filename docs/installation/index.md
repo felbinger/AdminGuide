@@ -159,7 +159,10 @@ MaxSessions 5
 ```
 
 !!! info ""
-    Don't forget to restart your SSH Server!
+    Don't forget to restart your SSH Server:
+    ```bash
+    sudo systemctl restart ssh
+    ```
 
 !!! warning ""
     Make sure you can log in using your SSH private key, otherwise you are not able to login again after the next step!
