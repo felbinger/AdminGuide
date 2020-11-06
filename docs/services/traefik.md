@@ -108,7 +108,7 @@ You also need a webserver for static content e.g. your error pages:
 You should also add your domain to the [HSTS Preload List](https://hstspreload.org/), all subdomains need to be reachable using a secure connection, so you need a wildcard certificate for this.
 
 Let's do a [ssltest](https://www.ssllabs.com/ssltest) to see how good we are:
-![Picture of the ssltest result](../img/services_traefik_ssllabs_test.png?raw=true){: loading=lazy }
+![Picture of the ssltest result](../img/services/traefik_ssllabs_test.png?raw=true){: loading=lazy }
 
 ### Wildcard Certificates
 1. Modify the command section of your traefik, to setup dnschallenge (remove `....tlschallenge=true`):

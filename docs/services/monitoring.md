@@ -1,7 +1,7 @@
 ## Resource Monitoring
 I'm using [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/), [InfluxDB](https://www.influxdata.com/products/influxdb-overview/) and [Grafana](https://grafana.com/) as frontend to monitor my server resources.
 
-![Grafana Dashboard](../img/services_grafana_dashboard.png?raw=true)
+![Grafana Dashboard](../img/services/grafana_dashboard.png?raw=true)
 ```yaml
   # shell: docker-compose exec influxdb influx -precision rfc3339
   influxdb:

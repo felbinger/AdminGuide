@@ -1,8 +1,8 @@
-## httpd
-[httpd documentation](https://hub.docker.com/_/httpd)
+## httpd with php
+[php documentation](https://hub.docker.com/_/php)
 ```yaml
   homepage:
-    image: httpd:alpine
+    image: php:apache2
     restart: always
     labels:
       - "traefik.enable=true"
