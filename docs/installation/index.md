@@ -158,5 +158,8 @@ MaxAuthTries 3
 MaxSessions 5
 ```
 
+!!! info ""
+    Don't forget to restart your SSH Server!
+
 !!! warning ""
     Make sure you can login using your SSH private key, otherwise you are not able to login again after the next step!
