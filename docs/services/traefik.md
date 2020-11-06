@@ -66,7 +66,7 @@ tls:
         - TLS_FALLBACK_SCSV
 ```
 
-You also need a webserver for static content e.g. your error pages: 
+You also need a webserver for static content e.g. your [error pages](https://github.com/felbinger/AdminGuide/tree/master/error_pages): 
 ```yaml
   static:
     image: nginx

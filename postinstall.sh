@@ -88,6 +88,7 @@ chown -R root:${ADM_NAME} ${ADM_HOME}
 chmod -R 775 ${ADM_HOME}
 for user in ${ADM_USERS}; do
   adduser ${user} ${ADM_NAME}
+  echo -e '\nalias dc="sudo docker-compose "\n' | tee -a /home/${user}/.bashrc
 done
 
 # create helper networks
