@@ -1,5 +1,5 @@
 ## Base
-First we update the package lists, kernel and other distrubution specific stuff.
+First we update the package lists, kernel and other distribution specific stuff.
 <br>
 Then we install some tools that are needed for this guide.
 ```bash
@@ -46,7 +46,7 @@ chmod -R 775 /home/admin
 
 ## Create Users
 You should create at least one user, and use it instead of the `root` user.
-Let's create a new user called `user` add add him to the groups `sudo` and `admin`.
+Let's create a new user called `user` and add him to the groups `sudo` and `admin`.
 
 === "default"
     ```bash
@@ -63,10 +63,10 @@ Let's create a new user called `user` add add him to the groups `sudo` and `admi
     You can repeat this part for any other user who needs administrative access.
 
 ## Setup SSH Keys
-SSH keys are a fundermendal for secure connection to your server.
+SSH keys are a fundamental for secure connection to your server.
 
 ### Create SSH Keys
-If you don't already have a SSH Key it is recommended to create one:
+If you don't already have an SSH Key it is recommended to create one:
 
 === "rsa"
     ```bash
@@ -96,7 +96,7 @@ If you don't already have a SSH Key it is recommended to create one:
 There are multiple options to add your public keys to the file `~/.ssh/authorized_keys`:
 
 === "Client Side"
-    One option is to use `ssh-copy-id` on the client machine (and authenticate yourself with for example a password)
+    One option is to use `ssh-copy-id` on the client machine (and authenticate yourself with for example a password),
     and the ssh client automatically copy the keys there.
 
     === "default key"
@@ -162,4 +162,4 @@ MaxSessions 5
     Don't forget to restart your SSH Server!
 
 !!! warning ""
-    Make sure you can login using your SSH private key, otherwise you are not able to login again after the next step!
+    Make sure you can log in using your SSH private key, otherwise you are not able to login again after the next step!

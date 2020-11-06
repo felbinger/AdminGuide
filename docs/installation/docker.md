@@ -6,7 +6,7 @@
     sudo apt-get remove docker docker-engine docker.io containerd runc
     ```
 
-Docker it self already provide a very good script:
+Docker itself already provide a very good script:
 
 ```bash
 curl -fsSL https://get.docker.com | sudo bash
@@ -20,7 +20,7 @@ sudo curl -L -o /usr/local/bin/docker-compose \
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-Instelt of typing `sudo docker-compose up -d` all the time you can use this alias and type `dc up -d`:
+Instead of typing `sudo docker-compose up -d` all the time you can use this alias and type `dc up -d`:
 
 ```bash
 echo 'alias dc="sudo docker-compose "' >> ~/.bashrc

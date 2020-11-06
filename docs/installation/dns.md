@@ -34,7 +34,7 @@
 It is recommended to change the name servers of your domain to the Cloudflare name servers.
 Check out [this (support.cloudflare.com)](https://support.cloudflare.com/hc/en-us/articles/205195708-Changing-your-domain-nameservers-to-Cloudflare) tutorial for your provider.
 
-### Examples records for the Cloudflare DNS management:
+### Example records for the Cloudflare DNS management:
 
 ![DNS-A](../img/dns/dns-a.jpg){: loading=lazy }
 ![DNS-CAA](../img/dns/dns-caa.jpg){: loading=lazy }

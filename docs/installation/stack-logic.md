@@ -1,4 +1,4 @@
-We will group the services in different "stacks" to manage them, this way we can change specific things without taking all services offline. Furthermore we will use one docker network per stack to make sure, that each container is only able to communicate with other containers which it really needs.
+We will group the services in different "stacks" to manage them, this way we can change specific things without taking all services offline. Furthermore, we will use one docker network per stack to make sure, that each container is only able to communicate with other containers which it really needs.
 
 ## Getting Started
 
@@ -23,7 +23,7 @@ For each stack we will create, we want to have a directory in `/home/admin/servi
 
 We will also create multiple docker networks, to give the containers the ability to communicate with each other.
 
-- Helper networks (for communitation between diffrent stacks: e.g. database, proxy, monitoring, ...) start at `192.168.0.0/24`
+- Helper networks (for communication between different stacks: e.g. database, proxy, monitoring, ...) start at `192.168.0.0/24`
 - Stack networks (one network for each stack) start at `192.168.100.0/24`
 
 !!! note ""
@@ -35,7 +35,7 @@ We will also create multiple docker networks, to give the containers the ability
 
 | Name       | Subnet           | Usage                                                      |
 | :--------- | :--------------- | :--------------------------------------------------------- |
-| Proxy      | 192.168.0.0/24   | Container communiation to nginx reverse proxy.             |
+| Proxy      | 192.168.0.0/24   | Container communication to nginx reverse proxy.            |
 | Database   | 192.168.1.0/24   | Communication to databases (MariaDB, MongoDB, PostgreSQL). |
 | Monitoring | 192.168.2.0/24   | Communication to monitoring utilities (InfluxDB).          |
 |            |                  |                                                            |
@@ -76,4 +76,4 @@ networks:
 ```
 
 The network created for a particular stack will be called `default` in the matching `docker-compose.yml`.
-This will help us, because if we do not specify a network in the service sections of the `docker-compose.yml`, these services will automatically connectto network `defalut`.
+This will help us, because if we do not specify a network in the service sections of the `docker-compose.yml`, these services will automatically connect network `defalut`.
