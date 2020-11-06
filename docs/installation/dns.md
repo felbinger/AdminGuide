@@ -44,7 +44,7 @@ Check out [this (support.cloudflare.com)](https://support.cloudflare.com/hc/en-u
 The reverse DNS is used to obtain the domain attached to an IP address.
 You can do this in the server control panel.
 
-### Validate DNS updates
+## Validate DNS updates
 
 !!! note ""
     DNS Updates can take quiet some time!
