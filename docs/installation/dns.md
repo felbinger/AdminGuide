@@ -25,7 +25,7 @@
 # allow letsencrypt.org to also issue wildcard certificates for your domain
 @ CAA 0 issuewild "letsencrypt.org"
 
-# set email address for certificate misuse
+# set email address for policy violations
 @ CAA 0 iodef "mailto:monitoring@domain.tld"
 ```
 
