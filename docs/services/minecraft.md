@@ -19,7 +19,7 @@
       - 'MAX_RAM=8G'
       - 'MIN_RAM=4G'
       - 'ENABLE_AUTOPAUSE=TRUE'
-      - 'MOTD=checkout https://github.com/felbinger/AdminGuide/wiki'
+      - 'MOTD=checkout https://felbinger.github.io/AdminGuide/'
       - 'SPAWN_PROTECTION=0'
       - 'SEED=2303273916051849791'
 ```
