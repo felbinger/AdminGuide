@@ -11,7 +11,9 @@ If you never used this guide, you should [perform the installation manually](./i
 You can basicly skip most of the installation section, but there are some exceptions.  
 First you should create all user accounts, and ensure that everyone is able to authenticate using public key authentication.
 You can add the users in the configuration section of the `postinstall.sh` to give them the groups, aliases, ... After you are sure that you can connect to the server you should secure your ssh server (e.g. disallow authentication using passwords, root login, ...).  
+
 If you want to change your hostname to something cooler than the name your hoster assigned you (this is not required, I do it to improve the identification process of the server, that I'm connected to).  
+
 You also need to setup your dns records, consider to change the name servers to cloudflare if you have trouble with the dns challenge for wildcard certificate later on.
 
 ```
