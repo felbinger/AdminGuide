@@ -1,3 +1,4 @@
+Checkout the [documentation](https://hub.docker.com/_/teamspeak)
 ```yaml
   ts3:
     image: teamspeak
