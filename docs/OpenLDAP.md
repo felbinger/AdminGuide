@@ -147,6 +147,8 @@ $ slappasswd -h '{BCRYPT}' -o module-load="/usr/lib/ldap/pw-bcrypt.so" -s random
 {BCRYPT}$2b$08$WQdWtD5L9LqIxcGG0xjiieM6./BAv/fbQOvSFnbF/REiLW6kg4eqq
 ```
 
+You only need the binary... /usr/lib/ldap/pw-bcrypt.so.0.0 -> simply mount it to the old container...
+
 ### SSH Public Key
 * Create the ldif file (do not try to refactor this...):
     ```ldif
@@ -194,3 +196,7 @@ uid: USERNAME
 uidnumber: 1000
 userpassword: {SSHA}THIS_IS_A_INVALID_HASH_UPDATE_IT
 ```
+
+
+## ApacheDirectoryStudio
+* local port fwd: ssh an2ic3.de -L 1389:192.168.1.7:389
