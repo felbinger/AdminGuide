@@ -23,12 +23,12 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
-  theme:
   features:
     - search.suggest
     - search.highlight
     - navigation.expand
     - navigation.instant
+    - navigation.tabs
 
 markdown_extensions:
   - toc:
@@ -55,21 +55,26 @@ nav:
     - 'Docker': 'installation/docker.md'
     - 'Stack Logic': 'installation/stack-logic.md'
   - 'Services':
-    - 'Traefik': services/traefik.md
-    - 'nginx/proxy': services/nginx-proxy.md
-    - 'nginx': services/nginx.md
-    - 'httpd': services/httpd.md
-    - 'httpd with php': services/httpd-php.md
-    - 'MariaDB': services/mariadb.md
-    - 'MongoDB': services/mongodb.md
-    - 'PostgreSQL': services/postgresql.md
-    - 'Redis': services/redis.md
-    - 'OpenLDAP': services/openldap.md
-    - 'Monitoring': services/monitoring.md
-    - 'Minecraft': services/minecraft.md
-    - 'Arma 3 Server': services/arma3.md
+    - 'Reverse Proxies':
+      - 'Traefik': services/traefik.md
+      - 'nginx/proxy': services/nginx-proxy.md
+    - 'Web Server':
+      - 'nginx': services/nginx.md
+      - 'httpd': services/httpd.md
+      - 'httpd with php': services/httpd-php.md
+    - 'Databases':
+      - 'MariaDB': services/mariadb.md
+      - 'MongoDB': services/mongodb.md
+      - 'PostgreSQL': services/postgresql.md
+      - 'Redis': services/redis.md
+      - 'OpenLDAP': services/openldap.md
+    - 'Gameserver':
+      - 'Minecraft': services/minecraft.md
+      - 'Arma 3 Server': services/arma3.md
     - 'Teamspeak 3 + Sinusbot': services/teamspeak.md
-
+    - 'Monitoring': services/monitoring.md
+    - 'Syncthing': services/syncthing.md
+    
 extra_javascript:
   - js/config.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
