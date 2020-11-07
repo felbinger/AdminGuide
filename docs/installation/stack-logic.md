@@ -1,4 +1,4 @@
-We will group the services in different "stacks" to manage them, this way we can change specific things without taking all services offline. Furthermore, we will use one docker network per stack to make sure, that each container is only able to communicate with other containers which it really needs.
+We will group the services in different "stacks" to manage them, this way we can change specific things without taking all services offline. Furthermore, we will use one docker network per stack to ensure, that each container is only able to communicate with other containers which it really needs.
 
 ## Getting Started
 
@@ -22,9 +22,7 @@ For each stack we will create, we want to have a directory in `/home/admin/servi
 * The directory in `/srv/` is used to store persistent data for the stack (docker volumes).
 
 We will also create multiple docker networks, to give the containers the ability to communicate with each other.
-
-- Helper networks (for communication between different stacks: e.g. database, proxy, monitoring, ...) start at `192.168.0.0/24`
-- Stack networks (one network for each stack) start at `192.168.100.0/24`
+Helper networks for specific communication (e.g. to the reverse proxy, the databases or the monitoring) start at `192.168.0.0/24`. Stack networks (one network for each stack) start at `192.168.100.0/24`.
 
 !!! note ""
     Note that a network with the submask 255.255.255.0 (cidr notation is 24) can only contain 254 hosts.
@@ -54,11 +52,25 @@ sudo docker network create --subnet 192.168.1.0/24 database
 sudo docker network create --subnet 192.168.2.0/24 monitoring
 ```
 
+You can create as many stacks, as you need. The main stack contains the services that are relevant for the majority of the services (e.g. reverse proxy, static webserver for the reverse proxy, databases, admin panels (because they are related to the databases), monitoring). All other services will be outsourced to another stack. The following list containers just a few ideas, how you could name them:
+
+* games: all game servers  
+(e.g. Minecraft, Arma 3)
+
+* storage: applications that store your data  
+(e.g. NextCloud, Syncthing, ...)
+
+* comms (short form of communication): things to communicate  
+(e.g. TeamSpeak, Sinusbot, Telegram Bots, Discord Bots)
+
+* jitsi: another video conference system (simply use [their configuration on github](https://github.com/jitsi/docker-jitsi-meet))
+
 Lastly we are going to create a `docker-compose.yml` which we will use to define our networks.
 
 ```yaml
 version: "3"
-services: ...
+services: 
+  ...     # you need to add your services right here...
 
 networks:
   default:
