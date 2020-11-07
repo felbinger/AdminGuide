@@ -28,7 +28,7 @@ theme:
     - search.highlight
     - navigation.expand
     - navigation.instant
-    - navigation.tabs
+    - navigation.sections
 
 markdown_extensions:
   - toc:
