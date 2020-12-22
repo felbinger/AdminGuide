@@ -75,6 +75,7 @@ nav:
     - 'Monitoring': services/monitoring.md
     - 'Syncthing': services/syncthing.md
     - 'ShareLaTeX': services/sharelatex.md
+    - 'Calibre': services/calibre.md
     
 extra_javascript:
   - js/config.js
