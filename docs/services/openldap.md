@@ -2,25 +2,17 @@ I tested a lot of prebuild docker images and I came to the conclusion that the o
 Unfortunately neither the [bcrypt hashing algorithm](https://en.wikipedia.org/wiki/Bcrypt) nor the [PBKDF2 hashing algorithm](https://en.wikipedia.org/wiki/PBKDF2) is being support.
 So, we are going to use osixia's image as base, and add the bcrypt hashing algorithm (checkout [howardlau1999/openldap-bcrypt-docker](https://github.com/howardlau1999/openldap-bcrypt-docker)).
 
-I like to combind every service with a administrative webinterface. I use phpldapadmin which is also available from osixia: [`osixia/docker-phpLDAPadmin`](https://github.com/osixia/docker-phpLDAPadmin).
-Today's version of phpldapadmin from osixia is 1.2.5, but there is version 1.2.6.2 (which supports bcrypt), so let's clone also this git repository to build the image with the correct version of phpldapadmin.
+I like to combind every service with a administrative webinterface. ~~I use phpldapadmin which is also available from osixia: [`osixia/docker-phpLDAPadmin`](https://github.com/osixia/docker-phpLDAPadmin).
+Today's version of phpldapadmin from osixia is 1.2.5, but there is version 1.2.6.2 (which supports bcrypt), so let's clone also this git repository to build the image with the correct version of phpldapadmin.~~
+A friend of mine, who's also supporting me with the admin guide, build a custom phpldapadmin image, which only supports secure hashing algorithms and uses a small alpine base image. 
+[Checkout his git repository](https://github.com/MarcelCoding/phpLDAPadmin) or simply use his docker image: [`marcelcoding/phpldapadmin`](https://hub.docker.com/r/marcelcoding/phpldapadmin)
 
-So let's clone the repositories and build our own images:  
+So let's clone the repositories and build our own ldap image:  
 ```sh
-# create docker image: local/openldap
 git clone https://github.com/howardlau1999/openldap-bcrypt-docker.git \
   /home/admin/images/main/openldap
 sudo docker build -t local/openldap \
   /home/admin/images/main/openldap
-
-# create docker image: local/phpldapadmin
-git clone https://github.com/osixia/docker-phpLDAPadmin.git \
-  /home/admin/images/main/phpldapadmin
-sudo docker build \
-  --build-arg 'PHPLDAPADMIN_VERSION=1.2.6.2' \
-  -t local/phpldapadmin \
-  /home/admin/images/main/phpldapadmin/image/
-
 ```
 
 Afterwards we can define the services in the main `docker-compose.yml`
