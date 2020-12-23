@@ -31,13 +31,11 @@ Afterwards we can define the services in the main `docker-compose.yml`
       - database
 
   ldapadmin:
-    image: local/phpldapadmin
+    image: marcelcoding/phpldapadmin
     restart: always
     environment:
-      - 'PHPLDAPADMIN_HTTPS=false'
-      - 'PHPLDAPADMIN_TRUST_PROXY_SSL=true'
-      - 'PHPLDAPADMIN_SERVER_ADMIN=admin@domain.de'
-      - 'PHPLDAPADMIN_LDAP_HOSTS=#PYTHON2BASH:[{"ldap": [{"server": [{"tls": False}]}, {"login": [{"bind_id": "cn=admin,dc=domain,dc=de"}]}]}]'
+      - 'LDAP_HOST=ldap'
+      - 'LDAP_BIND_DN=cn=admin,dc=domain,dc=de'
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_ldapadmin.loadbalancer.server.port=80"
