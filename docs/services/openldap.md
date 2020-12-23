@@ -6,21 +6,12 @@ I like to combind every service with a administrative webinterface.
 <s>I use phpldapadmin which is also available from osixia: [`osixia/docker-phpLDAPadmin`](https://github.com/osixia/docker-phpLDAPadmin).
 Today's version of phpldapadmin from osixia is 1.2.5, but there is version 1.2.6.2 (which supports bcrypt), so let's clone also this git repository to build the image with the correct version of phpldapadmin.</s>  
 
-A friend of mine, who's also supporting me with the admin guide, build a custom phpldapadmin image, which only supports secure hashing algorithms and uses a small alpine base image. 
+A friend of mine, who's also supporting me with the admin guide, has build a custom phpldapadmin image, which only supports secure hashing algorithms and is based on a small alpine image. 
 [Checkout his git repository](https://github.com/MarcelCoding/phpLDAPadmin) or simply use his docker image: [`marcelcoding/phpldapadmin`](https://hub.docker.com/r/marcelcoding/phpldapadmin)
 
-So let's clone the repositories and build our own ldap image:  
-```sh
-git clone https://github.com/howardlau1999/openldap-bcrypt-docker.git \
-  /home/admin/images/main/openldap
-sudo docker build -t local/openldap \
-  /home/admin/images/main/openldap
-```
-
-Afterwards we can define the services in the main `docker-compose.yml`
 ```yaml
   ldap:
-    image: local/openldap
+    image: howardlau1999/openldap-bcrypt
     restart: always
     environment:
       - "LDAP_ORGANISATIOn=Company Name"
