@@ -9,8 +9,8 @@ apt-get -y install apt sudo curl nano
 ```
 
 ## Change Hostname [optional]
-In most cases, your hosting provider gave your machine an ugly hostname, so let's change that.
-Just change your new hostname to the files `/etc/hostname` and `/etc/hosts` according to the following example:
+In most cases, your hosting provider gave your machine an ugly hostname.
+Just change it in the files `/etc/hostname` and `/etc/hosts` to your new one according to the following example:
 ```bash
 # /etc/hostname
 <hostname>
@@ -29,7 +29,7 @@ ff02::2           ip6-allrouters
 ```
 
 !!! warning ""
-    IPv6-FQDN is missing, although I never set up a server using ipb6.
+    IPv6-FQDN is missing, although I never set up a server using ipv6.
 
 In this case I decided to use the hostname `server` and assign the fully qualified domain name `fqdn.domain.tld` to it.
 To apply the changes, you need to restart the server.
