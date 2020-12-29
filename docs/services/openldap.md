@@ -14,7 +14,7 @@ A friend of mine, who's also supporting me with the admin guide, has build a cus
     image: howardlau1999/openldap-bcrypt
     restart: always
     environment:
-      - "LDAP_ORGANISATIOn=Company Name"
+      - "LDAP_ORGANISATION=Company Name"
       - "LDAP_DOMAIN=domain.de"
       - "LDAP_ADMIN_PASSWORD=S3cr3T"
     volumes:
