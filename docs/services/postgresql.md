@@ -5,7 +5,7 @@
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: SECRET_PASSWORD
+      - "POSTGRES_PASSWORD=S3cr3T"
     volumes:
       - "/srv/main/postgres/transfer:/transfer"
       - "/srv/main/postgres/data:/var/lib/postgresql/data"
