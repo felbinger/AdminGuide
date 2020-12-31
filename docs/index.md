@@ -140,12 +140,13 @@ First you need to install python3.8, because the latest version in the default r
 === "install python3.8 from debian/testing"
     !!! warning "Warning"
         Due to the fact that this will add the debian/testing repositories to your system, this might break your system. Do **not** execute this on a productive system!
-        `bash echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' \ | sudo tee -a /etc/apt/sources.list echo 'APT::Default-Release "stable";' \ | sudo tee /etc/apt/apt.conf.d/99defaultrelease sudo apt update sudo apt install -y -t testing python3.8 python3-pip `
+    ```bash echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' \ | sudo tee -a /etc/apt/sources.list echo 'APT::Default-Release "stable";' \ | sudo tee /etc/apt/apt.conf.d/99defaultrelease sudo apt update sudo apt install -y -t testing python3.8 python3-pip
+    ```
     
-    Afterwards you can clone the [pybackup repository](https://github.com/felbinger/pybackup) to a place which is only writeable by root (I recommend `/root/`) and install the reqirements from the `requirements.txt`:
+Afterwards you can clone the [pybackup repository](https://github.com/felbinger/pybackup) to a place which is only writeable by root (I recommend `/root/`) and install the reqirements from the `requirements.txt`:
     
-    !!! warning "Security Warning"
-        Due to the fact that the backup.py will be executed by root cronjob, the file should be only editable by root. Otherwise a lower privileged user, might exchange the python file or add a path (e.g. `/etc/shadow`) to the backup configuration to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).
+!!! warning "Security Warning"
+    Due to the fact that the backup.py will be executed by root cronjob, the file should be only editable by root. Otherwise a lower privileged user, might exchange the python file or add a path (e.g. `/etc/shadow`) to the backup configuration to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).
 
 ```bash
 # install git and clone repository
