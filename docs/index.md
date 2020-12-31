@@ -161,7 +161,7 @@ vim /root/pybackup/.config.json
 
 # run backup
 $ python3.8 backup.py -df
-````
+```
 
 I really suggest creating a separate database user which can only create backups.  
 Checkout the documentation for your dbms:
