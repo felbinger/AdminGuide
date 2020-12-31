@@ -120,11 +120,10 @@ Currently I use [my python backup script](https://github.com/felbinger/pybackup)
 First you need to install python3.8, because the latest version in the default repositories is `python 3.7.3` which won't work for my script.
 
 === "compile python3.8 from sources"
-
-````bash
-sudo apt-get install build-essential checkinstall libreadline-gplv2-dev \
- libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev \
- libc6-dev libbz2-dev libffi-dev zlib1g-dev
+    ```bash
+    sudo apt-get install build-essential checkinstall libreadline-gplv2-dev \
+      libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev \
+      libc6-dev libbz2-dev libffi-dev zlib1g-dev
 
     wget https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tgz
     tar xzf Python-3.8.6.tgz
@@ -139,14 +138,14 @@ sudo apt-get install build-essential checkinstall libreadline-gplv2-dev \
     ```
 
 === "install python3.8 from debian/testing"
-!!! warning "Warning"
-Due to the fact that this will add the debian/testing repositories to your system, this might break your system. Do **not** execute this on a productive system!
-`bash echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' \ | sudo tee -a /etc/apt/sources.list echo 'APT::Default-Release "stable";' \ | sudo tee /etc/apt/apt.conf.d/99defaultrelease sudo apt update sudo apt install -y -t testing python3.8 python3-pip `
-
-Afterwards you can clone the [pybackup repository](https://github.com/felbinger/pybackup) to a place which is only writeable by root (I recommend `/root/`) and install the reqirements from the `requirements.txt`:
-
-!!! warning "Security Warning"
-Due to the fact that the backup.py will be executed by root cronjob, the file should be only editable by root. Otherwise a lower privileged user, might exchange the python file or add a path (e.g. `/etc/shadow`) to the backup configuration to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).
+    !!! warning "Warning"
+        Due to the fact that this will add the debian/testing repositories to your system, this might break your system. Do **not** execute this on a productive system!
+        `bash echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' \ | sudo tee -a /etc/apt/sources.list echo 'APT::Default-Release "stable";' \ | sudo tee /etc/apt/apt.conf.d/99defaultrelease sudo apt update sudo apt install -y -t testing python3.8 python3-pip `
+    
+    Afterwards you can clone the [pybackup repository](https://github.com/felbinger/pybackup) to a place which is only writeable by root (I recommend `/root/`) and install the reqirements from the `requirements.txt`:
+    
+    !!! warning "Security Warning"
+        Due to the fact that the backup.py will be executed by root cronjob, the file should be only editable by root. Otherwise a lower privileged user, might exchange the python file or add a path (e.g. `/etc/shadow`) to the backup configuration to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).
 
 ```bash
 # install git and clone repository
