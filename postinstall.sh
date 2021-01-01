@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 ## CONFIGURATION ###
 ADM_NAME='admin'
 ADM_GID=997
