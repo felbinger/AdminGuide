@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 ## CONFIGURATION ###
 ADM_NAME='admin'
 ADM_GID=997
@@ -18,6 +16,9 @@ declare -A HELPER=(\
   ["monitoring"]="192.168.2.0/24"
 )
 ### END of CONFIGURATION ###
+
+# print all executed commands
+set -x
 
 function install_docker_compose() {
   curl -L "https://github.com/docker/compose/releases/download/latest/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
