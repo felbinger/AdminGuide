@@ -15,6 +15,7 @@ First add this configuration to you `docker-compose.yml`
       - "traefik.http.routers.r_matrix.tls.certresolver=myresolver"
     networks:
       - proxy
+      - database
 ```
 Befor starting this container you need to generate a configuration file. This command generates a `homeserver.yaml` configuartion file under /srv/comms/matrix
 ```yaml
