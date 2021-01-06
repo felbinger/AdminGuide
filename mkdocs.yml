@@ -71,13 +71,16 @@ nav:
     - 'Gameserver':
       - 'Minecraft': services/minecraft.md
       - 'Arma 3 Server': services/arma3.md
-    - 'Teamspeak 3 + Sinusbot': services/teamspeak.md
+    - 'Communication':
+      - 'Teamspeak 3 + Sinusbot': services/teamspeak.md
+      - 'Matrix': services/matrix.md
+      - 'Jitsi': services/jitsi.md
+    - 'Storage':
+      - 'Syncthing': services/syncthing.md
+      - 'ShareLaTeX': services/sharelatex.md
+      - 'HackMD': services/hackmd.md
+      - 'Calibre': services/calibre.md
     - 'Monitoring': services/monitoring.md
-    - 'Syncthing': services/syncthing.md
-    - 'ShareLaTeX': services/sharelatex.md
-    - 'HackMD': services/hackmd.md
-    - 'Calibre': services/calibre.md
-    - 'Matrix': services/matrix.md
     
 extra_javascript:
   - js/config.js
