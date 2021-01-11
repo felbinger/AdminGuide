@@ -50,14 +50,15 @@ plugins:
 nav:
   - 'Overview': index.md
   - 'Installation':
-    - 'Base': 'installation/index.md'
-    - 'Configure DNS': 'installation/dns.md'
-    - 'Docker': 'installation/docker.md'
-    - 'Stack Logic': 'installation/stack-logic.md'
+    - 'Base': installation/index.md
+    - 'Configure DNS': installation/dns.md
+    - 'Docker': installation/docker.md
+    - 'Stack Logic': installation/stack-logic.md
   - 'Services':
-    - 'Reverse Proxies':
+    - 'Proxies':
       - 'Traefik': services/traefik.md
       - 'nginx/proxy': services/nginx-proxy.md
+      - 'docky-onion': services/docky-onion.md  
     - 'Web Server':
       - 'nginx': services/nginx.md
       - 'httpd': services/httpd.md
