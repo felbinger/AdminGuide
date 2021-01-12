@@ -63,6 +63,9 @@ ShareLaTeX requires a redis and a mongodb instance!
 ```
 
 ### Installation of texlive-full
+!!! warning ""
+    If you start the container using docker-compose, the image will be commited with all environment variables and labels.
+
 1. Create admin user
 ```
 docker-compose exec paper /bin/bash -c "cd /var/www/sharelatex; grunt user:create-admin --email my@email.address"
