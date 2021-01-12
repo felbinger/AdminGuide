@@ -75,6 +75,7 @@ You also need a webserver for static content e.g. your [error pages](https://git
       # BASIC CONFIGURATION
       - "traefik.enable=true"
       - "traefik.http.services.srv_static.loadbalancer.server.port=80"
+
       # ERROR PAGES
       - "traefik.http.middlewares.error40x.errors.status=403-404"
       - "traefik.http.middlewares.error40x.errors.service=srv_static"
@@ -82,13 +83,8 @@ You also need a webserver for static content e.g. your [error pages](https://git
       - "traefik.http.middlewares.error30x.errors.status=300-308"
       - "traefik.http.middlewares.error30x.errors.service=srv_static"
       - "traefik.http.middlewares.error30x.errors.query=/error/30x.html"
-      # DOMAIN ROOT CONTENT
-      - "traefik.http.routers.r_static_root.rule=HostRegexp(`domain.de`, `{subdomain:[a-z0-9]+}.domain.de`)"
-      - "traefik.http.routers.r_static_root.entrypoints=websecure"
-      - "traefik.http.routers.r_static_root.tls=true"
-      - "traefik.http.routers.r_static_root.tls.certresolver=myresolver"
-      - "traefik.http.routers.r_static_root.priority=10"
-      - "traefik.http.middlewares.mw_static_root.addprefix.prefix=/domain_root/"
+
+      # HSTS
       - "traefik.http.middlewares.mw_hsts.headers.frameDeny=true"
       - "traefik.http.middlewares.mw_hsts.headers.contentTypeNosniff=true"
       - "traefik.http.middlewares.mw_hsts.headers.browserXssFilter=true"
@@ -98,6 +94,14 @@ You also need a webserver for static content e.g. your [error pages](https://git
       - "traefik.http.middlewares.mw_hsts.headers.stsSeconds=315360000"
       - "traefik.http.middlewares.mw_hsts.headers.stsIncludeSubdomains=true"
       - "traefik.http.middlewares.mw_hsts.headers.customRequestHeaders.X-Forwarded-Proto=https"
+
+      # DOMAIN ROOT CONTENT
+      - "traefik.http.routers.r_static_root.rule=HostRegexp(`domain.de`, `{subdomain:[a-z0-9]+}.domain.de`)"
+      - "traefik.http.routers.r_static_root.entrypoints=websecure"
+      - "traefik.http.routers.r_static_root.tls=true"
+      - "traefik.http.routers.r_static_root.tls.certresolver=myresolver"
+      - "traefik.http.routers.r_static_root.priority=10"
+      - "traefik.http.middlewares.mw_static_root.addprefix.prefix=/domain_root/"
       - "traefik.http.routers.r_static_root.middlewares=mw_hsts@docker,mw_static_root@docker,error40x@docker,error30x@docker"
     volumes:
       - "/srv/main/static/webroot:/usr/share/nginx/html/"
@@ -127,6 +131,65 @@ Let's do a [ssltest](https://www.ssllabs.com/ssltest) to see how good we are:
 
 ### Authentication Middlewares
 Traefik offers a lot of authentication middlewares (e.g. [BasicAuth](https://doc.traefik.io/traefik/middlewares/basicauth/), [ForwardAuth](https://doc.traefik.io/traefik/middlewares/forwardauth/) (if you can provide a authentication service))
+
+#### Basic Auth
+We are going to add a new router to our static service, which will provide files for download, behind an basic auth.
+First we have to extend our traefik service, with the htpasswd file for the service. This can be done by simply adding the following volume:
+```yaml
+...
+volumes:
+  ...
+  - "/srv/main/traefik/webfiles.htpasswd:/htpasswd/webfiles"
+  ...
+...
+```
+You can create the htpasswd file using the htpasswd utility from the apache2-utils package (at least on debian based operating systems).
+```
+apt install -y apache2-utils
+htpasswd -c /srv/main/traefik/webfiles.htpasswd -c <username>
+```
+
+Now we can add the new router to our static service:
+```yaml
+    ...
+    labels:
+      ...
+      - "traefik.http.routers.r_static_files.rule=Host(`files.domain.de`)"
+      - "traefik.http.routers.r_static_files.entrypoints=websecure"
+      - "traefik.http.routers.r_static_files.tls=true"
+      - "traefik.http.routers.r_static_files.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.mw_static_files.addprefix.prefix=/static_files/"
+      - "traefik.http.middlewares.mw_static_files_auth.basicauth.usersfile=/htpasswd/webfiles"
+      - "traefik.http.routers.r_static_files.middlewares=mw_static_files@docker,mw_static_files_auth@docker,error40x@docker,error30x@docker"
+    ...
+```
+
+We also need to enable directory listing by creating the configuration for this uri:
+```nginx
+server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    location /static_files {
+        root /usr/share/nginx/html;
+        autoindex on;
+    }
+}
+```
+
+Don't forget to add the created configuration to the volume section of the static service:
+```yaml
+...
+volumes:
+  ...
+  - "/srv/main/static/nginx.conf:/etc/nginx/conf.d/default.conf"
+...
+```
 
 ### Redirect Middleware
 You can also redirect a domain directly to another resource (e.g. your external webinterface of your mailserver):
