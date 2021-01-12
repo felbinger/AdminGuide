@@ -85,5 +85,26 @@ By default, a SQL-Lite database is used, so we still need to comment it out.
 
 ```
 
-Now we are finish and we can start the container with `docker-compose up -d`
+Now you are finish and you can start the container with `docker-compose up -d`
+
+### Reset password of user 
+
+If you want to reset the password run 
+```shell
+docker-compose exec -u www-data matrix hash_password -p PASSWORD
+```
+
+After the command is done you will get a password hash as stdout 
+
+After you have generated the password hash you can update the value in the database. First you shoud start a shell in the postgress container with 
+```shell
+docker-compose exec matrix_postgresql /bin/bash
+```
+Next, you can update the password with the command 
+```shell
+PGPASSWORD=S3cr3T \
+  psql -U postgres -d synapse -c \
+  "UPDATE users SET password_hash='\$2a\$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' \
+  WHERE name='@test:test.com';"
+```
 
