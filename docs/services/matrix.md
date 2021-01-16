@@ -89,25 +89,20 @@ Now you are finish and you can start the container with `docker-compose up -d`
 
 ### Reset password of user 
 
-If you want to reset the assword run 
-```yaml 
-  docker exec -it -u www-data matrix hash_password -p PASSWORD
+If you want to reset the password run 
+```shell
+docker-compose exec matrix -u www-data hash_password -p PASSWORD
 ```
 
-After the command is done you will become a password hash as std-out. 
+After the command is done you will become a password hash as stdout 
 
 After you have generated the password hash you can update the value in the database. First you shoud start a shell in the postgress container with 
-``` yaml
-docker exec -it matrix_postgresql /bin/bash
+```shell
+docker-compose exec matrix_postgresql /bin/bash
 ```
-Next, you can connect to the database with the command 
-```yaml
-psql -u postgres -d synapse -w S3cr3T
+Next, you can update the password with the command 
+```shell
+psql -U postgres -d synapse -w S3cr3T -c "UPDATE users SET password_hash='$2a$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    WHERE name='@test:test.com';"
 ```
-Finally you can update the password with the help of 
 
-```yaml
-UPDATE users SET password_hash='$2a$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-    WHERE name='@test:test.com';
-```
-Important do not forget the semicolon at the end of the line otherwise the UPDATE command will not work. Also PSQL is case sensitive so you have to pay attention to the upper and lower case.
