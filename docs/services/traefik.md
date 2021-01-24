@@ -2,7 +2,7 @@
 Add the following configuration to your `docker-compose.yml` in the main stack:
 ```yaml
   traefik:
-    image: "traefik:v2.3"
+    image: "traefik:v2.4"
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
