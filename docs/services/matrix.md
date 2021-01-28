@@ -108,3 +108,4 @@ PGPASSWORD=S3cr3T \
   WHERE name='@test:test.com';"
 ```
 
+Note You can also host your own Matrix WebClient. [Host your own Matrix WebClient ](./element.md)
