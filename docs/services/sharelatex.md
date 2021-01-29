@@ -13,28 +13,28 @@ ShareLaTeX requires a redis and a mongodb instance!
     volumes:
       - /srv/storage/paper/data:/var/lib/sharelatex
     environment:
-      - SHARELATEX_APP_NAME=ShareLaTeX
-      - SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex
-      - SHARELATEX_REDIS_HOST=redis
-      - REDIS_HOST=redis
-      - ENABLED_LINKED_FILE_TYPES='url,project_file'
-      - ENABLE_CONVERSIONS='true'
-      - EMAIL_CONFIRMATION_DISABLED='true'
-      - TEXMFVAR=/var/lib/sharelatex/tmp/texmf-var
-      - SHARELATEX_SITE_URL=https://paper.domain.de
-      - SHARELATEX_NAV_TITLE=ShareLaTeX
-      - SHARELATEX_LEFT_FOOTER='[]'
-      - SHARELATEX_RIGHT_FOOTER='[]'
-      #- SHARELATEX_HEADER_IMAGE_URL=http://somewhere.com/mylogo.png
-      #- SHARELATEX_EMAIL_FROM_ADDRESS="team@sharelatex.com"
-      #- SHARELATEX_EMAIL_SMTP_HOST=smtp.mydomain.com
-      #- SHARELATEX_EMAIL_SMTP_PORT=587
-      #- SHARELATEX_EMAIL_SMTP_SECURE=false
-      #- SHARELATEX_EMAIL_SMTP_USER=
-      #- SHARELATEX_EMAIL_SMTP_PASS=
-      #- SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true
-      #- SHARELATEX_EMAIL_SMTP_IGNORE_TLS=false
-      #- SHARELATEX_CUSTOM_EMAIL_FOOTER="This system is run by department x"
+      - "SHARELATEX_APP_NAME=ShareLaTeX"
+      - "SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex"
+      - "SHARELATEX_REDIS_HOST=redis"
+      - "REDIS_HOST=redis"
+      - "ENABLED_LINKED_FILE_TYPES=url,project_file"
+      - "ENABLE_CONVERSIONS=true"
+      - "EMAIL_CONFIRMATION_DISABLED=true"
+      - "TEXMFVAR=/var/lib/sharelatex/tmp/texmf-var"
+      - "SHARELATEX_SITE_URL=https://paper.domain.de"
+      - "SHARELATEX_NAV_TITLE=ShareLaTeX"
+      - "SHARELATEX_LEFT_FOOTER=[]"
+      - "SHARELATEX_RIGHT_FOOTER=[]"
+      #- "SHARELATEX_HEADER_IMAGE_URL=http://somewhere.com/mylogo.png"
+      #- "SHARELATEX_EMAIL_FROM_ADDRESS=team@sharelatex.com"
+      #- "SHARELATEX_EMAIL_SMTP_HOST=smtp.mydomain.com"
+      #- "SHARELATEX_EMAIL_SMTP_PORT=587"
+      #- "SHARELATEX_EMAIL_SMTP_SECURE=false"
+      #- "SHARELATEX_EMAIL_SMTP_USER="
+      #- "SHARELATEX_EMAIL_SMTP_PASS="
+      #- "SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true"
+      #- "SHARELATEX_EMAIL_SMTP_IGNORE_TLS=false"
+      #- "SHARELATEX_CUSTOM_EMAIL_FOOTER=This system is run by department x"
     networks:
       - database
       - proxy
@@ -44,7 +44,7 @@ ShareLaTeX requires a redis and a mongodb instance!
     image: mongo:4.0
     restart: always
     volumes:
-      - /srv/storage/paper/mongo:/data/db
+      - "/srv/storage/paper/mongo:/data/db"
     healthcheck:
       test: echo 'db.stats().ok' | mongo localhost:27017/test --quiet
       interval: 10s
@@ -57,31 +57,32 @@ ShareLaTeX requires a redis and a mongodb instance!
     image: redis:5
     restart: always
     volumes:
-      - /srv/storage/paper/redis:/data
+      - "/srv/storage/paper/redis:/data"
     networks:
       - database
 ```
 
 ### Installation of texlive-full
-**Attention**
+!!! warning ""
     If you start the container using docker-compose, the image will be commited with all environment variables and labels.
 
 1. Install `texlive-full`
+   
+    !!! warning ""
+        Due to the fact, that this command will take a couple of house, I suggest you to execute it in a screen session.
 
-   **Note:**
+    !!! warning ""
+        The Image will take about 8 gigabytes after installation all additional packages.
 
-   - You should do this in a screen, cause it will take a couple of hours...
-   - The image will be about 8 gigabytes after installing all the additional packages.
-
-```sh
-screen -AmdS latex-installation "docker-compose exec paper tlmgr update --self; tlmgr install scheme-full"
-```
+    ```sh
+    screen -AmdS latex-installation "docker-compose exec paper tlmgr update --self; tlmgr install scheme-full"
+    ```
 
 2. Save the current container filesystem as docker image with tag: `with-texlive-full`
 
-```shell
-docker commit -m "installing all latex packages" $(docker-compose ps -q paper) sharelatex/sharelatex:with-texlive-full
-```
+    ```shell
+    docker commit -m "installing all latex packages" $(docker-compose ps -q paper) sharelatex/sharelatex:with-texlive-full
+    ```
 
 3. Replace the image tag in your `docker-compose.yml` from `latest` to `with-texlive-full`
 
