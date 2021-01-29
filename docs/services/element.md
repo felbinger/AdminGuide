@@ -1,13 +1,12 @@
 ## Element WebClient 
-```yaml 
-version: "3.9"
+The Element web client can be used by [Matrix](./matrix.md).
 
-services:
+```yaml 
   element:   
     image: vectorim/element-web
     restart: always
     volumes:
-      - '/srv/comms/element/data/config.json:/app/conig.json'
+      - "/srv/comms/element/data/config.json:/app/conig.json"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_element.loadbalancer.server.port=80"
@@ -16,16 +15,15 @@ services:
       - "traefik.http.routers.r_element.tls=true"
       - "traefik.http.routers.r_element.tls.certresolver=myresolver"
     networks:
-      - proxy    
+      - proxy
 ```
 
-### Config.json 
-First create a config.json for this you can use the following command:
-
-```bash
+### Configuration
+First you need to create a `config.json`:
+```shell
+mkdir -p /srv/comms/element/data/
 touch /srv/comms/element/data/config.json 
 ```
-
-Element supports a variety of settings to configure default servers, behaviour, themes, etc.
-See the [configuration docs](https://github.com/vector-im/element-web/blob/develop/docs/config.md#desktop-app-configuration) for more details.
+Element supports a variety of settings to configure default servers, behaviour, themes, etc.  
+Checkout the [configuration docs](https://github.com/vector-im/element-web/blob/develop/docs/config.md#desktop-app-configuration) for more details.
 
