@@ -6,7 +6,7 @@ The Element web client can be used by [Matrix](./matrix.md).
     image: vectorim/element-web
     restart: always
     volumes:
-      - "/srv/comms/element/data/config.json:/app/conig.json"
+      - "/srv/comms/element/data/config.json:/app/config.json"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_element.loadbalancer.server.port=80"
