@@ -38,7 +38,7 @@ Don't forget to start the container after editing the option with `docker-compos
 
 Now you can create a user using the command line:
 ```yaml
-docker exec matrix register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml matrix.domain.de
+docker-compose exec matrix register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://matrix.domain.de
 ```
 
 ### Using Postgres
@@ -98,7 +98,7 @@ After the command is done you will get a password hash as stdout
 
 After you have generated the password hash you can update the value in the database. First you shoud start a shell in the postgress container with 
 ```shell
-docker-compose exec matrix_postgresql /bin/bash
+docker-compose exec postgres /bin/bash
 ```
 Next, you can update the password with the command 
 ```shell
