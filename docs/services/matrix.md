@@ -21,10 +21,10 @@ Befor starting this container you need to generate a configuration file. This co
 ```yaml
 docker run -it --rm -v "/srv/comms/matrix/data:/data" -e "SYNAPSE_SERVER_NAME=matrix.domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse:latest generate
 ```
-You have to specify the domain of the service using the SYNAPSE_SERVER_NAME environment variable. You also can enable anonymous statistics reporting by setting sthe SYNAPSE_REPORT_STATS to yes
+You have to specify the domain of the service using the SYNAPSE_SERVER_NAME environment variable. You also can enable anonymous statistics reporting by setting sthe SYNAPSE_REPORT_STATS to yes.
 
 After the command is done you can find the homeserver.yaml configurationfile in the data folder. 
-Now you can start the service using docker-compose up -d matrix
+Now you can start the service using docker-compose up -d matrix.
 
 ### Register a new user 
 You can enable the registration in your `homeserver.yaml` file:
@@ -94,9 +94,9 @@ If you want to reset the password run
 docker-compose exec -u www-data matrix hash_password -p PASSWORD
 ```
 
-After the command is done you will get a password hash as stdout 
+After the command is done you will get a password hash as stdout. 
 
-After you have generated the password hash you can update the value in the database. First you shoud start a shell in the postgress container with 
+Once you have generated the password hash you can update the value in the database. First start a shell in the postgress container with. 
 ```shell
 docker-compose exec postgres /bin/bash
 ```
@@ -107,5 +107,17 @@ PGPASSWORD=S3cr3T \
   "UPDATE users SET password_hash='\$2a\$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' \
   WHERE name='@test:test.com';"
 ```
+
+### Federation 
+
+To enable cross-server communication you need to set an SRV DNS record.
+
+```
+;; SRV Records
+_matrix._tcp.matrix.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
+```
+
+![DNS configuration](../img/services/matrix-dns.jpg){: loading=lazy }
+
 
 Note You can also host your own Matrix WebClient. [Host your own Matrix WebClient ](./element.md)
