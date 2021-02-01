@@ -1,16 +1,16 @@
 ## Required DNS entries
 
 ```bash
-# redirect yout domain to IPv4
+# redirect your domain to IPv4
 @ A <ipv4>
 
-# redirect yout domain to IPv6 (optional)
+# redirect your domain to IPv6 (optional)
 @ AAAA <ipv6>
 
-# redirect all subdomain to IPv4
+# redirect all subdomains to IPv4
 * A <ipv4>
 
-# redirect all subdomain to IPv6 (optional)
+# redirect all subdomains to IPv6 (optional)
 * AAAA <ipv6>
 
 # redirect some subdomains to other IPv4 (optional)
