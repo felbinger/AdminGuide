@@ -2,7 +2,7 @@
 Add the following configuration to your `docker-compose.yml` in the main stack:
 ```yaml
   traefik:
-    image: "traefik:v2.4"
+    image: traefik:v2.4
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -17,9 +17,7 @@ Add the following configuration to your `docker-compose.yml` in the main stack:
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--providers.file.filename=/configs/dynamic.yml"
-      - "--log.format=json"
-      - "--log.level=DEBUG"
-      - "--log.filePath=/logs/traefik.log"
+      #- "--log.level=DEBUG"
       - "--accesslog=true"
     labels:
       - "traefik.enable=true"
@@ -31,9 +29,7 @@ Add the following configuration to your `docker-compose.yml` in the main stack:
     ports:
       - "80:80"
       - "443:443"
-    env_file: .traefik.env
     volumes:
-      - "/srv/main/traefik/logs:/logs"
       - "/srv/main/traefik/letsencrypt:/letsencrypt"
       - "/srv/main/traefik/dynamic.yml:/configs/dynamic.yml"
       - "/etc/localtime:/etc/localtime:ro"
@@ -58,18 +54,12 @@ tls:
         - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
-        # not improving ssllabs score (you just get A not A+)
-        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
-        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
-        - TLS_FALLBACK_SCSV
 ```
 
 You also need a webserver for static content e.g. your [error pages](https://github.com/felbinger/AdminGuide/tree/master/error_pages): 
 ```yaml
   static:
-    image: nginx
+    image: nginx:stable-alpine
     restart: always
     labels:
       # BASIC CONFIGURATION
