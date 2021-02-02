@@ -36,7 +36,7 @@ To apply the changes, you need to restart the server.
 
 ## The Admin Group
 On every server that is managed by me, there exists an `admin` group that has access to almost all service configuration files.
-This group is used to easily manage many administrators on one server.
+This group is used to easily manage multiple administrators on one server.
 ```bash
 groupadd -g 997 admin
 mkdir /home/admin

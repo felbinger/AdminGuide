@@ -6,7 +6,7 @@
     sudo apt-get remove docker docker-engine docker.io containerd runc
     ```
 
-Docker itself already provide a very good script:
+Docker itself already provides a very good script:
 
 ```bash
 curl -fsSL https://get.docker.com | sudo bash
@@ -46,7 +46,7 @@ function docker_network_create() {
 
 # install docker if not already installed
 if [[ -z $(which docker) ]]; then
-  if [[ -z $(which docker) ]]; then
+  if [[ -z $(which curl) ]]; then
     apt-get install curl
   fi
   curl https://get.docker.com | bash

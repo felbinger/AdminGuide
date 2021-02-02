@@ -10,7 +10,7 @@ docker network inspect ${name} >/dev/null 2>&1 || \
 docker network create --subnet 192.168.110.0/24 jitsi
 ```
 
-Afterwars you can download the required files from the [jitsi/docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet) github repository
+Afterwards you can download the required files from the [jitsi/docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet) github repository
 ```
 wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/docker-compose.yml -O /home/admin/services/jitsi/docker-compose.yml
 wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/env.example -O /home/admin/services/jitsi/.env
@@ -23,13 +23,21 @@ curl https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/gen-passwo
 sed -i 's|CONFIG=.*|CONFIG=/srv/jitsi|g' .env
 ```
 
-Afterwards you may configure the .env file.
+Next step is to configure the .env file.
 
 ## Use Traefik
 Modify web services:
-* remove port forwardings
-* add traefik labels
-* connect network: proxy
+<ul>
+  <li>
+    remove port forwardings
+  </li>
+  <li>
+    add traefik labels
+  </li>
+  <li>
+    connect network: proxy
+  </li>
+</ul>
 
 After your changes the web service should look like this:
 ```yaml
@@ -61,8 +69,15 @@ After your changes the web service should look like this:
 
 ## Use LDAP Auth Backend
 Modify prosody service:
-* connect network: database
-* configure ldap credentials
+<ul>
+  <li>
+    connect network: database
+  </li>
+  <li>
+    configure ldap credentials
+  </li>
+</ul>
+
 
 After your changes the prosody service should look like this:
 ```yaml
@@ -114,9 +129,16 @@ LDAP_FILTER=(&(objectclass=person)(&(memberof=cn=jitsi,ou=groups,dc=domain,dc=de
 ```
 
 ## Configuration
-All configuration are stored in the `/srv/jitsi` directory:
-* You can't modify `/srv/jitsi/web/config.js`, because it will be generated on container start, but you can update the attributes in the .env file
-* You can update the settings of your interface by modifying `/srv/jitsi/web/interface_config.js`
+All configurations are stored in the `/srv/jitsi` directory:
+<ul>
+  <li>
+    You can't modify <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
+  </li>
+  <li>
+    You can update the settings of your interface by modifying <code>/srv/jitsi/web/interface_config.js</code>
+  </li>
+</ul>
+
 
 ## Extend your Jitsi instance
 ### Etherpad

@@ -1,6 +1,6 @@
 This Admin Guide describes how I setup my servers using docker.
 
-### Installation
+## Installation
 
 I created a script which can be executed to setup the server.  
 I suggest you to get used to my structure (e.g. the stack logic), otherwise you might run into problems later on.  
@@ -35,47 +35,13 @@ curl -fsSL https://raw.githubusercontent.com/felbinger/AdminGuide/master/postins
 
 </details>
 
-### Create your Services
+## Create your Services
 
 After you successfully installed your system, you can add the services you need.  
-Before you add a new service think which stack what fit best. It might be useful to create a new stack.
+Before you add a new service think which stack fits best. It might be useful to create a new stack.
 
-The following list contains a list of services that might come in handy. Simply add them to your `docker-compose.yml` and modify the required attributes (e.g. passwords, domain name, routing configuration, ...).
-
-You can find all services (e.g. Gameserver, Teamspeak, Sinusbot, ...) in the navigation bar on the left side of your page.
-
-#### Reverse Proxy's
-
-A reverse proxy is a router which binds to the ports `80` (http) and `443` (https).  
-You can access the configured services by connecting to the proxy (`https://domain.tld`) with a specific host header, which is going to be evaluated by the proxy.  
-But how do you connect to your proxy with this specific host header? Due to the fact that you configured your dns to redirect all subdomains to your server you can simply access `https://phpmyadmin.domain.tld`. You will reach the reverse proxy on port 443 with the host header `phpmyadmin.domain.tld`, after evaluation the proxy will redirect the incomming request to the configured service.
-
-- [Traefik](./services/traefik.md)
-- [jwilder/nginx-proxy](./services/nginx-proxy.md) is no longer being maintained.
-
-#### Webserver
-
-There are a bunch of webservers out there, I use nginx or httpd (apache2) most of the time.
-
-- [nginx](./services/nginx.md)
-- [httpd](./services/httpd.md)
-- [httpd with php](./services/httpd-php.md)
-
-#### Databases
-
-I like to put the admin webtool for database management right next to the database:
-
-- [MariaDB + phpMyAdmin](./services/mariadb.md)
-- [PostgreSQL + pgAdmin 4](./services/postgresql.md)
-- [MongoDB](./services/mongodb.md)
-- [Redis](./services/redis.md)
-
-I recommend that you switch off the administrative services when not in use (e.g. overnight). Due to the fact that it is easy to forget this, you can also do this with a cronjob:
-
-```bash
-# stop administrative services at 5 am during the week
-00 05 * * 1-5 /usr/local/bin/docker-compose -f /home/admin/services/main/docker-compose.yml rm -fs phpmyadmin pgadmin 2>&1
-```
+You can find a lot of services (e.g. Databases, Gameserver, Apps for Communication, Apps for File Storage, ...) in the navigation bar on the left side of the page.
+Simply add them to your `docker-compose.yml` and modify the required attributes (e.g. passwords, domain name, routing configuration, ...).
 
 ## Tools
 
@@ -102,76 +68,68 @@ sudo chmod +x /usr/local/bin/dnv
 ```sh
 $ sudo ./dnv
 bridge			172.17.0.0/16
-proxy		  	192.168.0.0/24
+proxy			192.168.0.0/24
 database		192.168.1.0/24
-monitoring	192.168.2.0/24
-main			  192.168.100.0/24
+monitoring		192.168.2.0/24
+main			192.168.100.0/24
 storage			192.168.101.0/24
-jitsi			  192.168.102.0/24
-games			  192.168.103.0/24
+comms			192.168.102.0/24
+jitsi			192.168.103.0/24
+games			192.168.104.0/24
 ```
 
-### Backup
+## Backup
 
-**I'm currently working on a new backup tool written in golang**, this could be an alternative if you don't want to install the latest version of python on your server.
+I suspended all file backup projects ([GBM](https://github.com/felbinger/GBM), [PyBackup](https://github.com/felbinger/PyBackup)). 
+I suggest you use [borg backup](https://borgbackup.readthedocs.io/en/stable/) for file backups. You can use my [DBM](https://github.com/felbinger/dbm) to get the database backups from your docker container.
 
-Currently I use [my python backup script](https://github.com/felbinger/pybackup).
+### Docker Backup Manager (DBM)
+The [docker backup management](https://github.com/felbinger/dbm) is a docker image to back up the database and ldap server inside your docker container. 
+It's basicly a bash script which uses the docker network to access the database servers.  
 
-First you need to install python3.8, because the latest version in the default repositories is `python 3.7.3` which won't work for my script.
+You can simply create a script which runs the container with the required environment variables to create the backup.  
 
-=== "compile python3.8 from sources"
-    ```bash
-    sudo apt-get install build-essential checkinstall libreadline-gplv2-dev \
-      libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev \
-      libc6-dev libbz2-dev libffi-dev zlib1g-dev
-
-    wget https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tgz
-    tar xzf Python-3.8.6.tgz
-
-    cd Python-3.8.6
-    ./configure --enable-optimizations --prefix=/opt/python/3.8
-    make -j$(nproc)
-    sudo make altinstall
-
-    echo "export PATH=/opt/python/3.8/bin:$PATH" >> /etc/profile.d/python3.8.sh
-    bash /etc/profile.d/python3.8.sh
-    ```
-
-=== "install python3.8 from debian/testing"
-    !!! warning "Warning"
-        Due to the fact that this will add the debian/testing repositories to your system, this might break your system. Do **not** execute this on a productive system!
-    ```bash echo -e '\n# python3.8\ndeb [arch=amd64] http://deb.debian.org/debian/ testing main' \ | sudo tee -a /etc/apt/sources.list echo 'APT::Default-Release "stable";' \ | sudo tee /etc/apt/apt.conf.d/99defaultrelease sudo apt update sudo apt install -y -t testing python3.8 python3-pip
-    ```
-    
-Afterwards you can clone the [pybackup repository](https://github.com/felbinger/pybackup) to a place which is only writeable by root (I recommend `/root/`) and install the reqirements from the `requirements.txt`:
-    
 !!! warning "Security Warning"
-    Due to the fact that the backup.py will be executed by root cronjob, the file should be only editable by root. Otherwise a lower privileged user, might exchange the python file or add a path (e.g. `/etc/shadow`) to the backup configuration to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).
+    Note that all scripts executed by a root cronjob, should only be editable by root. Otherwise a lower privileged user, might be able to gain higher privileges ([Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)).  
 
-```bash
-# install git and clone repository
-sudo apt install -y git
-sudo git clone https://github.com/felbinger/pybackup /root/pybackup/
-sudo pip3 install -r /root/pybackup/requirements.txt
+You're script may look like this, you may remove the environmentment variables you don't need.  
 
-# delete offside backup cause we don't need it on the server
-rm -r /root/pybackup/OffsideBackup
+```shell
+#!/bin/bash
 
-# configure pybackup
-vim /root/pybackup/.config.json
-
-# run backup
-$ python3.8 backup.py -df
+docker run --rm -it \
+  -v '/var/backups/:/data/' \
+  -e "LDAP_HOST=main_ldap_1" \
+  -e "LDAP_BASE_DN=dc=domain,dc=de" \
+  -e "LDAP_BIND_DN=cn=admin,dc=domain,dc=de" \
+  -e "LDAP_BIND_PW=S3cr3T" \
+  -e "MARIADB_HOST=main_mariadb_1" \
+  -e "MARIADB_DATABASES=mysql mariadb_backup nonexistent" \
+  -e "MARIADB_PASSWORD=S3cr3T" \
+  -e "MARIADB_USERNAME=root" \
+  -e "POSTGRES_HOST=main_postgres_1" \
+  -e "POSTGRES_USERNAME=postgres" \
+  -e "POSTGRES_PASSWORD=S3cr3T" \
+  -e "POSTGRES_DATABASES=postgres_backup postgres nonexistent" \
+  -e "MONGODB_HOST=main_mongo_1" \
+  -e "MONGODB_PASSWORD=S3cr3T" \
+  -e "MONGODB_DATABASES=admin nonexistent" \
+  --network=database \
+  ghcr.io/felbinger/dbm
 ```
 
 I really suggest creating a separate database user which can only create backups.  
 Checkout the documentation for your dbms:
 
+!!! warning ""
+    If you created these users for the old backup (eighter pybackup or gbm), you probally limited these users to the localhost. 
+    The DBM creates the backup over the network, so it can't use a user which is limited to localhost. Make sure to adjust the privileges.
+
 - [MariaDB](https://mariadb.com/kb/en/create-user/)
   ```bash
   # example for mariadb (you need SELECT and LOCK TABLES permissions)
-  $ sudo docker-compose exec mariadb 'mysql -u root -pSECRET_PASSWORD'
-  mariadb> CREATE USER 'backup'@'localhost' IDENTIFIED BY 'SECRET_PASSWORD_FOR_BACKUP';
+  $ sudo docker-compose exec mariadb mysql -u root -pS3cr3T
+  mariadb> CREATE USER 'backup'@'%' IDENTIFIED BY 'secret_password_for_backup_user';
   mariadb> GRANT SELECT, LOCK TABLES ON mysql.* TO 'backup'@'localhost';
   # add privileges to all databases that you want to backup!
   mariadb> FLUSH PRIVILEGES;
@@ -181,9 +139,58 @@ Checkout the documentation for your dbms:
 - [MongoDB](https://docs.mongodb.com/manual/reference/method/db.createUser/)
 
 Backups should also be scheduled using cronjob:
-
 ```
-# database / file backups at 2:50 / 3 am am every every day
-00 03 * * * /usr/bin/python3.8 /root/pybackup/backup.py -c /root/pybackup/.config.json -f
-50 02 * * * /usr/bin/python3.8 /root/pybackup/backup.py -c /root/pybackup/.config.json -d
+# database backups using docker backup management every three hours
+0 */3 * * * /bin/bash /root/db_backup.sh >/dev/null 2>&1
+```
+
+### Borg Backup
+Like I mentioned above, I'm currently using borg for file backups. Checkout the [official documentation](https://borgbackup.readthedocs.io/en/stable/#easy-to-use)
+
+I created a script to perform the backups:
+```shell
+#!/bin/bash
+
+export BORG_PASSPHRASE="<your_borg_repository_passphrase>"
+
+# date in format: YYYY-MM-DD_HH-MM round to 15 minutes blocks
+DATE=$(date +"%Y-%m-%d_%H")-$(echo "$(date +%M) - ($(date +%M)%15)" | bc)
+
+PATHS=(
+  "/srv/"
+  "/home/admin/"
+  "/root/"
+  "/etc/ssh/sshd_config"
+  "/etc/telegraf/telegraf.conf"
+)
+
+borg create --stats --progress -C lzma,5 /home/borg::${DATE} ${PATHS[@]}
+```
+
+The script is being executed by a crontab every night:
+```
+# run borg backup at 4 am
+0 4 * * * /bin/bash /root/backup.sh >/dev/null 2>&1
+```
+
+I also created a script to pack the whole borg repository into a tar file:
+```shell
+#!/bin/bash
+
+export BORG_PASSPHRASE="<your_borg_repository_passphrase>"
+latest=$(borg list /home/borg | tail -1 | cut -d " " -f 1)
+
+# extract last full backup from repository
+#borg export-tar --progress "/home/borg::${latest}" "/home/user/${latest}.tar"
+
+# validate that bork is not in use
+while [[ -n $(pidof -x $(which borg)) ]]; do
+  sleep 60
+done
+
+# pack backup repository
+tar -cvf /home/user/backup_repository.tar /home/borg
+
+chown user:user /home/user/backup_repository.tar
+chmod 664 /home/user/backup_repository.tar
 ```

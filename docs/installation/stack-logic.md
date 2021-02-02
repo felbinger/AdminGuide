@@ -88,7 +88,7 @@ networks:
 ```
 
 The network created for a particular stack will be called `default` in the matching `docker-compose.yml`.
-This will help us, because if we do not specify a network in the service sections of the `docker-compose.yml`, these services will automatically connect network `defalut`.
+This will help us, because if we do not specify a network in the service sections of the `docker-compose.yml`, these services will automatically connect network `default`.
 
 
 <details>

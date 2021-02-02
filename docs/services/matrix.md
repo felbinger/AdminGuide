@@ -21,7 +21,7 @@ Befor starting this container you need to generate a configuration file. This co
 ```yaml
 docker run -it --rm -v "/srv/comms/matrix/data:/data" -e "SYNAPSE_SERVER_NAME=matrix.domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse:latest generate
 ```
-You have to specify the domain of the service using the SYNAPSE_SERVER_NAME environment variable. You also can enable anonymous statistics reporting by setting sthe SYNAPSE_REPORT_STATS to yes.
+You have to specify the domain of the service using the `SYNAPSE_SERVER_NAME` environment variable. You also can enable anonymous statistics reporting by setting sthe `SYNAPSE_REPORT_STATS` to yes.
 
 After the command is done you can find the homeserver.yaml configurationfile in the data folder. 
 Now you can start the service using docker-compose up -d matrix.

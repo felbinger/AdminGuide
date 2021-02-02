@@ -1,4 +1,12 @@
 # Traefik
+
+!!! info ""
+    A reverse proxy is a router which binds to the ports `80` (http) and `443` (https).
+    You can access the configured services by connecting to the proxy (`https://domain.tld`) with a specific host header, which is going to be evaluated by the proxy.
+    But how do you connect to your proxy with this specific host header?
+    Due to the fact that you configured your dns to redirect all subdomains to your server you can simply access `https://phpmyadmin.domain.tld`.
+    You will reach the reverse proxy on port 443 with the host header `phpmyadmin.domain.tld`, after evaluation the proxy will redirect the incomming request to the configured service.
+
 Add the following configuration to your `docker-compose.yml` in the main stack:
 ```yaml
   traefik:

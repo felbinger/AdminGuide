@@ -21,7 +21,7 @@ declare -A HELPER=(\
 set -x
 
 function install_docker_compose() {
-  curl -L "https://github.com/docker/compose/releases/download/latest/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
 }
 
@@ -35,7 +35,7 @@ function docker_network_create() {
 function create_compose() {
   compose=${1}
   touch ${compose}
-  echo -e "version: '3.8'\n" >${compose}
+  echo -e "version: '3.9'\n" >${compose}
 
   # define services
   echo -e "services:\n" >>${compose}
@@ -68,9 +68,11 @@ if [[ $(/usr/bin/id -u) != "0" ]]; then
   exit 1
 fi
 
+apt-get update
+
 # install docker if not already installed
 if [[ -z $(which docker) ]]; then
-  if [[ -z $(which docker) ]]; then
+  if [[ -z $(which curl) ]]; then
     apt-get install curl
   fi
   curl https://get.docker.com | bash
