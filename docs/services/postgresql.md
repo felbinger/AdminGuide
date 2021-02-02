@@ -1,11 +1,14 @@
 ## PostgreSQL
 [postgres documentation](https://hub.docker.com/_/postgres)
+
+You can generate a database by setting the commented out environment variables.
 ```yaml
   postgresql:
     image: postgres
     restart: always
     environment:
       - "POSTGRES_PASSWORD=S3cr3T"
+      #- "POSTGRES_DB=app"
     volumes:
       - "/srv/main/postgres/transfer:/transfer"
       - "/srv/main/postgres/data:/var/lib/postgresql/data"
