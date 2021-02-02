@@ -1,4 +1,4 @@
-First add this configuration to you `docker-compose.yml`
+First add this configuration to your `docker-compose.yml`
 ```yaml
   matrix:
     container_name: matrix
@@ -17,17 +17,17 @@ First add this configuration to you `docker-compose.yml`
       - proxy
       - database
 ```
-Befor starting this container you need to generate a configuration file. This command generates a `homeserver.yaml` configuartion file under /srv/comms/matrix
+Before starting this container you need to generate a configuration file. This command generates a `homeserver.yaml` configuartion file under /srv/comms/matrix
 ```yaml
 docker run -it --rm -v "/srv/comms/matrix/data:/data" -e "SYNAPSE_SERVER_NAME=matrix.domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse:latest generate
 ```
 You have to specify the domain of the service using the `SYNAPSE_SERVER_NAME` environment variable. You also can enable anonymous statistics reporting by setting sthe `SYNAPSE_REPORT_STATS` to yes.
 
 After the command is done you can find the homeserver.yaml configurationfile in the data folder. 
-Now you can start the service using docker-compose up -d matrix.
+Now you can start the service using `docker-compose up -d matrix`.
 
 ### Register a new user 
-You can enable the registration in your `homeserver.yaml` file:
+If you want to enable registration via Matrix clients such as element you can enable it in your `homeserver.yaml` file.
 ```yaml
 ...
 enable_registration: true
@@ -36,7 +36,7 @@ enable_registration: true
 
 Don't forget to start the container after editing the option with `docker-compose up -d`
 
-Now you can create a user using the command line:
+You can also create a new user from the command line:
 ```yaml
 docker-compose exec matrix register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://matrix.domain.de
 ```
@@ -74,7 +74,7 @@ database:
     cp_max: 10
 ```
 
-By default, a SQL-Lite database is used, so we still need to comment it out.
+By default, a SQLite database is used, so we still need to comment it out.
 
 
 ``` yaml
