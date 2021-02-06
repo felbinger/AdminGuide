@@ -1,7 +1,6 @@
 First add this configuration to your `docker-compose.yml`
 ```yaml
   matrix:
-    container_name: matrix
     image: matrixdotorg/synapse
     restart: always
     volumes:
