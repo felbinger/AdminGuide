@@ -6,11 +6,10 @@ ADM_GID=997
 ADM_HOME='/home/admin'
 ADM_USERS=('user')
 
-# create compose files (disable if you would like to import a backup)
-ADD_COMPOSE=1
-
 declare -A STACKS=(\
   ["main"]="192.168.100.0/24"
+  ["comms"]="192.168.101.0/24"
+  ["storage"]="192.168.102.0/24"
 )
 
 declare -A HELPER=(\
@@ -79,11 +78,12 @@ set -x
 
 apt-get update
 
+if [[ -z $(which curl) ]]; then
+  apt-get install -y curl
+fi
+
 # install docker if not already installed
 if [[ -z $(which docker) ]]; then
-  if [[ -z $(which curl) ]]; then
-    apt-get install -y curl
-  fi
   curl https://get.docker.com | bash
 fi
 
@@ -109,7 +109,8 @@ for user in ${ADM_USERS[@]}; do
   echo -e '\nalias dc="sudo docker-compose "' | tee -a /home/${user}/.bashrc > /dev/null
   echo -e 'alias ctop="sudo ctop"\n' | tee -a /home/${user}/.bashrc > /dev/null
 
-  ln -s ${ADM_HOME} /home/${user}/admin
+  # check if exist
+  [ -h "/home/{user}/admin" ] && ln -s ${ADM_HOME} /home/${user}/admin
 done
 
 # create helper networks
@@ -129,24 +130,22 @@ for name in ${!STACKS[@]}; do
   docker_network_create ${name} ${subnet}
 
   # create docker-compose.yml
-  if [ ${ADD_COMPOSE} == 1 ]; then
-    compose="${ADM_HOME}/services/${name}/docker-compose.yml"
+  compose="${ADM_HOME}/services/${name}/docker-compose.yml"
+  if [ ! -f ${compose} ]; then
     create_compose ${compose}
   fi
 done
 
-if [[ -z $(which wget) ]]; then
-  apt-get install -y wget
-fi
-
 # ctop.sh
 if [ -z $(which /usr/local/bin/ctop) ]; then
-  wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 -O /usr/local/bin/ctop
+  curl -LJO https://github.com/bcicen/ctop/releases/download/v0.7.5/ctop-0.7.5-linux-amd64
+  mv ctop-0.7.5-linux-amd64 /usr/local/bin/ctop
   chmod +x /usr/local/bin/ctop
 fi
 
 # docker network viewer
 if [ -z $(which /usr/local/bin/dnv) ]; then
-  wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv -O /usr/local/bin/dnv
+  curl -LJO https://github.com/felbinger/DNV/releases/download/v0.1/dnv
+  mv dnv /usr/local/bin/dnv
   chmod +x /usr/local/bin/dnv
 fi
