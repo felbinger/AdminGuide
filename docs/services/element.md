@@ -27,3 +27,6 @@ touch /srv/comms/element/data/config.json
 Element supports a variety of settings to configure default servers, behaviour, themes, etc.  
 Checkout the [configuration docs](https://github.com/vector-im/element-web/blob/develop/docs/config.md#desktop-app-configuration) for more details.
 
+## Security note
+
+For security reasons, it is recommended that element is not used by the same domain as the Matrix homeserver. For more information see [here](https://github.com/vector-im/element-web#separate-domains)  
