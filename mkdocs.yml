@@ -82,6 +82,7 @@ nav:
       - 'ShareLaTeX': services/sharelatex.md
       - 'HackMD': services/hackmd.md
       - 'Calibre': services/calibre.md
+      - 'Gitea': services/gitea.md
     - 'Monitoring': services/monitoring.md
     
 extra_javascript:
