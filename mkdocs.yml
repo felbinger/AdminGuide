@@ -87,10 +87,14 @@ nav:
     - 'Monitoring': services/monitoring.md
     
 extra_css:
-  - https://cdnjs.cloudflare.com/ajax/libs/asciinema-player/2.4.1/asciinema-player.min.css
-    
+  # waiting for new version
+  #- https://cdnjs.cloudflare.com/ajax/libs/asciinema-player/2.4.1/asciinema-player.min.css
+  - css/asciinema-player.css
+
 extra_javascript:
   - js/config.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.2/es5/tex-mml-chtml.js
-  - https://cdnjs.cloudflare.com/ajax/libs/asciinema-player/2.4.1/asciinema-player.min.js
+  # waiting for new version
+  #- https://cdnjs.cloudflare.com/ajax/libs/asciinema-player/2.4.1/asciinema-player.min.js
+  - js/asciinema-player.js
