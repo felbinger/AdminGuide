@@ -110,7 +110,7 @@ for user in ${ADM_USERS[@]}; do
   echo -e 'alias ctop="sudo ctop"\n' | tee -a /home/${user}/.bashrc > /dev/null
 
   # check if exist
-  [ -h "/home/{user}/admin" ] && ln -s ${ADM_HOME} /home/${user}/admin
+  [ ! -h "/home/{user}/admin" ] && ln -s ${ADM_HOME} /home/${user}/admin
 done
 
 # create helper networks
