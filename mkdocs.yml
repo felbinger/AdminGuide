@@ -84,7 +84,11 @@ nav:
       - 'HackMD': services/hackmd.md
       - 'Calibre': services/calibre.md
       - 'Gitea': services/gitea.md
-    - 'Monitoring': services/monitoring.md
+    - 'Monitoring': 
+      - 'Grafana': services/grafana.md
+      - 'InfluxDB + Telegraf': services/influxdb.md
+      - 'Prometheus': services/prometheus.md
+      - 'Loki (collect logs)': services/loki.md
     
 extra_css:
   # waiting for new version
