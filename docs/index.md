@@ -68,7 +68,7 @@ sudo chmod +x /usr/local/bin/dnv
 ```
 
 ```sh
-$ sudo ./dnv
+$ sudo dnv
 bridge			172.17.0.0/16
 proxy			192.168.0.0/24
 database		192.168.1.0/24
@@ -148,6 +148,16 @@ Backups should also be scheduled using cronjob:
 
 ### Borg Backup
 Like I mentioned above, I'm currently using borg for file backups. Checkout the [official documentation](https://borgbackup.readthedocs.io/en/stable/#easy-to-use)
+
+Create a backup repository:
+```shell
+borg init -e repokey /home/borg
+```
+
+Don't forget to export the repokey and save it somewhere safe!
+```shell
+borg key export /home/borg /home/user/borg.repokey
+```
 
 I created a script to perform the backups:
 ```shell
