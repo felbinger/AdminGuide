@@ -201,3 +201,19 @@ You can also redirect a domain directly to another resource (e.g. your external 
       - "traefik.http.middlewares.mw_redirect.redirectregex.permanent=true"
       - "traefik.http.routers.r_redirect.middlewares=mw_redirect@docker,error40x@docker,error30x@docker"
 ```
+
+### Enable Metrics for Monitoring
+You can enable the prometheus metrics for monitoring (checkout [prometheus](./prometheus.md)) by adding the following to your command:
+```yaml
+      - "--metrics.prometheus=true"
+```
+
+Don't forget to add your traefik container to the prometheus configuration:
+```yaml
+...
+scrape_configs:
+   ...
+  - job_name: 'traefik'
+    static_configs:
+      - targets: ['traefik:8080']
+```

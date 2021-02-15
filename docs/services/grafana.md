@@ -54,3 +54,52 @@ You may specify a list of plugins which you would like to install in the `.grafa
 ```
 GF_INSTALL_PLUGINS=grafana-piechart-panel
 ```
+
+### LDAP Auth
+You can configure ldap auth in `/srv/main/grafana/etc/grafana.ini` and `/srv/main/grafana/etc/ldap.toml`:
+```ini
+#################################### Auth LDAP ##########################
+[auth.ldap]
+enabled = true
+;config_file = /etc/grafana/ldap.toml
+;allow_sign_up = true
+```
+
+```toml
+[log]
+filters = "ldap:debug"
+
+[[servers]]
+host = "ldap"
+port = 389
+use_ssl = false
+start_tls = false
+ssl_skip_verify = false
+
+bind_dn = "cn=admin,dc=domain,dc=de"
+bind_password = 'S3cr3T'
+
+search_filter = "(&(objectclass=person)(&(memberof=cn=grafana,ou=groups,dc=domain,dc=de))(uid=%s))"
+search_base_dns = ["dc=domain,dc=de"]
+
+[servers.attributes]
+name = "givenName"
+surname = "sn"
+username = "cn"
+member_of = "memberOf"
+email =  "email"
+
+[[servers.group_mappings]]
+group_dn = "cn=admin,cn=grafana,ou=groups,dc=domain,dc=de"
+org_role = "Admin"
+
+[[servers.group_mappings]]
+group_dn = "cn=editor,cn=grafana,ou=groups,dc=domain,dc=de"
+org_role = "Editor"
+
+[[servers.group_mappings]]
+group_dn = "*"
+org_role = "Viewer"
+```
+
+All members of `cn=grafana,ou=groups,dc=domain,dc=de` get the Viewer role, members that are also in `cn=editor,cn=grafana,ou=groups,dc=domain,dc=de` get the Editor role...

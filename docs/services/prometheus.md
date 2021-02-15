@@ -42,3 +42,5 @@ scrape_configs:
     static_configs:
       - targets: ['traefik:8080']
 ```
+
+In some services (e.g. jitsi and traefik) you may find these "Enable Exports" tutorials, but I didn't add them for every service!

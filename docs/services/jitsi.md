@@ -166,3 +166,24 @@ You can now request the statistics from the api:
 ip=$(docker inspect jitsi_jvb_1 | jq ".[0].NetworkSettings.Networks.jitsi.IPAddress" | tr -d '"')
 curl -s "http://${ip}:8080/colibri/stats" | jq
 ```
+
+## Export Metrics
+You can export the metrics by using a prometheus exporter:
+```yaml
+    jitsi2prometheus:
+        image: ghcr.io/an2ic3/jitsi2prometheus
+        restart: always
+        networks:
+            meet.jitsi:
+            monitoring
+```
+
+Don't forget to add your jitsi2prometheus instance to the prometheus configuration:
+```yaml
+...
+scrape_configs:
+   ...
+  - job_name: 'jitsi'
+    static_configs:
+      - targets: ['jitsi2prometheus:8080']
+```
