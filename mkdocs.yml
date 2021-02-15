@@ -49,6 +49,8 @@ plugins:
 
 nav:
   - 'Overview': index.md
+  - 'Backup': backup.md
+  - 'Snort 3 (NIDS)': snort.md
   - 'Installation':
     - 'Base': installation/index.md
     - 'Configure DNS': installation/dns.md
