@@ -7,47 +7,112 @@
     Due to the fact that you configured your dns to redirect all subdomains to your server you can simply access `https://phpmyadmin.domain.tld`.
     You will reach the reverse proxy on port 443 with the host header `phpmyadmin.domain.tld`, after evaluation the proxy will redirect the incomming request to the configured service.
 
-Add the following configuration to your `docker-compose.yml` in the main stack:
+The following codeblocks contain everything for a dns challenge setup, 
+if you would rather use a minimal configuration of traefik, checkout the docs.
+
+Make sure you configured your dns correctly: domain.de need to point to your server. 
 ```yaml
+# append /home/admin/services/main/docker-compose.yml
   traefik:
     image: traefik:v2.4
     command:
       - "--api.insecure=true"
+      - "--metrics.prometheus=true"
+      #- "--log.level=DEBUG"
+      - "--accesslog=true"
+
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=proxy"
+      - "--providers.file.filename=/configs/dynamic.yml"
+      - "--providers.file.filename=/configs/middlewares.yml"
+
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--entrypoints.websecure.http.middlewares=mw_hsts@file,mw_compress@file"
+      - "--entryPoints.websecure.http.tls=true"
+      - "--entryPoints.websecure.http.tls.certresolver=myresolver"
+      - "--entryPoints.websecure.http.tls.domains[0].main=domain.de"
+      - "--entryPoints.websecure.http.tls.domains[0].sans=*.domain.de"
+
+      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.delayBeforeCheck=10"
       - "--certificatesresolvers.myresolver.acme.email=admin@domain.de"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--providers.file.filename=/configs/dynamic.yml"
-      #- "--log.level=DEBUG"
-      - "--accesslog=true"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_traefik.loadbalancer.server.port=8080"
       - "traefik.http.routers.r_traefik.rule=Host(`traefik.domain.de`)"
       - "traefik.http.routers.r_traefik.entrypoints=websecure"
-      - "traefik.http.routers.r_traefik.tls=true"
-      - "traefik.http.routers.r_traefik.tls.certresolver=myresolver"
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - "/srv/main/traefik/letsencrypt:/letsencrypt"
       - "/srv/main/traefik/dynamic.yml:/configs/dynamic.yml"
+      - "/srv/main/traefik/middlewares.yml:/configs/middlewares.yml"
       - "/etc/localtime:/etc/localtime:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - proxy
+
+  static:
+    image: nginx:stable-alpine
+    restart: always
+    labels:
+      # BASIC CONFIGURATION
+      - "traefik.enable=true"
+      - "traefik.http.services.srv_static.loadbalancer.server.port=80"
+
+      # ERROR PAGES
+      # you can use my error_pages: https://github.com/felbinger/AdminGuide/tree/master/error_pages
+      - "traefik.http.middlewares.error40x.errors.status=403-404"
+      - "traefik.http.middlewares.error40x.errors.service=srv_static"
+      - "traefik.http.middlewares.error40x.errors.query=/error/{status}.html"
+      - "traefik.http.middlewares.error30x.errors.status=300-308"
+      - "traefik.http.middlewares.error30x.errors.service=srv_static"
+      - "traefik.http.middlewares.error30x.errors.query=/error/30x.html"
+
+      # DOMAIN ROOT CONTENT
+      - "traefik.http.routers.r_static_root.rule=HostRegexp(`domain.de`, `{subdomain:[a-z0-9]+}.domain.de`)"
+      - "traefik.http.routers.r_static_root.entrypoints=websecure"
+      - "traefik.http.routers.r_static_root.priority=10"
+      - "traefik.http.middlewares.mw_static_root.addprefix.prefix=/domain_root/"
+      - "traefik.http.routers.r_static_root.middlewares=mw_static_root@docker,error40x@docker,error30x@docker"
+    volumes:
+      - "/srv/main/static/webroot:/usr/share/nginx/html/"
+    networks:
+      - proxy
 ```
 
-Create the file `/srv/main/traefik/dynamic.yml` to require TLS version 1.2 or higher (currently only TLS 1.3):
+```
+# /srv/main/traefik/middlewares.yml 
+http:
+  middlewares:
+    mw_compress:
+      compress: true
+    mw_hsts:
+      headers:
+        contentTypeNosniff: true
+        browserXssFilter: true
+        forceSTSHeader: true
+        sslRedirect: true
+        stsPreload: true
+        stsSeconds: 315360000
+        stsIncludeSubdomains: true
+        customResponseHeaders:
+          X-Forwarded-Proto: https
+          X-Frame-Options: sameorigin
+```
+
 ```yaml
+# /srv/main/traefik/dynamic.yml
 tls:
   options:
     default:
@@ -64,68 +129,10 @@ tls:
         - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
 ```
 
-You also need a webserver for static content e.g. your [error pages](https://github.com/felbinger/AdminGuide/tree/master/error_pages): 
-```yaml
-  static:
-    image: nginx:stable-alpine
-    restart: always
-    labels:
-      # BASIC CONFIGURATION
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_static.loadbalancer.server.port=80"
-
-      # ERROR PAGES
-      - "traefik.http.middlewares.error40x.errors.status=403-404"
-      - "traefik.http.middlewares.error40x.errors.service=srv_static"
-      - "traefik.http.middlewares.error40x.errors.query=/error/{status}.html"
-      - "traefik.http.middlewares.error30x.errors.status=300-308"
-      - "traefik.http.middlewares.error30x.errors.service=srv_static"
-      - "traefik.http.middlewares.error30x.errors.query=/error/30x.html"
-
-      # HSTS
-      - "traefik.http.middlewares.mw_hsts.headers.frameDeny=true"
-      - "traefik.http.middlewares.mw_hsts.headers.contentTypeNosniff=true"
-      - "traefik.http.middlewares.mw_hsts.headers.browserXssFilter=true"
-      - "traefik.http.middlewares.mw_hsts.headers.forceSTSHeader=true"
-      - "traefik.http.middlewares.mw_hsts.headers.sslRedirect=true"
-      - "traefik.http.middlewares.mw_hsts.headers.stsPreload=true"
-      - "traefik.http.middlewares.mw_hsts.headers.stsSeconds=315360000"
-      - "traefik.http.middlewares.mw_hsts.headers.stsIncludeSubdomains=true"
-      - "traefik.http.middlewares.mw_hsts.headers.customRequestHeaders.X-Forwarded-Proto=https"
-
-      # DOMAIN ROOT CONTENT
-      - "traefik.http.routers.r_static_root.rule=HostRegexp(`domain.de`, `{subdomain:[a-z0-9]+}.domain.de`)"
-      - "traefik.http.routers.r_static_root.entrypoints=websecure"
-      - "traefik.http.routers.r_static_root.tls=true"
-      - "traefik.http.routers.r_static_root.tls.certresolver=myresolver"
-      - "traefik.http.routers.r_static_root.priority=10"
-      - "traefik.http.middlewares.mw_static_root.addprefix.prefix=/domain_root/"
-      - "traefik.http.routers.r_static_root.middlewares=mw_hsts@docker,mw_static_root@docker,error40x@docker,error30x@docker"
-    volumes:
-      - "/srv/main/static/webroot:/usr/share/nginx/html/"
-    networks:
-      - proxy
-```
-
-You should also add your domain to the [HSTS Preload List](https://hstspreload.org/), all subdomains need to be reachable using a secure connection, so you need a wildcard certificate for this.
+You should also add your domain to the [HSTS Preload List](https://hstspreload.org/).
 
 Let's do a [ssltest](https://www.ssllabs.com/ssltest) to see how good we are:
 ![Picture of the ssltest result](../img/services/traefik_ssllabs_test.png?raw=true){: loading=lazy }
-
-### Wildcard Certificates
-1. Modify the command section of your traefik, to setup dnschallenge (remove `....tlschallenge=true`):
-   ```yaml
-         # e.g. for cloudflare
-         - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
-         - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
-         - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
-   ```
-2. Modify the environment section ([you can also use docker secrets](https://doc.traefik.io/traefik/user-guides/docker-compose/acme-dns/#use-secrets)) of your traefik, to provide the required credentials for you dns api (checkout [the list of providers](https://doc.traefik.io/traefik/https/acme/#providers)).
-3. Configure the wildcard certificate for your services (e.g. the traefik dashboard in the labels section of the traefik service):
-   ```yaml
-         - "traefik.http.routers.r_traefik.tls.domains[0].main=domain.de"
-         - "traefik.http.routers.r_traefik.tls.domains[0].sans=*.domain.de"
-   ```
 
 ### Authentication Middlewares
 Traefik offers a lot of authentication middlewares (e.g. [BasicAuth](https://doc.traefik.io/traefik/middlewares/basicauth/), [ForwardAuth](https://doc.traefik.io/traefik/middlewares/forwardauth/) (if you can provide a authentication service))
@@ -194,8 +201,6 @@ You can also redirect a domain directly to another resource (e.g. your external 
 ```yaml
       - "traefik.http.routers.r_redirect.rule=Host(`domain.de`)"
       - "traefik.http.routers.r_redirect.entrypoints=websecure"
-      - "traefik.http.routers.r_redirect.tls=true"
-      - "traefik.http.routers.r_redirect.tls.certresolver=myresolver"
       - "traefik.http.middlewares.mw_redirect.redirectregex.regex=https://domain.de"
       - "traefik.http.middlewares.mw_redirect.redirectregex.replacement=https://redirecteddomain.de"
       - "traefik.http.middlewares.mw_redirect.redirectregex.permanent=true"
