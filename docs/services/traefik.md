@@ -91,7 +91,7 @@ Make sure you configured your dns correctly: domain.de need to point to your ser
       - proxy
 ```
 
-```
+```yaml
 # /srv/main/traefik/middlewares.yml 
 http:
   middlewares:
@@ -161,8 +161,6 @@ Now we can add the new router to our static service:
       ...
       - "traefik.http.routers.r_static_files.rule=Host(`files.domain.de`)"
       - "traefik.http.routers.r_static_files.entrypoints=websecure"
-      - "traefik.http.routers.r_static_files.tls=true"
-      - "traefik.http.routers.r_static_files.tls.certresolver=myresolver"
       - "traefik.http.middlewares.mw_static_files.addprefix.prefix=/static_files/"
       - "traefik.http.middlewares.mw_static_files_auth.basicauth.usersfile=/htpasswd/webfiles"
       - "traefik.http.routers.r_static_files.middlewares=mw_static_files@docker,mw_static_files_auth@docker,error40x@docker,error30x@docker"

@@ -1,17 +1,17 @@
 ShareLaTeX requires a redis and a mongodb instance!
 ```yaml
-  paper:
+  sharelatex:
     # use latest tag for setup, use your own image (tag: with-texlive-full) after installation 
     image: sharelatex/sharelatex:latest
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.srv_paper.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_paper.rule=Host(`paper.domain.de`)"
-      - "traefik.http.routers.r_paper.entrypoints=websecure"
-      - "traefik.http.routers.r_paper.tls.certresolver=myresolver"
+      - "traefik.http.services.srv_sharelatex.loadbalancer.server.port=80"
+      - "traefik.http.routers.r_sharelatex.rule=Host(`paper.domain.de`)"
+      - "traefik.http.routers.r_sharelatex.entrypoints=websecure"
+      - "traefik.http.routers.r_sharelatex.tls.certresolver=myresolver"
     volumes:
-      - /srv/storage/paper/data:/var/lib/sharelatex
+      - /srv/storage/sharelatex/data:/var/lib/sharelatex
     environment:
       - "SHARELATEX_APP_NAME=ShareLaTeX"
       - "SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex"
@@ -41,10 +41,10 @@ ShareLaTeX requires a redis and a mongodb instance!
 
   # requirements for ShareLaTeX
   mongo:
-    image: mongo:4.0
+    image: mongo
     restart: always
     volumes:
-      - "/srv/storage/paper/mongo:/data/db"
+      - "/srv/storage/sharelatex/mongo:/data/db"
     healthcheck:
       test: echo 'db.stats().ok' | mongo localhost:27017/test --quiet
       interval: 10s
@@ -53,11 +53,12 @@ ShareLaTeX requires a redis and a mongodb instance!
     networks:
       - database
 
+  # version must be locked to 5, otherwise sharelatex wont work
   redis:
     image: redis:5
     restart: always
     volumes:
-      - "/srv/storage/paper/redis:/data"
+      - "/srv/storage/sharelatex/redis:/data"
     networks:
       - database
 ```
@@ -75,13 +76,13 @@ ShareLaTeX requires a redis and a mongodb instance!
         The Image will take about 8 gigabytes after installation all additional packages.
 
     ```sh
-    screen -AmdS latex-installation "docker-compose exec paper tlmgr update --self; tlmgr install scheme-full"
+    screen -AmdS latex-installation "docker-compose exec sharelatex tlmgr update --self; tlmgr install scheme-full"
     ```
 
 2. Save the current container filesystem as docker image with tag: `with-texlive-full`
 
     ```shell
-    docker commit -m "installing all latex packages" $(docker-compose ps -q paper) sharelatex/sharelatex:with-texlive-full
+    docker commit -m "installing all latex packages" $(docker-compose ps -q sharelatex) sharelatex/sharelatex:with-texlive-full
     ```
 
 3. Replace the image tag in your `docker-compose.yml` from `latest` to `with-texlive-full`
@@ -91,7 +92,7 @@ ShareLaTeX requires a redis and a mongodb instance!
 Now you have to create an admin user by simply running this command:
 
 ```shell
-docker-compose exec paper /bin/bash -c "cd /var/www/sharelatex; grunt user:create-admin --email=my@email.address"
+docker-compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:create-admin --email=my@email.address"
 ```
 
 Replace `my@email.address` with your email. You will now be given a password reset link with which you can initially set the password for the admin user.
