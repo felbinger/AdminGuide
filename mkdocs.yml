@@ -86,6 +86,7 @@ nav:
       - 'HackMD': services/hackmd.md
       - 'Calibre': services/calibre.md
       - 'Gitea': services/gitea.md
+      - 'Nextcloud': services/nextcloud.md
     - 'Monitoring': 
       - 'Grafana': services/grafana.md
       - 'InfluxDB + Telegraf': services/influxdb.md
