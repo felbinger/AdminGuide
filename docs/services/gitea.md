@@ -24,3 +24,7 @@
       - proxy
       - database
 ```
+
+## OpenID/KeyCloak
+* Server Settings -> `Authentication Sources` -> OAuth2 -> OpenID-Connect
+* Discovery URL: `https://id.domain.de/auth/realms/<realm>/.well-known/openid-configuration`
