@@ -67,6 +67,9 @@ After your changes the web service should look like this:
                     - ${XMPP_DOMAIN}
 ```
 
+## OpenID Connect
+See [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
+
 ## Use LDAP Auth Backend
 Modify prosody service:
 <ul>
