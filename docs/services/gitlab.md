@@ -11,11 +11,11 @@ Setting up Gitlab with Docker-Compose isn't really that hard. Look at this Examp
     restart: always
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://YOURDOMAIN.example.com'
+        external_url 'http://gitlab.example.com'
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_gitlab.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_gitlab.rule=Host(`YOURDOMAIN.example.com`)"
+      - "traefik.http.routers.r_gitlab.rule=Host(`gitlab.example.com`)"
       - "traefik.http.routers.r_gitlab.entrypoints=websecure"
       - "traefik.http.routers.r_gitlab.tls=true"
       - "traefik.http.routers.r_gitlab.tls.certresolver=myresolver"
@@ -64,7 +64,7 @@ gitlab_rails['omniauth_providers'] = [
          id_path: ['sub'],
          attributes: { username: 'username'}
       } },
-    'redirect_uri' =>  'https://YOURDOMAIN.example.com/users/auth/oauth2_generic/callback'
+    'redirect_uri' =>  'https://gitlab.YOURDOMAIN.com/users/auth/oauth2_generic/callback'
   }
 ]
 ```
@@ -90,3 +90,60 @@ Administrator Account as you will no longer be able to log in with the initial A
 If something goes wrong the Gitlab-Logs and the Messages from your Authentication Service should be helpful to you.
 Furthermore you can refer to [this Documentation](https://docs.gitlab.com/ee/integration/oauth2_generic.html) 
 from Gitlab itself.
+
+Configuring SSO with Keycloak
+=============================
+
+If you use your own *Keycloak* Instance as an Authentication Service you have to configure Keycloak properly.
+
+At first, create a new Client. **The Client ID must be the Domain of your Gitlab.** The Client Protocol is
+*openid-connect*.
+
+Now edit the new Client. Leave all Settings standard except of the following:
+
+```
+Root URL: https://gitlab.example.com/
+
+Valid Redirect URIs: https://gitlab.example.com/*
+                     http://gitlab.example.com/*
+                     
+Base URL: https://gitlab.example.com/
+
+Web Origins: +
+```
+
+**It is very important to specify both http and https under `Valid Redirect URIs`, or the Authentication Process
+won't work.**
+
+Save the Settings. You can now copy your Client Secret from the "Credentials" Tab.
+
+Now you need to edit your `gitlab.rb` File. For Keycloak it should look like this:
+
+```
+gitlab_rails['omniauth_enabled'] = true
+gitlab_rails['omniauth_allow_single_sign_on'] = ['oauth2_generic']
+# gitlab_rails['omniauth_auto_sign_in_with_provider'] = 'oauth2_generic' # (Uncomment if you finished Testing)
+gitlab_rails['omniauth_block_auto_created_users'] = false
+
+gitlab_rails['omniauth_providers'] = [
+  {
+    "name" => "oauth2_generic",
+    "app_id" => "gitlab.example.com",
+    "app_secret" => "YOURSECRET",
+    'args' => {
+      client_options: {
+        'site' => 'https://keycloak.example.com/',
+        'user_info_url' => '/auth/realms/YOURREALM/protocol/openid-connect/userinfo',
+        'authorize_url' => '/auth/realms/YOURREALM/protocol/openid-connect/auth',
+        'token_url' => '/auth/realms/YOURREALM/protocol/openid-connect/token'
+      },
+      user_response_structure: {
+         id_path: ['sub'], 
+         attributes: { username: 'username'}
+      } },
+    'redirect_uri' =>  'https://gitlab.YOURDOMAIN.com/users/auth/oauth2_generic/callback'
+  }
+]
+```
+
+Now run `gitlab-ctl reconfigure`. You should be now be able to login using your Keycloak Accounts.
