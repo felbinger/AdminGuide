@@ -101,16 +101,13 @@ At first, create a new Client. **The Client ID must be the Domain of your Gitlab
 
 Now edit the new Client. Leave all Settings standard except of the following:
 
-```
-Root URL: https://gitlab.example.com/
+Setting | Value
+--------|-------
+Root URL | `https://gitlab.example.com/`
+Valid Redirect URIs | `https://gitlab.example.com/*` <br /> `http://gitlab.example.com/*`
+Base URL | `https://gitlab.example.com/`
+Web Origins | +
 
-Valid Redirect URIs: https://gitlab.example.com/*
-                     http://gitlab.example.com/*
-                     
-Base URL: https://gitlab.example.com/
-
-Web Origins: +
-```
 
 **It is very important to specify both http and https under `Valid Redirect URIs`, or the Authentication Process
 won't work.**
