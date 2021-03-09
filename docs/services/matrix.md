@@ -120,3 +120,45 @@ _matrix._tcp.matrix.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
 
 
 Note You can also host your own Matrix WebClient. [Host your own Matrix WebClient ](./element.md)
+
+### SSO with Keycloak
+
+If you have an Instance of *Keycloak* running, you can use it as an external Authentication Provider.
+At first, we have to create the Client in Keycloak. Create a new Client. Use `matrix.domain.de` as Client ID
+and `openid` as Protocol. Edit your newly created Client as follows:
+
+Setting | Value
+--------|-------
+Access Type | confidential
+Direct Access Grants Enabled | OFF
+Root URL | `https://matrix.domain.de`
+Valid Redirect URIs | `https://matrix.domain.de` <br /> `http://matrix.domain.de`
+Base URL | `https://matrix.domain.de`
+Web Origins | +
+
+Now go to the "Credentials" Tab and save the Client Secret; we will need it later.
+
+<br />
+
+Now we have to edit the `homeserver.yaml` file. I suggest you search for the Values because the file is very long.
+Uncomment / add and edit the following lines:
+
+```
+server_name: "matrix.domain.de"
+
+enable_registration: false
+password_config.enabled: false
+
+# For use with Keycloak
+  - idp_id: keycloak
+    idp_name: YOURNAME
+    issuer: "https://keycloak.domain.de/auth/realms/YOURREALM"
+    client_id: "matrix.domain.de"
+    client_secret: "YOURSECRET"
+    scopes: ["profile"]
+```
+
+**It is very important to remove the `openid` Scope which is preset. Things will not work if the
+`openid` Scope is set.**
+
+Now restart your Matrix Server. You should now be able to login with your Keycloak as an SSO Provider.
