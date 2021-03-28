@@ -75,6 +75,7 @@ nav:
     - 'Communication':
       - 'Teamspeak 3 + Sinusbot': services/teamspeak.md
       - 'Matrix': services/matrix.md
+      - 'Matrix Signal Bridge': services/matrix-signal-bridge.md
       - 'Element': services/element.md
       - 'Jitsi': services/jitsi.md
     - 'Storage':
