@@ -53,16 +53,16 @@ In the `bridge` Folder is now a `config.yaml`.
 You have to change some things:
 ```yaml
 homeserver:
-    address: https://example.com
-    domain: example.com
+    address: https://matrix.domain.de
+    domain: matrix.domain.de
 
 appservice:
     address: https://mautrix-signal:29328 # the hostname/ip of the bridge container
     database: postgres://mautrixsignal:mautrixsignal@signal-bridge-db/mautrixsignal
 bridge:
     permissions:
-        example.com user # adds all users of the homeserver 'example.com'
-        '@admin:example.com' admin # sets the user '@admin:example.com' as admin
+        matrix.domain.de user # adds all users of the homeserver 'matrix.domain.de'
+        '@admin:matrix.domain.de' admin # sets the user '@admin:matrix.domain.de' as admin
         # you can add more users/admins
 ```
 Restarting the container should generate a `registration.yaml`
@@ -73,6 +73,6 @@ app_service_config_files:
     - "/data/signal/registration.yaml" # path to the mounted file
 ```
 Now restart all Containers (including Matrix).
-Now invite `@signalbot:example.com` to a Direct Message Room.
+Now invite `@signalbot:matrix.domain.de` to a Direct Message Room.
 Type `!signal help` to get all Commands.
 Or type `!signal link` an Link your Signal Account.
