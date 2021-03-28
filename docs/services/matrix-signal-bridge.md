@@ -10,8 +10,8 @@ services:
     image: heywoodlh/mautrix-signal
     restart: always
     volumes:
-    - ./bridge:/data
-    - ./signald:/signald
+    - /srv/main/bridge:/data
+    - /srv/main/signald:/signald
     depends_on:
       - signald
     ports:
@@ -25,7 +25,7 @@ services:
     image: mik/signald # my self builed image for arm
     restart: unless-stopped
     volumes: 
-      - ./signald:/signald
+      - /srv/main/signald:/signald
     networks:
         - matrix
   
@@ -37,7 +37,7 @@ services:
       POSTGRES_DATABASE: mautrixsignal
       POSTGRES_PASSWORD: mautrixsignal
     volumes:
-    - ./db:/var/lib/postgresql/data
+    - /srv/main/signal-bridge-db:/var/lib/postgresql/data
     networks:
         - matrix
 
