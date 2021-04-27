@@ -136,6 +136,12 @@ for name in ${!STACKS[@]}; do
   fi
 done
 
+# adjust permissions
+chown -R root:admin ${ADM_HOME}
+find ${ADM_HOME} -type d -exec chmod 0775 {} \;
+find ${ADM_HOME} -type f -exec chmod 0664 {} \;
+find ${ADM_HOME}/tools/ -type f -exec chmod 0775 {} \;
+
 # ctop.sh
 if [ -z $(which /usr/local/bin/ctop) ]; then
   curl -LJO https://github.com/bcicen/ctop/releases/download/v0.7.5/ctop-0.7.5-linux-amd64
