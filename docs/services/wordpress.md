@@ -15,7 +15,7 @@ services:
   wordpress:
     depends_on:
       - mysql
-    image: wordpress:latest
+    image: wordpress
     restart: always
     environment:
       WORDPRESS_DB_HOST: mysql:3306
