@@ -4,7 +4,7 @@ services:
     image: mysql
     restart: always
     volumes:
-      - "/srv/comms/wordpress/:/var/lib/mysql"
+      - "/srv/comms/wordpress/mysql:/var/lib/mysql"
     environment:
       - "MYSQL_DATABASE=wordpress"
       - "MYSQL_USER=wordpress"
