@@ -15,6 +15,10 @@ services:
   wordpress:
     image: wordpress
     restart: always
+    volumes:
+      - "/srv/comms/wordpress/plugins:/var/www/html/wp-content/plugins"
+      - "/srv/comms/wordpress/themes:/var/www/html/wp-content/themes"
+      - "/srv/comms/wordpress/uploads:/var/www/html/wp-content/uploads"
     environment:
       - "WORDPRESS_DB_HOST=mysql:3306"
       - "WORDPRESS_DB_USER=wordpress"
