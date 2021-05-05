@@ -6,6 +6,7 @@ You can generate a database by setting the commented out environment variables.
   postgresql:
     image: postgres
     restart: always
+    hostname: postgres_database
     environment:
       - "POSTGRES_PASSWORD=S3cr3T"
       #- "POSTGRES_DB=app"
@@ -21,6 +22,7 @@ You can generate a database by setting the commented out environment variables.
   pgadmin:
     image: dpage/pgadmin4
     restart: always
+    hostname: pgadmin
     environment:
       - "PGADMIN_DEFAULT_EMAIL=admin@domain.tld"
       - "PGADMIN_DEFAULT_PASSWORD=S3cr3T"
