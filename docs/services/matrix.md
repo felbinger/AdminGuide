@@ -4,7 +4,7 @@ First add this configuration to your `docker-compose.yml`
     image: matrixdotorg/synapse
     restart: always
     volumes:
-      - /srv/comms/matrix/data:/data
+      - "/srv/comms/matrix:/data"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_homepage.loadbalancer.server.port=8008"
@@ -18,7 +18,7 @@ First add this configuration to your `docker-compose.yml`
 ```
 Before starting this container you need to generate a configuration file. This command generates a `homeserver.yaml` configuartion file under /srv/comms/matrix
 ```yaml
-docker run -it --rm -v "/srv/comms/matrix/data:/data" -e "SYNAPSE_SERVER_NAME=matrix.domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse:latest generate
+docker run -it --rm -v "/srv/comms/matrix:/data" -e "SYNAPSE_SERVER_NAME=matrix.domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse:latest generate
 ```
 You have to specify the domain of the service using the `SYNAPSE_SERVER_NAME` environment variable. You also can enable anonymous statistics reporting by setting sthe `SYNAPSE_REPORT_STATS` to yes.
 
