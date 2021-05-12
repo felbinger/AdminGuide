@@ -169,7 +169,7 @@ volumes:
 You can create the htpasswd file using the htpasswd utility from the apache2-utils package (at least on debian based operating systems).
 ```
 apt install -y apache2-utils
-htpasswd -c /srv/main/traefik/webfiles.htpasswd -c <username>
+htpasswd -c /srv/main/traefik/webfiles.htpasswd <username>
 ```
  
 Now we can add the new router to our static service:
