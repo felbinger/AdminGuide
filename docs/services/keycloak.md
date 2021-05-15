@@ -29,7 +29,6 @@ The realm is e.g. the name if your organisation. You have to create the realm la
       - "traefik.http.routers.r_keycloak-admin.middlewares=mw_keycloak-admin-redirect@docker"
     volumes:
       - "/srv/main/keycloak/extensions:/opt/jboss/keycloak/standalone/deployments"
-      - "/srv/main/keycloak/theme:/opt/jboss/keycloak/themes/morpheus"
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - database
