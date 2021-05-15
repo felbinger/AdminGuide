@@ -146,6 +146,30 @@ Etherpad allows you to edit documents collaboratively in real-time.
 
 You can find the [etherpad.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/etherpad.yml) in which the service is defined, in the github repo.
 I suggest you copy the etherpad service to your `docker-compose.yml`.
+You can also add some environment variables to connect your own database. Your `.env` file should look like this:
+```bash
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=etherpad
+DB_USER=etherpad
+DB_PASS=S3cR3T
+#DB_CHARSET= This is only for MySQL
+#DB_FILENAME= Just for SQLite or DirtyDB
+```
+Look also the [available database types](https://www.npmjs.com/package/ueberdb2). Now you have to put in these environment variables into your `docker-compose.yml`. This could look like this:
+```yaml
+    etherpad:
+      environment:
+        - ...
+        - DB_TYPE=${DB_TYPE}
+        - DB_HOST=${DB_HOST}
+        - DB_PORT=${DB_PORT}
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PASS=${DB_PASS}
+        - ...
+```
 
 ### Jibri
 The [Jitsi Broadcasting Infrastructure](https://github.com/jitsi/jibri) provides services for recording or streaming.
