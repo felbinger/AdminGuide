@@ -1,3 +1,6 @@
+Keycloak is an idendety management system. It provides support for OAuth2, OpenID-Connect and Saml2. In other words: You have one account for all of your services.
+<br>
+
 The realm is e.g. the name if your organisation. You have to create the realm later in the keycloak admin interface.
 
 ```yaml
