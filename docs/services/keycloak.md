@@ -34,3 +34,17 @@ The realm is e.g. the name if your organisation. You have to create the realm la
       - database
       - proxy
 ```
+## Initial Setup
+
+Open the webinterface and create a new realm withe the same name as in the docker compose.
+![image](https://user-images.githubusercontent.com/34819524/118363751-35f67c00-b596-11eb-9603-95df4a3c8e41.png)
+
+On the left side:
+* Realm Settings: Settings for your environment
+* Clients: A client is a service witch should be connected with keycloak.
+* Identity Providers: Here you can enable that users can login using external services like Google or Twitter.
+* Groupes: Roles are global roles that can grant access to other client specific roles.
+* Users: Here you can manage your userbase. (e.g. add new users, request a password change and more)
+
+## Add Services
+How you can add a service is described on the corresponding page of this service.
