@@ -12,7 +12,7 @@ The realm is e.g. the name if your organisation. You have to create the realm la
       - "traefik.enable=true"
       - "traefik.http.services.srv_keycloak.loadbalancer.server.port=8080"
 
-      - "traefik.http.routers.r_keycloak.rule=Host(`id.<domain>`)" # <- edit
+      - "traefik.http.routers.r_keycloak.rule=Host(`id.<domain>`)" # <- edit (user interface)
       - "traefik.http.routers.r_keycloak.entrypoints=websecure"
       - "traefik.http.middlewares.mw_keycloak-host-rewrite.headers.customrequestheaders.Host=id.<domain>" # <- edit
       - "traefik.http.middlewares.mw_keycloak-host-rewrite2.headers.customrequestheaders.X-Forwarded-Host=id.<domain>" # <- edit
@@ -22,7 +22,7 @@ The realm is e.g. the name if your organisation. You have to create the realm la
       - "traefik.http.middlewares.mw_keycloak-block-admin.replacepathregex.replacement=/auth/realms/<ralm>/account/" # <- edit
       - "traefik.http.routers.r_keycloak.middlewares=mw_keycloak-redirect@docker,mw_keycloak-block-admin@docker,mw_keycloak-host-rewrite@docker,mw_keycloak-host-rewrite2@docker"
 
-      - "traefik.http.routers.r_keycloak-admin.rule=Host(`keycloak.<domain>`)" # <- edit
+      - "traefik.http.routers.r_keycloak-admin.rule=Host(`keycloak.<domain>`)" # <- edit (admin interface)
       - "traefik.http.routers.r_keycloak-admin.entrypoints=websecure"
       - "traefik.http.middlewares.mw_keycloak-admin-redirect.redirectregex.regex=^https:\/\/keycloak.<domain>\/?$$" # <- edit
       - "traefik.http.middlewares.mw_keycloak-admin-redirect.redirectregex.replacement=https://keycloak.<domain>/auth/admin/" # <- edit
@@ -36,7 +36,7 @@ The realm is e.g. the name if your organisation. You have to create the realm la
 ```
 ## Initial Setup
 
-Open the webinterface and create a new realm withe the same name as in the docker compose.
+Open the admin interface (`keycloak.<domain>`) and create a new realm withe the same name as in the docker compose.
 
 ![image](https://user-images.githubusercontent.com/34819524/118363751-35f67c00-b596-11eb-9603-95df4a3c8e41.png)
 
