@@ -37,6 +37,7 @@ The realm is e.g. the name if your organisation. You have to create the realm la
 ## Initial Setup
 
 Open the webinterface and create a new realm withe the same name as in the docker compose.
+
 ![image](https://user-images.githubusercontent.com/34819524/118363751-35f67c00-b596-11eb-9603-95df4a3c8e41.png)
 
 On the left side:
