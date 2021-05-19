@@ -65,6 +65,7 @@ VOLUME /var/www/html/uploads
 ```yaml
   typo3:
     build: /home/admin/images/main/typo3/
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_t3.loadbalancer.server.port=80"
@@ -84,6 +85,7 @@ After the installtion, you won't be able to access the backend unless you specif
 ```yaml
   typo3:
     build: /home/admin/images/main/typo3/
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_t3.loadbalancer.server.port=80"
