@@ -71,6 +71,9 @@ nav:
       - 'PostgreSQL': services/postgresql.md
       - 'Redis': services/redis.md
       - 'OpenLDAP': services/openldap.md
+    - 'CMS':
+      - 'Wordpress': services/wordpress.md
+      - 'TYPO3': services/typo3.md
     - 'Gameserver':
       - 'Minecraft': services/minecraft.md
       - 'Arma 3 Server': services/arma3.md
