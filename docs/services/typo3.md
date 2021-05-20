@@ -1,8 +1,8 @@
 ### Dockerfile
 
-The current LTS image on [dockerhub](https://hub.docker.com/r/martinhelmich/typo3/) is currently one minor release behind.
+The current LTS image on [dockerhub](https://hub.docker.com/r/martinhelmich/typo3/) is one minor release behind.
 
-You can still use it for older versions, or the experimental version 11, but for latest LTS release you have to use this file
+You can still use it for older versions, or the experimental version 11, but for latest LTS release you have to use this file.
 
 ```Dockerfile
 FROM php:7.4-apache-buster
@@ -40,6 +40,7 @@ RUN apt-get update && \
 
 RUN cd /var/www/html && \
     wget -O download.tar.gz https://get.typo3.org/10.4.16 && \
+    echo "38d05c7869e1200675483d0edabdf3afa86d7e2c85aa8b2d60299891c8872644 download.tar.gz" > download.tar.gz.sum && \
     tar -xzf download.tar.gz && \
     rm download.* && \
     ln -s typo3_src-* typo3_src && \
@@ -65,6 +66,7 @@ VOLUME /var/www/html/uploads
 ```yaml
   typo3:
     build: /home/admin/images/main/typo3/
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_t3.loadbalancer.server.port=80"
@@ -79,11 +81,14 @@ VOLUME /var/www/html/uploads
 
 ### Typo3 through a reverse proxy
 
-After the installtion, you won't be able to access the backend unless you specify the proxy in a new config file.
+After the installation, you won't be able to access the backend unless you specify the proxy in a new config file.
+
+#### updated docker-compose.yml
 
 ```yaml
   typo3:
     build: /home/admin/images/main/typo3/
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_t3.loadbalancer.server.port=80"
