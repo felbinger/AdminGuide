@@ -95,7 +95,7 @@ nav:
       - 'InfluxDB + Telegraf': services/influxdb.md
       - 'Prometheus': services/prometheus.md
       - 'Loki (collect logs)': services/loki.md
-    - 'Notebooks':
+    - 'Other':
         - 'JupyterLab': services/jupyter.md
     
 extra_css:
