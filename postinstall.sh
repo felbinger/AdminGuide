@@ -127,9 +127,6 @@ fi
 wget -q https://raw.githubusercontent.com/felbinger/scripts/master/genpw.sh -O /usr/local/bin/genpw
 chmod +x /usr/local/bin/genpw
 
-exit
-
-# untested functions
 echo ">>> Setup Backup"
 export BORG_PASSPHRASE=$(/usr/local/bin/genpw)
 echo "export BORG_PASSPHRASE=${BORG_PASSPHRASE}" > /root/.borg.sh
