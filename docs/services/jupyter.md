@@ -27,7 +27,7 @@ networks:
 ```
 Then just run the container and watch on the JupyterLab Website. You have to set a password
 for your Jupyter Environment. For this you have to put in a token which you can find in the logs
-of your container with `docker-compose logs jupyter`. There is an example domain which endswith
+of your container with `docker-compose logs jupyter`. There is an example domain which ends with
 `?token=******`. You have to copy this token and create a password on the website with it.
 
 ### Reset Password
