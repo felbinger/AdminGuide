@@ -21,7 +21,7 @@ docker-compose run --rm openvpn ovpn_initpki
 Afterwards you can start the server 
 
 ```shell
-docker-compose up -d 
+docker-compose up -d openvpn
 ```
 
 You can generate the certificates as follows 
