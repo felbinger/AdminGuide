@@ -41,6 +41,7 @@ Open the admin interface (`keycloak.<domain>`) and create a new realm withe the 
 ![image](https://user-images.githubusercontent.com/34819524/118363751-35f67c00-b596-11eb-9603-95df4a3c8e41.png)
 
 On the left side:
+
 * Realm Settings: Settings for your environment
 * Clients: A client is a service witch should be connected with keycloak.
 * Identity Providers: Here you can enable that users can login using external services like Google or Twitter.
