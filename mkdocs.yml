@@ -43,14 +43,13 @@ markdown_extensions:
 
 plugins:
   - git-revision-date
-  - git-revision-date-localized
+  #- git-revision-date-localized
   - search:
       lang: en
 
 nav:
   - 'Overview': index.md
   - 'Backup': backup.md
-  - 'Snort 3 (NIDS)': snort.md
   - 'Installation':
     - 'Base': installation/index.md
     - 'Configure DNS': installation/dns.md
@@ -72,6 +71,9 @@ nav:
       - 'PostgreSQL': services/postgresql.md
       - 'Redis': services/redis.md
       - 'OpenLDAP': services/openldap.md
+    - 'CMS':
+      - 'Wordpress': services/wordpress.md
+      - 'TYPO3': services/typo3.md
     - 'Gameserver':
       - 'Minecraft': services/minecraft.md
       - 'Arma 3 Server': services/arma3.md
@@ -86,11 +88,15 @@ nav:
       - 'HackMD': services/hackmd.md
       - 'Calibre': services/calibre.md
       - 'Gitea': services/gitea.md
+      - 'Nextcloud': services/nextcloud.md
+      - 'Seafile': services/seafile.md
     - 'Monitoring': 
       - 'Grafana': services/grafana.md
       - 'InfluxDB + Telegraf': services/influxdb.md
       - 'Prometheus': services/prometheus.md
       - 'Loki (collect logs)': services/loki.md
+    - 'Other':
+        - 'JupyterLab': services/jupyter.md
     
 extra_css:
   # waiting for new version

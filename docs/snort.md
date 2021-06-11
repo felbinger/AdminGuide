@@ -1,7 +1,10 @@
+!!! note "This guide is unfinished"
+    I am not going to complete this guide, because I am using suricata within <a href="https://opnsense.org/">opnsense</a>. Feel free to finish this guide!
+
 [Snort](https://www.snort.org/snort3) is a open source Network Intrusion Detection & Prevention system,
 checkout the resources section on their page!
 
-[Installation Guide for Snort 3.1.0.0](https://snort-org-site.s3.amazonaws.com/production/document_files/files/000/003/979/original/Snort3_3.1.0.0_on_Ubuntu_18___20.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIXACIED2SPMSC7GA%2F20210215%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210215T132857Z&X-Amz-Expires=172800&X-Amz-SignedHeaders=host&X-Amz-Signature=b89786f8d04c6b5270176ad658bd6627a525427e05041d6cc819d0fb585817bd)
+[Installation Guide for Snort 3.1.0.0](https://www.snort.org/documents/snort-3-1-0-0-on-ubuntu-18-20)
 
 ## Installation
 ```shell

@@ -21,7 +21,7 @@
       - database
 ```
 
-Don't forget to create the `.netcloud.env` with your environment variables:
+Don't forget to create the `.nextcloud.env` with your environment variables:
 ```
 POSTGRES_HOST=postgres
 POSTGRES_DB=nextcloud
@@ -29,7 +29,7 @@ POSTGRES_USER=nextcloud
 POSTGRES_PASSWORD=S3cr3T
 NEXTCLOUD_ADMIN_USER=S3cr3T
 NEXTCLOUD_ADMIN_PASSWORD=S3cr3T
-NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.the-morpheus.de
+NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.domain.de
 REDIS_HOST=redis
 ```
 You can also use mariadb, checkout the [official documentation](https://hub.docker.com/_/nextcloud).

@@ -34,6 +34,7 @@ The realm is e.g. the name if your organisation. You have to create the realm la
       - database
       - proxy
 ```
+
 ## Initial Setup
 
 Open the admin interface (`keycloak.<domain>`) and create a new realm withe the same name as in the docker compose.
