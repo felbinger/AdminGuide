@@ -70,7 +70,9 @@ nav:
       - 'MongoDB': services/mongodb.md
       - 'PostgreSQL': services/postgresql.md
       - 'Redis': services/redis.md
+    - 'Authentication Provider':
       - 'OpenLDAP': services/openldap.md
+      - 'Keycloak': services/keycloak.md
     - 'CMS':
       - 'Wordpress': services/wordpress.md
       - 'TYPO3': services/typo3.md
