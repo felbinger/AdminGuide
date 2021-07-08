@@ -1,4 +1,3 @@
-## PostgreSQL
 [postgres documentation](https://hub.docker.com/_/postgres)
 
 You can generate a database by setting the commented out environment variables.
