@@ -5,8 +5,8 @@
 
 1. Fork the following two repos:
 
-* [github.com/themorpheustutorials/status](https://github.com/themorpheustutorials/status)
-* [github.com/themorpheustutorials/status-web](https://github.com/themorpheustutorials/status-web)
+    * [github.com/themorpheustutorials/status](https://github.com/themorpheustutorials/status)
+    * [github.com/themorpheustutorials/status-web](https://github.com/themorpheustutorials/status-web)
 
 ---
 **repo: status**
