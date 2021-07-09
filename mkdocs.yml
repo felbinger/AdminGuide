@@ -60,7 +60,7 @@ nav:
     - 'Proxies':
       - 'Traefik': services/traefik.md
       - 'nginx/proxy': services/nginx-proxy.md
-      - 'docky-onion': services/docky-onion.md  
+      - 'docky-onion': services/docky-onion.md
     - 'Web Server':
       - 'nginx': services/nginx.md
       - 'httpd': services/httpd.md
@@ -92,14 +92,15 @@ nav:
       - 'Gitea': services/gitea.md
       - 'Nextcloud': services/nextcloud.md
       - 'Seafile': services/seafile.md
-    - 'Monitoring': 
+    - 'Monitoring':
       - 'Grafana': services/grafana.md
       - 'InfluxDB + Telegraf': services/influxdb.md
       - 'Prometheus': services/prometheus.md
       - 'Loki (collect logs)': services/loki.md
+      - 'Status Page': services/status.md
     - 'Other':
         - 'JupyterLab': services/jupyter.md
-    
+
 extra_css:
   # waiting for new version
   #- https://cdnjs.cloudflare.com/ajax/libs/asciinema-player/2.4.1/asciinema-player.min.css
