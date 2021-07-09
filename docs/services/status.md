@@ -1,5 +1,5 @@
 !!! info ""
-    If you want to deploy a status page it is important to deploy the status infrastructure independent to the main infrastructure.<br><br>For this reason we are deploying the staus page on Cloudflare Pages and Workers.<br><br>Cloudflare Pages is being used for the frontend and Workers for the backend.
+    If you want to deploy a status page it is important to deploy the status infrastructure independent to the main infrastructure.<br>For this reason we are deploying the staus page on Cloudflare Pages and Workers.<br>Cloudflare Pages is being used for the frontend and Workers for the backend.
 
 ## Installation
 
