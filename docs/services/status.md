@@ -1,6 +1,13 @@
 !!! info ""
     If you want to deploy a status page it is important to deploy the status infrastructure independent to the main infrastructure.<br>For this reason we are deploying the staus page on Cloudflare Pages and Workers.<br>Cloudflare Pages is being used for the frontend and Workers for the backend.
 
+## Examples
+
+* [The Morpheus Status Page](https://status.the-morpheus.de)
+* [Cryptic Staus Page](https://status.cryptic-game.net)
+
+[![Status Page Example](../img/services/status_example_1.png){: loading=lazy }](https://status.cryptic-game.net)
+
 ## Installation
 
 1. Fork the following two repos:
