@@ -3,7 +3,6 @@
 
 ## Examples
 
-* [The Morpheus Status Page](https://status.the-morpheus.de)
 * [Cryptic Staus Page](https://status.cryptic-game.net)
 
 [![Status Page Example](../img/services/status_example_1.png){: loading=lazy }](https://status.cryptic-game.net)
