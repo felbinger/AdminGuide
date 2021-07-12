@@ -5,7 +5,7 @@ The realm is e.g. the name if your organisation. You have to create the realm la
 
 ```yaml
   keycloak:
-    image: jboss/keycloak:<version> # current: 13.0.0, in the future: ghcr.io/an2ic3/keycloak:<version>
+    image: jboss/keycloak:<version> # current: 14.0.0, in the future: ghcr.io/an2ic3/keycloak:<version>
     restart: always
     env_file: .keycloak.env
     labels:
@@ -34,6 +34,20 @@ The realm is e.g. the name if your organisation. You have to create the realm la
       - database
       - proxy
 ```
+
+```
+#.keycloak.env
+KEYCLOAK_USER=<admin>
+KEYCLOAK_PASSWORD=<admin password>
+DB_VENDOR=<postgres|mysql|mariadb>
+DB_ADDR=
+DB_USER=
+DB_PASSWORD=
+DB_PORT=
+DB_DATABASE=keycloak
+PROXY_ADDRESS_FORWARDING=true # if you use a reverse proxy (e.g. traefik)
+```
+
 ## Initial Setup
 
 Open the admin interface (`keycloak.<domain>`) and create a new realm withe the same name as in the docker compose.
