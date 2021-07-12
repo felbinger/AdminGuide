@@ -10,9 +10,20 @@ edit_uri: edit/master/docs
 theme:
   name: 'material'
   palette:
-    scheme: preference
-    primary: 'green'
-    accent: 'lime'
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: 'green'
+      accent: 'lime'
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: 'green'
+      accent: 'lime'
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
   font:
     text: Roboto
