@@ -1,3 +1,5 @@
+# Stack Logic
+
 We will group the services in different "stacks" to manage them, this way we can change specific things without taking all services offline. Furthermore, we will use one docker network per stack to ensure, that each container is only able to communicate with other containers which it really needs.
 
 ## Getting Started
