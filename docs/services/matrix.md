@@ -149,10 +149,11 @@ server_name: "matrix.domain.de"
 enable_registration: false
 password_config.enabled: false
 
+oidc_providers:
 # For use with Keycloak
   - idp_id: keycloak
     idp_name: YOURNAME
-    issuer: "https://keycloak.domain.de/auth/realms/YOURREALM"
+    issuer: "https://id.domain.de/auth/realms/YOURREALM"
     client_id: "matrix.domain.de"
     client_secret: "YOURSECRET"
     scopes: ["profile"]
