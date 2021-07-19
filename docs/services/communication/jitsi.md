@@ -64,6 +64,8 @@ After your changes the web service should look like this:
         networks:
             # added proxy network
             proxy:
+              external:
+                name: proxy
             meet.jitsi:
                 aliases:
                     - ${XMPP_DOMAIN}
