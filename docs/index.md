@@ -1,3 +1,5 @@
+# Home
+
 This Admin Guide describes how I setup my servers using docker.
 
 ## Installation
@@ -44,6 +46,11 @@ Before you add a new service think which stack fits best. It might be useful to 
 
 You can find a lot of services (e.g. Databases, Gameserver, Apps for Communication, Apps for File Storage, ...) in the navigation bar on the left side of the page.
 Simply add them to your `docker-compose.yml` and modify the required attributes (e.g. passwords, domain name, routing configuration, ...).
+
+### Environment Variables
+I don't put environment variables in the `docker-compose.yml`, instead I create a `.<service_name>.env` file, in which all environment variables are defined.
+Afterwards I add this environment file using `env_file: .<service_name>.env` to the service, defined in the `docker-compose.yml`.
+The main reason for that is, to prevent password leaks: e.g. screensharing, or if you send someone your service definition
 
 ## Tools
 

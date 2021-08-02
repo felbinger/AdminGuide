@@ -1,5 +1,5 @@
 # Admin Guide
-You can find this repository here: [https://felbinger.github.io/AdminGuide](https://felbinger.github.io/AdminGuide)
+You can find this repository here: [https://adminguide.pages.dev](https://adminguide.pages.dev).
 
 ## Contribute
 Feel free to open issues / pull requests.

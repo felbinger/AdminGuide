@@ -10,9 +10,20 @@ edit_uri: edit/master/docs
 theme:
   name: 'material'
   palette:
-    scheme: preference
-    primary: 'green'
-    accent: 'lime'
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: 'green'
+      accent: 'lime'
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: 'green'
+      accent: 'lime'
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
   font:
     text: Roboto
@@ -43,57 +54,10 @@ markdown_extensions:
 
 plugins:
   - git-revision-date
-  - git-revision-date-localized
+  #- git-revision-date-localized
   - search:
       lang: en
 
-nav:
-  - 'Overview': index.md
-  - 'Backup': backup.md
-  - 'Snort 3 (NIDS)': snort.md
-  - 'Installation':
-    - 'Base': installation/index.md
-    - 'Configure DNS': installation/dns.md
-    - 'Docker': installation/docker.md
-    - 'Stack Logic': installation/stack-logic.md
-    - 'Postinstall Script': installation/postinstall.md
-  - 'Services':
-    - 'Proxies':
-      - 'Traefik': services/traefik.md
-      - 'nginx/proxy': services/nginx-proxy.md
-      - 'docky-onion': services/docky-onion.md  
-    - 'Web Server':
-      - 'nginx': services/nginx.md
-      - 'httpd': services/httpd.md
-      - 'httpd with php': services/httpd-php.md
-    - 'Databases':
-      - 'MariaDB': services/mariadb.md
-      - 'MongoDB': services/mongodb.md
-      - 'PostgreSQL': services/postgresql.md
-      - 'Redis': services/redis.md
-      - 'OpenLDAP': services/openldap.md
-    - 'Gameserver':
-      - 'Minecraft': services/minecraft.md
-      - 'Arma 3 Server': services/arma3.md
-    - 'Communication':
-      - 'Teamspeak 3 + Sinusbot': services/teamspeak.md
-      - 'Matrix': services/matrix.md
-      - 'Matrix Discord Bridge': services/matrix-discord-bridge.md
-      - 'Element': services/element.md
-      - 'Jitsi': services/jitsi.md
-    - 'Storage':
-      - 'Syncthing': services/syncthing.md
-      - 'ShareLaTeX': services/sharelatex.md
-      - 'HackMD': services/hackmd.md
-      - 'Calibre': services/calibre.md
-      - 'Gitea': services/gitea.md
-      - 'Nextcloud': services/nextcloud.md
-    - 'Monitoring': 
-      - 'Grafana': services/grafana.md
-      - 'InfluxDB + Telegraf': services/influxdb.md
-      - 'Prometheus': services/prometheus.md
-      - 'Loki (collect logs)': services/loki.md
-    
 extra_css:
   # waiting for new version
   #- https://cdnjs.cloudflare.com/ajax/libs/asciinema-player/2.4.1/asciinema-player.min.css
