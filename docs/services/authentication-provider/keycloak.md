@@ -47,7 +47,9 @@ DB_USER=
 DB_PASSWORD=
 DB_PORT=
 DB_DATABASE=keycloak
-PROXY_ADDRESS_FORWARDING=true # if you use a reverse proxy (e.g. traefik)
+
+# if you use a reverse proxy (e.g. traefik)
+PROXY_ADDRESS_FORWARDING=true
 ```
 
 ## Initial Setup

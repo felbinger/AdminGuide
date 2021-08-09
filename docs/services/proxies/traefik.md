@@ -50,6 +50,7 @@ Make sure you configured your dns correctly: domain.de need to point to your ser
       - "traefik.http.services.srv_traefik.loadbalancer.server.port=8080"
       - "traefik.http.routers.r_traefik.rule=Host(`traefik.domain.de`)"
       - "traefik.http.routers.r_traefik.entrypoints=websecure"
+    env_file: .traefik.env
     ports:
       - "80:80"
       - "443:443"
@@ -90,7 +91,15 @@ Make sure you configured your dns correctly: domain.de need to point to your ser
     networks:
       - proxy
 ```
- 
+
+Aquire a api token from cloudflare:  
+![Cloudflare API Token](../../img/services/traefik_cf_api_token.png){: loading=lazy }
+
+```shell
+# .traefik.env 
+CF_DNS_API_TOKEN=XXXXXXXXXXXXX
+```
+
 ```yaml
 # /srv/main/traefik/middlewares.yml 
 http:
