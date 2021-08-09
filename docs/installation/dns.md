@@ -1,3 +1,5 @@
+# DNS
+
 ## Required DNS entries
 
 ```bash

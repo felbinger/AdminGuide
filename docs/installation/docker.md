@@ -1,3 +1,5 @@
+# Docker
+
 !!! note "Old Docker Versions"
     > [Older versions of the Docker binary were called docker or docker-engine or docker-io](https://stackoverflow.com/a/45023650)
 
@@ -19,7 +21,10 @@ sudo curl -L -o /usr/local/bin/docker-compose \
   "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)"
 sudo chmod +x /usr/local/bin/docker-compose
 ```
-
+On an ARM Maschine you need:
+```
+pip install docker-compose
+```
 Instead of typing `sudo docker-compose up -d` all the time you can use this alias and type `dc up -d`:
 
 ```bash
