@@ -20,7 +20,7 @@ First add this configuration to your `docker-compose.yml`
 ```
 Before starting this container you need to generate a configuration file. This command generates a `homeserver.yaml` configuartion file under /srv/comms/matrix
 ```yaml
-docker run -it --rm -v "/srv/comms/matrix:/data" -e "SYNAPSE_SERVER_NAME=matrix.domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse:latest generate
+docker run -it --rm -v "/srv/comms/matrix:/data" -e "SYNAPSE_SERVER_NAME=domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse:latest generate
 ```
 You have to specify the domain of the service using the `SYNAPSE_SERVER_NAME` environment variable. You also can enable anonymous statistics reporting by setting sthe `SYNAPSE_REPORT_STATS` to yes.
 
@@ -115,7 +115,7 @@ To enable cross-server communication you need to set an SRV DNS record.
 
 ```
 ;; SRV Records
-_matrix._tcp.matrix.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
+_matrix._tcp.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
 ```
 
 ![DNS configuration](../../img/services/matrix-dns.jpg){: loading=lazy }
