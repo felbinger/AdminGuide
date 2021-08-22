@@ -118,7 +118,7 @@ To enable cross-server communication you need to set an SRV DNS record.
 _matrix._tcp.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
 ```
 
-![DNS configuration](../../img/services/matrix-dns.jpg){: loading=lazy }
+![DNS configuration](../../img/services/matrix-dns.png){: loading=lazy }
 
 
 Note You can also host your own Matrix WebClient. [Host your own Matrix WebClient ](./element.md)
