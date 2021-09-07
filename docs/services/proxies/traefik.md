@@ -37,12 +37,14 @@ Make sure you configured your dns correctly: domain.de need to point to your ser
       - "--entryPoints.websecure.http.tls.certresolver=myresolver"
       - "--entryPoints.websecure.http.tls.domains[0].main=domain.de"
       - "--entryPoints.websecure.http.tls.domains[0].sans=*.domain.de"
+      #- "--entryPoints.websecure.http.tls.domains[1].main=domain2.de"
+      #- "--entryPoints.websecure.http.tls.domains[1].sans=*.domain2.de"
  
       - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.delayBeforeCheck=10"
-      - "--certificatesresolvers.myresolver.acme.email=admin@domain.de"
+      - "--certificatesresolvers.myresolver.acme.email=certificates@domain.de"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     labels:
@@ -143,23 +145,10 @@ You should also add your domain to the [HSTS Preload List](https://hstspreload.o
 Let's do a [ssltest](https://www.ssllabs.com/ssltest) to see how good we are:
 ![Picture of the ssltest result](../../img/services/traefik_ssllabs_test.png?raw=true){: loading=lazy }
 !!! info ""
-    If you use Cloudfare Proxy (free version), it is possible that the best score you will get is a B.
-    This is due to the fact that Cloudfare Proxy is still supporting TLS 1.0/1.1 for backwards compatibility reasons.
+    If you are using the Cloudfare Proxy and didn't remove TLS 1.0/1.1 in the TLS/SSL section, the best score you will get is B.
 
 ### Wildcard Certificates
-1. Modify the command section of your traefik, to setup dnschallenge (remove `....tlschallenge=true`):
-   ```yaml
-         # e.g. for cloudflare
-         - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
-         - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
-         - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
-   ```
-2. Modify the environment section ([you can also use docker secrets](https://doc.traefik.io/traefik/user-guides/docker-compose/acme-dns/#use-secrets)) of your traefik, to provide the required credentials for you dns api (checkout [the list of providers](https://doc.traefik.io/traefik/https/acme/#providers)).
-3. Configure the wildcard certificate for your services (e.g. the traefik dashboard in the labels section of the traefik service):
-   ```yaml
-         - "traefik.http.routers.r_traefik.tls.domains[0].main=domain.de"
-         - "traefik.http.routers.r_traefik.tls.domains[0].sans=*.domain.de"
-   ```
+You need to have ACME DNS-01 Challenge configured to aquire wildcard certificates from Let's Encrypt. The setup above has been adjusted to do `dnschallenge`, even if you don't want to aquire a wildcard certificate. Simply replace the domain `domain.de`.
 
 ### Authentication Middlewares
 Traefik offers a lot of authentication middlewares (e.g. [BasicAuth](https://doc.traefik.io/traefik/middlewares/basicauth/), [ForwardAuth](https://doc.traefik.io/traefik/middlewares/forwardauth/) (if you can provide a authentication service))
