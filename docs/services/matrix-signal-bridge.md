@@ -1,23 +1,22 @@
 ## Matrix Signal Bridge
-(Only tested on ARM)
-Docker-compose
+This has only been tested on ARM
 ```yaml
+# docker-compose.yml
 version: "3.9"
 
 services:
   mautrix-signal:
-    container_name: mautrix-signal
     image: heywoodlh/mautrix-signal
     restart: always
     volumes:
-    - /srv/main/bridge:/data
-    - /srv/main/signald:/signald
+      - "/srv/main/bridge:/data"
+      - "/srv/main/signald:/signald:z"
     depends_on:
       - signald
     ports:
       - 29328:29328
     networks:
-        - matrix
+      - matrix
 
   signald:
     container_name: signald
@@ -25,9 +24,9 @@ services:
     image: mik/signald # my self builed image for arm
     restart: unless-stopped
     volumes: 
-      - /srv/main/signald:/signald
+      - "/srv/main/signald:/signald:z"
     networks:
-        - matrix
+      - matrix
   
   signal-bridge-db:
     image: postgres
@@ -37,7 +36,7 @@ services:
       POSTGRES_DATABASE: mautrixsignal
       POSTGRES_PASSWORD: mautrixsignal
     volumes:
-    - /srv/main/signal-bridge-db:/var/lib/postgresql/data
+      - "/srv/main/signal-bridge-db:/var/lib/postgresql/data"
     networks:
         - matrix
 
