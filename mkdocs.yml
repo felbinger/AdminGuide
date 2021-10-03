@@ -1,11 +1,11 @@
 site_name: Admin Guide
-site_url: https://felbinger.github.io/AdminGuide/
+site_url: https://adminguide.pages.dev/
 repo_name: felbinger/AdminGuide
 repo_url: https://github.com/felbinger/AdminGuide/
 site_description: "Linux Server Administrator Guide"
 site_author: https://github.com/felbinger
 remote_branch: gh-pages
-edit_uri: edit/master/docs
+edit_uri: https://github.dev/felbinger/AdminGuide/blob/master/docs
 
 theme:
   name: 'material'

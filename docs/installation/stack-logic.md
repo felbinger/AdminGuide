@@ -44,7 +44,7 @@ Helper networks for specific communication (e.g. to the reverse proxy, the datab
 ```bash
 # create main stack
 name='main'
-mkdir -p "/home/admin/{services,images}/${name}/"
+mkdir -p /home/admin/{services,images}/${name}/
 sudo mkdir -p "/srv/${name}/"
 sudo docker network create --subnet 192.168.100.0/24 ${name}
 
