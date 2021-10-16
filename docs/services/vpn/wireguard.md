@@ -1,7 +1,6 @@
 # Wireguard
 
 We will use an instation script, because we don't want to use the full possibilities of wireguard. The script is created for the server only a simple vpn and runs on the distributions listed below.
-We will use an instation script, because we don't want to use the full possibilities of wireguard. The script is created for the server only a simple vpn and runs on the distributions listed below.
 
 ## Supported distributions
 
