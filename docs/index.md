@@ -59,30 +59,7 @@ The main reason for that is, to prevent password leaks: e.g. screensharing, or i
 Simple commandline monitoring tool for docker containers:
 
 ```bash
-sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 \
+sudo wget https://github.com/bcicen/ctop/releases/download/0.7.6/ctop-0.7.6-linux-amd64 \
   -O /usr/local/bin/ctop
 sudo chmod +x /usr/local/bin/ctop
-```
-
-### Docker Network Viewer
-
-A simple tool to show docker networks:
-
-```bash
-sudo wget https://github.com/felbinger/DNV/releases/download/v0.1/dnv \
-  -O /usr/local/bin/dnv
-sudo chmod +x /usr/local/bin/dnv
-```
-
-```sh
-$ sudo dnv
-bridge			172.17.0.0/16
-proxy			192.168.0.0/24
-database		192.168.1.0/24
-monitoring		192.168.2.0/24
-main			192.168.100.0/24
-storage			192.168.101.0/24
-comms			192.168.102.0/24
-jitsi			192.168.103.0/24
-games			192.168.104.0/24
 ```
