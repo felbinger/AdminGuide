@@ -63,3 +63,38 @@ sudo wget https://github.com/bcicen/ctop/releases/download/0.7.6/ctop-0.7.6-linu
   -O /usr/local/bin/ctop
 sudo chmod +x /usr/local/bin/ctop
 ```
+
+### Docker Network Viewer
+
+A simple tool to show docker networks:
+
+```bash
+sudo apt install apt-transport-https ca-certificates curl gnupg
+  
+curl -fsSL https://m4rc3l.de/static/deb-repo.pem | sudo gpg --dearmor -o /usr/share/keyrings/m4rc3l-deb-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/m4rc3l-deb-keyring.gpg] http://deb.m4rc3l.de/ all main" \
+  | sudo tee /etc/apt/sources.list.d/m4rc3l.list > /dev/null
+
+sudo apt update
+sudo apt install docker-network-viewer
+```
+
+```bash
+sudo wget https://github.com/MarcelCoding/docker-network-viewer/releases/download/v1.1.1/docker-network-viewer \
+  -O /usr/local/bin/dnv
+sudo chmod +x /usr/local/bin/dnv
+```
+
+```sh
+$ sudo dnv
+bridge			172.17.0.0/16
+proxy			  192.168.0.0/24
+database		192.168.1.0/24
+monitoring	192.168.2.0/24
+main			  192.168.100.0/24
+storage			192.168.101.0/24
+comms			  192.168.102.0/24
+jitsi			  192.168.103.0/24
+games			  192.168.104.0/24
+```
