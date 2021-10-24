@@ -7,15 +7,15 @@ ADM_HOME='/home/admin'
 ADM_USERS=('user')
 
 declare -A STACKS=(\
-  ["main"]="192.168.100.0/24"
-  ["comms"]="192.168.101.0/24"
-  ["storage"]="192.168.102.0/24"
+  ["main"]="172.30.100.0/24"
+  ["comms"]="172.30.101.0/24"
+  ["storage"]="172.30.102.0/24"
 )
 
 declare -A HELPER=(\
-  ["proxy"]="192.168.0.0/24" \
-  ["database"]="192.168.1.0/24" \
-  ["monitoring"]="192.168.2.0/24"
+  ["proxy"]="172.30.0.0/24" \
+  ["database"]="172.30.1.0/24" \
+  ["monitoring"]="172.30.2.0/24"
 )
 ### END of CONFIGURATION ###
 
@@ -112,64 +112,17 @@ find ${ADM_HOME}/tools/ -type f -exec chmod 0775 {} \;
 
 # ctop.sh
 if [ -z $(which /usr/local/bin/ctop) ]; then
-  curl -LJO https://github.com/bcicen/ctop/releases/download/v0.7.5/ctop-0.7.5-linux-amd64
+  curl -LJO https://github.com/bcicen/ctop/releases/download/v0.7.6/ctop-0.7.6-linux-amd64
   mv ctop-0.7.5-linux-amd64 /usr/local/bin/ctop
   chmod +x /usr/local/bin/ctop
 fi
 
 # docker network viewer
-if [ -z $(which /usr/local/bin/dnv) ]; then
-  curl -LJO https://github.com/felbinger/DNV/releases/download/v0.1/dnv
-  mv dnv /usr/local/bin/dnv
-  chmod +x /usr/local/bin/dnv
-fi
+#if [ -z $(which /usr/local/bin/dnv) ]; then
+#  curl -LJO https://github.com/felbinger/DNV/releases/download/v0.1/dnv
+#  mv dnv /usr/local/bin/dnv
+#  chmod +x /usr/local/bin/dnv
+#fi
 
 wget -q https://raw.githubusercontent.com/felbinger/scripts/master/genpw.sh -O /usr/local/bin/genpw
 chmod +x /usr/local/bin/genpw
-
-exit
-
-# untested functions
-echo ">>> Setup Backup"
-export BORG_PASSPHRASE=$(/usr/local/bin/genpw)
-echo "export BORG_PASSPHRASE=${BORG_PASSPHRASE}" > /root/.borg.sh
-echo ">>> Borg Passphrase is: ${BORG_PASSPHRASE}"
-borg init -e repokey /home/borg
-borg key export /home/borg /root/borg-key.txt
-echo ">>> Borg Key has been saved to /root/borg-key.txt"
-echo ">>> Make sure to save this file to your local machine and delete it afterwards."
-
-# adjust cronjob
-
-echo ">>> Setup Exporter User"
-username="exporter"
-useradd -s /bin/false -m ${username}
-rm /home/${username}/.{bashrc,bash_logout,profile}
-cp /etc/ssh/sshd_config{,.bak}
-
-# add exporter user to allow users
-sed -i "/AllowUsers/ s/$/ ${username}/" /etc/ssh/sshd_config
-
-# setup sftp jail
-cat <<EOF >> /etc/ssh/sshd_config
-AuthorizedKeysFile .ssh/authorized_keys /etc/ssh/authorized_keys/%u
-Match User ${username}
-  X11Forwarding no
-  AllowTcpForwarding no
-  PermitTTY no
-  ForceCommand internal-sftp
-  ChrootDirectory /home/${username}/
-Match all
-EOF
-mkdir -p /etc/ssh/authorized_keys/
-touch /etc/ssh/authorized_keys/exporter
-
-echo ">>> Add the ssh public keys for the exporter user to /etc/ssh/authorized_keys/exporter"
-
-# copy scripts
-cp resources/{,export_}backup.sh /root/
-chmod +x /root/backup.sh
-chmod +x /root/export_backup.sh
-
-echo ">>> You may want to set a telegram token in /root/.telegram.sh and adjust the chat_id in the scripts."
-echo "export TELEGRAM_TOKEN=" > /root/.borg.sh

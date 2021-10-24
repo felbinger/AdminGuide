@@ -33,25 +33,25 @@ Helper networks for specific communication (e.g. to the reverse proxy, the datab
     Remember the formular: $2^{32-x}-2$ where $x$ is your submask in cidr notation  
     (e.g. with $24$: $2^{32−24}−2=254$; or with $20$: $2^{32−20}−2=4094$ usable adresses)
 
-| Name       | Subnet           | Usage                                                      |
-| :--------- | :--------------- | :--------------------------------------------------------- |
-| Proxy      | 192.168.0.0/24   | Container communication to nginx reverse proxy.            |
-| Database   | 192.168.1.0/24   | Communication to databases (MariaDB, MongoDB, PostgreSQL). |
-| Monitoring | 192.168.2.0/24   | Communication to monitoring utilities (InfluxDB).          |
-|            |                  |                                                            |
-| Main       | 192.168.100.0/24 | Network for the Main Stack                                 |
+| Name       | Subnet          | Usage                                                      |
+| :--------- | :-------------- | :--------------------------------------------------------- |
+| Proxy      | 172.30.0.0/24   | Container communication to nginx reverse proxy.            |
+| Database   | 172.30.1.0/24   | Communication to databases (MariaDB, MongoDB, PostgreSQL). |
+| Monitoring | 172.30.2.0/24   | Communication to monitoring utilities (InfluxDB).          |
+|            |                 |                                                            |
+| Main       | 172.30.100.0/24 | Network for the Main Stack                                 |
 
 ```bash
 # create main stack
 name='main'
 mkdir -p /home/admin/{services,images}/${name}/
 sudo mkdir -p "/srv/${name}/"
-sudo docker network create --subnet 192.168.100.0/24 ${name}
+sudo docker network create --subnet 172.30.100.0/24 ${name}
 
 # create helper networks (we will need them in the next chapter)
-sudo docker network create --subnet 192.168.0.0/24 proxy
-sudo docker network create --subnet 192.168.1.0/24 database
-sudo docker network create --subnet 192.168.2.0/24 monitoring
+sudo docker network create --subnet 172.30.0.0/24 proxy
+sudo docker network create --subnet 172.30.1.0/24 database
+sudo docker network create --subnet 172.30.2.0/24 monitoring
 ```
 
 You can create as many stacks, as you need. The main stack contains the services that are relevant for the majority of the services (e.g. reverse proxy, static webserver for the reverse proxy, databases, admin panels (because they are related to the databases), monitoring). All other services will be outsourced to another stack. The following list containers just a few ideas, how you could name them:
@@ -106,13 +106,13 @@ ADM_HOME='/home/admin'
 ADM_USERS=('user')
 
 declare -A STACKS=(\
-  ["main"]="192.168.100.0/24"
+  ["main"]="172.30.100.0/24"
 )
 
 declare -A HELPER=(\
-  ["proxy"]="192.168.0.0/24" \
-  ["database"]="192.168.1.0/24" \
-  ["monitoring"]="192.168.2.0/24"
+  ["proxy"]="172.30.0.0/24" \
+  ["database"]="172.30.1.0/24" \
+  ["monitoring"]="172.30.2.0/24"
 )
 ### END of CONFIGURATION ###
 
