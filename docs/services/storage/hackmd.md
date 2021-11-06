@@ -14,7 +14,7 @@
       - "traefik.http.routers.r_hackmd.tls=true"
       - "traefik.http.routers.r_hackmd.tls.certresolver=myresolver"
     environment:
-      - CMD_DB_URL=mysql://hackmd:S3cr3T@mariadb/hackmd
+      - "CMD_DB_URL=mysql://hackmd:S3cr3T@mariadb/hackmd"
     networks:
       - proxy
       - database
