@@ -19,10 +19,8 @@ services:
       - matrix
 
   signald:
-    container_name: signald
-    #image: docker.io/finn/signald
-    image: mik/signald # my self builed image for arm
-    restart: unless-stopped
+    image: docker.io/signald/signald
+    restart: always
     volumes: 
       - "/srv/main/signald:/signald:z"
     networks:
