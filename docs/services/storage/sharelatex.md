@@ -98,3 +98,13 @@ docker-compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:
 ```
 
 Replace `my@email.address` with your email. You will now be given a password reset link with which you can initially set the password for the admin user.
+
+### Deleting an user
+
+User can be deleted via the following command, projects will also be deleted so be careful with this.
+
+```shell
+docker-compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:delete --email=my@email.address"
+```
+
+Change here the email `my@email.address` with the email of the user you want to delete.
