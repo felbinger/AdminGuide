@@ -35,7 +35,7 @@ You can basicly skip most of the installation section, but there are some except
 curl -fsSL https://raw.githubusercontent.com/felbinger/AdminGuide/master/postinstall.sh | sudo bash
 ```
 
-Checkout the <a href="/AdminGuide/installation/postinstall/">demo of the postinstall script</a>.
+Checkout the <a href="/installation/postinstall/">demo of the postinstall script</a>.
 
 </details>
 
