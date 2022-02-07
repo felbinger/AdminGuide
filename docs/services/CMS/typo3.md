@@ -4,7 +4,7 @@
 
 The current [dockerhub](https://hub.docker.com/r/martinhelmich/typo3/) repo contains various versions, all manually setup.
 
-For development purposes, a 10.4 [Dockerfile](https://github.com/Ziehnert/Typo3-docker) containing an automatic setup using sqlite.
+For development purposes, a 10.4 [Dockerfile](https://github.com/Ziehnert/Typo3-docker) exists, containing an automatic setup using sqlite.
 
 ### docker-compose.yaml
 
