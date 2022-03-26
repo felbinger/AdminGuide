@@ -21,10 +21,9 @@ Every service has its own directory in `/home/admin/<service>` and `/srv/<servic
 Services which are accessible over the web (https) have:
 
 * a nginx vhost in `/etc/nginx/sites-available/<domain>`,
-* a symbolic link to the vhost from `/etc/nginx/sites-enabled/<domain>`,
 * a tls certificate in `/etc/ssl/<domain>.crt`, and
 * a private key in `/etc/ssl/<domain>.key`
 
 If the service needs environment variables, you'll find them in `/home/admin/<service>/.<service_name>.env`. This helps
-prevent leaks, for example while sharing the screen. Be aware that these two service_names can differ
-(e.g. in the matrix service where the `service` is `matrix`, but the `service_name` is for example synapse).
+prevent leaks, for example while sharing the screen. Be aware that these two service identified can differ
+(e.g. in the matrix service where the `service` is `matrix`, but the `service_name` is for example `synapse`).

@@ -160,6 +160,3 @@ As I already mentioned in the introduction, you need to use the Cloudflare proxy
 This means you need to use the Cloudflare name servers, check out 
 [support.cloudflare.com](https://support.cloudflare.com/hc/en-us/articles/205195708-Changing-your-domain-nameservers-to-Cloudflare) 
 for a guide on how to do this.
-
-![DNS-A](img/dns/dns-a.jpg){: loading=lazy }
-![DNS-CAA](img/dns/dns-caa.jpg){: loading=lazy }
