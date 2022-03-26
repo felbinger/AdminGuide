@@ -13,6 +13,7 @@ wget https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.p
 ```
 
 If we want to add a service we have to follow this procedure:
+
 1. Host the service, don't forget to adjust the port number.
 2. Add a new ipv6 address for this service.
 3. Configure the DNS (AAAA record).
@@ -23,6 +24,7 @@ If we want to add a service we have to follow this procedure:
 ## Example
 
 Let's do this for the service [hackmd](services/hackmd.md):
+
 1. Create the service directory:
    ```shell
    mkdir -p /home/admin/hackmd
@@ -72,14 +74,17 @@ Let's do this for the service [hackmd](services/hackmd.md):
        # hackmd
        post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/128 dev ens18    # <---- this line
    ```
+   
 3. Now open the Cloudflare dashboard and go to the domain you would like to use to access your service.
    Go to DNS and add the `AAAA` dns record for the subdomain you'd like:
    ![Image of dns record creation](img/nginx/create_dns_record.png)
+
 4. Next go to SSL/TLS -> Origin Server and create a new certificate for the subdomain:
    ![Image of certificate creation](img/nginx/create_certificate.png)
    ![Image 2 of certificate creation](img/nginx/create_certificate2.png)
    Make sure to save the resulting origin certificate in `/etc/ssl/hackmd.admin-guide.com.crt` 
    and the private key in `/etc/ssl/hackmd.admin-guide.com.key`.
+
 5. The vhost configuration is most of the time the same:  
    Don't forget to adjust the port number in the proxy_pass to the service you created.  
    ```nginx
@@ -122,6 +127,7 @@ Let's do this for the service [hackmd](services/hackmd.md):
    ```shell
    ln -s /etc/nginx/sites-available/hackmd.admin-guide.com /etc/nginx/sites-enabled/
    ```
+
 6. Lastly we test the nginx configuration and apply it, if the test shows no errors:
    ```shell
    sudo nginx -t
