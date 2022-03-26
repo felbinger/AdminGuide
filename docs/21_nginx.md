@@ -20,6 +20,8 @@ If we want to add a service we have to follow this procedure:
 5. Create and enable the nginx vhost for the domain.
 6. Test the nginx configuration and reload the nginx daemon.
 
+## Example
+
 Let's do this for the service [hackmd](services/hackmd.md):
 1. Create the service directory:
    ```shell
