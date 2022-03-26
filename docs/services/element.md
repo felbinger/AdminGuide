@@ -6,7 +6,8 @@
 ## Cloudflare Pages
 
 Fork [github.com/vector-im/element-web](https://github.com/vector-im/element-web) and change the `config.json` according
-to your matrix server details.
+to your matrix server details and add a file called `.nvmrc` with the content of `16`. This file tells cloudflare pages
+witch version of NodeJS should be used.
 
 If you want to add a `_redirects` file to configure http redirects, you have to add the redirects file in the copy file
 section in the `scripts/copy-res.js` file.
