@@ -60,7 +60,7 @@
       - '2305:2305/udp'    # old Voice over Network
       - '2306:2306/udp'    # BattleEye
     volumes:
-      - '/srv/games/arma3:/home/lgsm'
+      - '/srv/arma3:/home/lgsm'
   ```
 
 * Start the service and execute a shell:

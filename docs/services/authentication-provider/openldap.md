@@ -20,10 +20,8 @@ A friend of mine, who's also supporting me with the admin guide, has build a cus
       - "LDAP_DOMAIN=domain.de"
       - "LDAP_ADMIN_PASSWORD=S3cr3T"
     volumes:
-      - "/srv/main/ldap/data:/var/lib/ldap"
-      - "/srv/main/ldap/config:/etc/ldap/slapd.d"
-    networks:
-      - database
+      - "/srv/ldap/data:/var/lib/ldap"
+      - "/srv/ldap/config:/etc/ldap/slapd.d"
 
   ldapadmin:
     image: marcelcoding/phpldapadmin
@@ -31,16 +29,8 @@ A friend of mine, who's also supporting me with the admin guide, has build a cus
     environment:
       - 'LDAP_HOST=ldap'
       - 'LDAP_BIND_DN=cn=admin,dc=domain,dc=de'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_ldapadmin.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_ldapadmin.rule=Host(`ldapadmin.domain.de`)"
-      - "traefik.http.routers.r_ldapadmin.entrypoints=websecure"
-      - "traefik.http.routers.r_ldapadmin.tls.certresolver=myresolver"
-    networks:
-      - database
-      - proxy
-
+    ports:
+      - "[::1]:8000:80"
 ```
 
 ## Custom Schemas

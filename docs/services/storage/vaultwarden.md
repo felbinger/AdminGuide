@@ -4,8 +4,11 @@
   vaultwarden:
     image: vaultwarden/server:alpine
     restart: always
-    #environment:
-    #  - "SIGNUPS_ALLOWED=false"
+    environment:
+      - "DOMAIN=https://vault.secshell.net"
+      - "SIGNUPS_ALLOWED=false"
+      - "INVITATIONS_ALLOWED=false"
+      - "SHOW_PASSWORD_HINT=false"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_vaultwarden.loadbalancer.server.port=80"

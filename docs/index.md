@@ -1,43 +1,32 @@
 # Home
 
-This Admin Guide describes how I setup my servers using docker.
+!!! warning ""
+    This Admin Guide is being rewritten at the moment!
 
-## Installation
+This document describes my current preferred method to make a virtual machine with web applications accessible behind the Cloudflare proxy.
 
-I created a script which can be executed to setup the server.  
-I suggest you to get used to my structure (e.g. the stack logic), otherwise you might run into problems later on.  
-If you never used this guide, you should [perform the installation manually](./installation/) to understand the structure.
+Basically, I only make web-based applications available via IPv6. To ensure IPv4 reachability, and to be able to switch a web application firewall or page rules if necessary, the Cloudflare proxy is used.
 
-<details>
-  <summary>Post Installation Script</summary>
+Cloudflare connects to the web-based application on my server via IPv6. Using Origin Server Certificates, the connection is encrypted.
 
-<br>
-You can basicly skip most of the installation section, but there are some exceptions.
+To ensure that the WAF / Page Rules cannot be bypassed, my web server expects a mTLS client certificate from the Cloudflare Origin Pull CA, the setup at Cloudflare is described here.
 
-<ul>
-  <li>
-  First you should create all user accounts, and ensure that everyone is able to authenticate using public key authentication.
-  </li>
-  <li>
-  You can add the users in the configuration section of the `postinstall.sh` to give them the groups, aliases, ... After you are sure that you can connect to the server you should secure your ssh server (e.g. disallow authentication using passwords, root login, ...).  
-  </li>
-
-  <li>
-  If you want to change your hostname to something cooler than the name your hoster assigned you (this is not required, I do it to improve the identification process of the server, that I'm connected to).  
-  </li>
-
-  <li>
-  You also need to setup your dns records, consider to change the name servers to cloudflare if you have trouble with the dns challenge for wildcard certificate later on.
-  </li>
-</ul>
+If more than one web based application are installed on a server, I assign myself a separate IPv6 address for each service. This makes blocking a single service in the firewall as well as debugging easier. Under Debian the network configuration in the file /etc/network/interfaces is extended as follows:
 
 ```
-curl -fsSL https://raw.githubusercontent.com/felbinger/AdminGuide/master/postinstall.sh | sudo bash
+allow-hotplug eth0
+iface eth0 inet dhcp
+
+iface eth0 inet6 static
+    # service 1 
+    address 2001:db8::fdfd:dead:beef:affe/64
+    gateway 2001:db8::1
+    # service 2
+    post-up ip -6 a add 2001:db8::fefe:dead:beef:affe/64 dev ens18    # <---- this line
+    # service 3
+    post-up ip -6 a add 2001:db8::ffff:dead:beef:affe/64 dev ens18    # <---- this line
 ```
 
-Checkout the <a href="/installation/postinstall/">demo of the postinstall script</a>.
-
-</details>
 
 ## Create your Services
 

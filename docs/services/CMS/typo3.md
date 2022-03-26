@@ -6,24 +6,6 @@ The current [dockerhub](https://hub.docker.com/r/martinhelmich/typo3/) repo cont
 
 For development purposes, a 10.4 [Dockerfile](https://github.com/Ziehnert/Typo3-docker) exists, containing an automatic setup using sqlite.
 
-### docker-compose.yaml
-
-```yaml
-  typo3:
-    build: martinhelmich/typo3:$VERSION
-    restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_t3.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_t3.rule=Host(`typo3.domain.de`)"
-      - "traefik.http.routers.r_t3.entrypoints=websecure"
-      - "traefik.http.routers.r_t3.tls=true"
-      - "traefik.http.routers.r_t3.tls.certresolver=myresolver"
-    networks:
-      - proxy
-      - database
-```
-
 ### Typo3 through a reverse proxy
 
 After the installtion, you won't be able to access the backend unless you specify the proxy in a new config file.
@@ -32,15 +14,10 @@ After the installtion, you won't be able to access the backend unless you specif
   typo3:
     build: martinhelmich/typo3:$VERSION
     restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_t3.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_t3.rule=Host(`typo3.domain.de`)"
-      - "traefik.http.routers.r_t3.entrypoints=websecure"
-      - "traefik.http.routers.r_t3.tls=true"
-      - "traefik.http.routers.r_t3.tls.certresolver=myresolver"
+    ports:
+      - "[::1]:8000:80"
     volumes:
-      - "/srv/main/typo3/conf:/var/www/html/typo3conf/"
+      - "/srv/typo3/conf:/var/www/html/typo3conf/"
     networks:
       - proxy
       - database

@@ -6,14 +6,10 @@ ShareLaTeX requires a redis and a mongodb instance!
     # use latest tag for setup, use your own image (tag: with-texlive-full) after installation 
     image: sharelatex/sharelatex:latest
     restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_sharelatex.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_sharelatex.rule=Host(`paper.domain.de`)"
-      - "traefik.http.routers.r_sharelatex.entrypoints=websecure"
-      - "traefik.http.routers.r_sharelatex.tls.certresolver=myresolver"
+    ports:
+      - "[::1]:8000:80"
     volumes:
-      - /srv/storage/sharelatex/data:/var/lib/sharelatex
+      - /srv/sharelatex/data:/var/lib/sharelatex
     environment:
       - "SHARELATEX_APP_NAME=ShareLaTeX"
       - "SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex"
@@ -37,32 +33,25 @@ ShareLaTeX requires a redis and a mongodb instance!
       #- "SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true"
       #- "SHARELATEX_EMAIL_SMTP_IGNORE_TLS=false"
       #- "SHARELATEX_CUSTOM_EMAIL_FOOTER=This system is run by department x"
-    networks:
-      - database
-      - proxy
 
   # requirements for ShareLaTeX
   mongo:
     image: mongo
     restart: always
     volumes:
-      - "/srv/storage/sharelatex/mongo:/data/db"
+      - "/srv/sharelatex/mongo:/data/db"
     healthcheck:
       test: echo 'db.stats().ok' | mongo localhost:27017/test --quiet
       interval: 10s
       timeout: 10s
       retries: 5
-    networks:
-      - database
 
   # version must be locked to 5, otherwise sharelatex wont work
   redis:
     image: redis:5
     restart: always
     volumes:
-      - "/srv/storage/sharelatex/redis:/data"
-    networks:
-      - database
+      - "/srv/sharelatex/redis:/data"
 ```
 
 ### Installation of texlive-full

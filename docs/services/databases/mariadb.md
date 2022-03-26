@@ -14,9 +14,7 @@ You can generate a database and/or a user account which has full access on this 
       #- "MYSQL_USER=app"
       #- "MYSQL_PASSWORD=S3cr3T"
     volumes:
-      - "/srv/main/mariadb/data:/var/lib/mysql"
-    networks:
-      - database
+      - "/srv/mariadb/data:/var/lib/mysql"
 
   phpmyadmin:
     image: phpmyadmin
@@ -27,14 +25,6 @@ You can generate a database and/or a user account which has full access on this 
       - "PMA_ABSOLUTE_URI=https://phpmyadmin.domain.tld/"
       - "UPLOAD_LIMIT=512M"
       - "HIDE_PHP_VERSION=true"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_phpmyadmin.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_phpmyadmin.rule=Host(`phpmyadmin.domain.de`)"
-      - "traefik.http.routers.r_phpmyadmin.entrypoints=websecure"
-      - "traefik.http.routers.r_phpmyadmin.tls=true"
-      - "traefik.http.routers.r_phpmyadmin.tls.certresolver=myresolver"
-    networks:
-      - proxy
-      - database
+    ports:
+      - "[::1]:8000:80"
 ```

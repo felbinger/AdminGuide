@@ -9,10 +9,8 @@ You can generate a database by setting the commented out environment variables.
     restart: always
     env_file: .postgres.env
     volumes:
-      - "/srv/main/postgres/transfer:/transfer"
-      - "/srv/main/postgres/data:/var/lib/postgresql/data"
-    networks:
-      - database
+      - "/srv/postgres/transfer:/transfer"
+      - "/srv/postgres/data:/var/lib/postgresql/data"
 ```
 
 `.postgres.env`

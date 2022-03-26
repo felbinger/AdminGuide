@@ -1,30 +1,16 @@
 # Gitea
 
-1. Add the following to your `docker-compose.yml`
-2. Start the service (`docker-compose up -d`)
-3. Go to the configured domain to install gitea (e.g. configure db setup)
-
 ```yaml
   gitea:
     image: gitea/gitea:latest         
     restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_gitea.loadbalancer.server.port=3000"
-      - "traefik.http.routers.r_gitea.rule=Host(`git.domain.de`)"
-      - "traefik.http.routers.r_gitea.entrypoints=websecure"
-      - "traefik.http.routers.r_gitea.tls=true"
-      - "traefik.http.routers.r_gitea.tls.certresolver=myresolver"
+    ports:
+      - "[::1]:8000:3000"
+      - "22222:22"
     volumes:
-      - "/srv/storage/gitea:/data"
+      - "/srv/gitea:/data"
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-    ports:
-      - "22222:22"
-    networks:
-      - default
-      - proxy
-      - database
 ```
 
 ## OpenID/KeyCloak

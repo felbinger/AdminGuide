@@ -10,8 +10,6 @@
       - "MONGO_INITDB_ROOT_PASSWORD=S3cr3T"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/srv/main/mongodb/transfer:/data/transfer"
-      - "/srv/main/mongodb/data:/data/db"
-    networks:
-      - database
+      - "/srv/mongodb/transfer:/data/transfer"
+      - "/srv/mongodb/data:/data/db"
 ```

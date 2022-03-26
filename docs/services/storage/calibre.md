@@ -1,6 +1,5 @@
 # Calibre
 
-checkout [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre)
 ```yaml
   calibre:
     image: linuxserver/calibre-web
@@ -11,16 +10,9 @@ checkout [linuxserver/calibre](https://hub.docker.com/r/linuxserver/calibre)
       - "SET_CONTAINER_TIMEZONE=true"
       - "CONTAINER_TIMEZONE=Europe/Berlin"
       - "USE_CONFIG_DIR=true"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_calibre.loadbalancer.server.port=8083"
-      - "traefik.http.routers.r_calibre.rule=Host(`calibre.domain.de`)"
-      - "traefik.http.routers.r_calibre.entrypoints=websecure"
-      - "traefik.http.routers.r_calibre.tls.certresolver=myresolver"
+    ports:
+      - "[::1]:8000:8083"
     volumes:
-      - "/srv/storage/calibre/config:/config"
-      - "/srv/storage/calibre/books:/books"
-    networks:
-      - proxy
-      - database
+      - "/srv/calibre/config:/config"
+      - "/srv/calibre/books:/books"
 ```

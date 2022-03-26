@@ -2,21 +2,23 @@
 
 First add this configuration to your `docker-compose.yml`
 ```yaml
-  matrix:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - "POSTGRES_PASSWORD=S3cr3T"
+      - "POSTGRES_DB=synapse"
+      - "POSTGRES_INITDB_ARGS=-E UTF8 --lc-collate=C --lc-ctype=C"
+    volumes:
+      - "/srv/synapse/postgres:/var/lib/postgresql/data"
+
+  synapse:
     image: matrixdotorg/synapse
     restart: always
     volumes:
-      - "/srv/comms/synapse:/data"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_homepage.loadbalancer.server.port=8008"
-      - "traefik.http.routers.r_matrix.rule=Host(`matrix.domain.de`)"
-      - "traefik.http.routers.r_matrix.entrypoints=websecure"
-      - "traefik.http.routers.r_matrix.tls=true"
-      - "traefik.http.routers.r_matrix.tls.certresolver=myresolver"
-    networks:
-      - proxy
-      - database
+      - "/srv/synapse:/data"
+    ports:
+      - "[::1]:8000:8008"
 ```
 Before starting this container you need to generate a configuration file. This command generates a `homeserver.yaml` configuartion file under /srv/comms/synapse
 ```yaml
@@ -43,25 +45,7 @@ docker-compose exec matrix register_new_matrix_user -u USERNAME -p PASSWORD -a -
 ```
 
 ### Using Postgres
-
-For using postgresql append this configuration to your docker-compose
-
-``` yaml
-  postgres:
-    image: postgres
-    restart: always
-    environment:
-      - "POSTGRES_PASSWORD=S3cr3T"
-      - "POSTGRES_DB=synapse"
-      - "POSTGRES_INITDB_ARGS=-E UTF8 --lc-collate=C --lc-ctype=C"
-    volumes:
-      - "/srv/main/postgres/transfer:/transfer"
-      - "/srv/main/postgres/data:/var/lib/postgresql/data"
-    networks:
-      - database
-```
-
-Now you have to edit the `homeserver.yaml`. Go to the Database section and uncomment it and add your postgresql settings. 
+Edit the `homeserver.yaml`: Go to the Database section and uncomment it and add your postgresql settings. 
 
 ``` yaml
 database:

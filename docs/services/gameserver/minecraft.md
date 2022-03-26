@@ -7,7 +7,7 @@
     ports:
       - '25565:25565'
     volumes:
-      - '/srv/games/minecraft:/data'
+      - '/srv/minecraft:/data'
     environment:
       - 'TYPE=SPIGOT'
       - 'SPIGOT_DOWNLOAD_URL=https://cdn.getbukkit.org/spigot/spigot-1.16.3.jar'

@@ -19,11 +19,8 @@ Take a look at this Example:
       - APP_URL=https://bookstack.example.com
     volumes:
       - 'YOURCONFIGPATH:/config'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.example.com`)"
-      - "traefik.http.routers.r_bookstack.entrypoints=websecure"
+    ports:
+      - "[::1]:8000:80"
 ```
 
 This should work pretty much out of the Box. Of course, you have to set up a Database first.

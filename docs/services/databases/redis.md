@@ -7,7 +7,5 @@
     restart: always
     command: "redis-server --appendonly yes"
     volumes:
-      - "/srv/main/redis:/data"
-    networks:
-      - database
+      - "/srv/redis:/data"
 ```
