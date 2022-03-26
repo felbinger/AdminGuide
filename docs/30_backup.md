@@ -30,6 +30,7 @@ PATHS=(
   "/srv/"
   "/home/admin/"
   "/root/"
+  "/etc/nginx/sites-available/"
   "/etc/ssh/sshd_config"
   "/etc/network/interfaces"
 )
