@@ -19,4 +19,4 @@ Now you can create a new page in the Cloudflare Pages webinterface with the foll
 | Build Command          | `yarn build` |
 | Build output directory | `webapp`     |
 
-![CF Pages Build Properties](../img/services/element_cf_pages_1.jpg){: loading=lazy }
+![CF Pages Build Properties](../../img/services/element_cf_pages_1.jpg){: loading=lazy }

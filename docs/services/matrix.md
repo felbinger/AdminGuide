@@ -114,7 +114,7 @@ PGPASSWORD=S3cr3T \
 
 !!! info ""
 	Even though you can use a srv dns record to do this, we suggest taking a look 
-	at [hosting your .well-known in cloudflare workers](well-known.md). 
+	at [hosting your .well-known in cloudflare workers](cloudflare/well-known.md). 
 
 ```
 ;; SRV Records

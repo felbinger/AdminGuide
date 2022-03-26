@@ -7,7 +7,7 @@
 
 * [Cryptic Status Page](https://status.cryptic-game.net)
 
-[![Status Page Example](../img/services/status_example_1.png){: loading=lazy }](https://status.cryptic-game.net)
+[![Status Page Example](../../img/services/status_example_1.png){: loading=lazy }](https://status.cryptic-game.net)
 
 ## Installation
 
@@ -38,4 +38,4 @@
 | Build Command | `npm run build:ci -- --output-path=./dist |
 | Build output directory | `dist|
 
-![CF Pages Build Properties](../img/services/status_cf_pages_1.png){: loading=lazy }
+![CF Pages Build Properties](../../img/services/status_cf_pages_1.png){: loading=lazy }
