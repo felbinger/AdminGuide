@@ -3,38 +3,47 @@
 !!! warning ""
 	This Admin Guide is being rewritten at the moment!
 
+```yaml
+version: '3.9'
 
-
-### Check out the [Official Guide](https://hub.docker.com/r/linuxserver/bookstack)
-
-Setting up Bookstack
-====================
-
-Take a look at this Example:
-
-```
+services:
+  mariadb:
+    image: mariadb
+    restart: always
+    env_file: .mariadb.env
+    volumes:
+      - "/srv/teamspeak3/mariadb:/var/lib/mysql"
+	
   bookstack:
     image: linuxserver/bookstack
     restart: always
-    environment:
-      - DB_HOST=YOURHOST
-      - DB_USER=YOURUSER
-      - DB_PASS=YOURPW
-      - DB_DATABASE=bookstack
-      - APP_URL=https://bookstack.example.com
+    env_file: .bookstack.env
     volumes:
-      - 'YOURCONFIGPATH:/config'
+      - '/srv/bookstack:/config'
     ports:
       - "[::1]:8000:80"
 ```
 
-This should work pretty much out of the Box. Of course, you have to set up a Database first.
+```shell
+# .mariadb.env
+MYSQL_RANDOM_ROOT_PASSWORD=yes
+MYSQL_DATABASE=bookstack
+MYSQL_USER=bookstack
+MYSQL_PASSWORD=S3cr3T
+```
 
-You should now be able to log in under the given Domain. The default Credentials are `admin@admin.com`
-as Username and `password` as Password.
+```shell
+# .bookstack.env
+DB_HOST=mariadb
+DB_USER=bookstack
+DB_PASS=S3cr3T
+DB_DATABASE=bookstack
+APP_URL=https://bookstack.example.com
+```
 
-Setting up SAML2 Authentication
-===============================
+You should now be able to log in under the given domain. The default credentials are `admin@admin.com`:`password`.
+
+## Setting up SAML2 Authentication
 
 Now here's how to set up SAML2 Authentication with a *Keycloak* Server.
 
@@ -43,45 +52,43 @@ At first, we have to configure Keycloak properly.
 Create a new Client. Client ID is `https://bookstack.example.com/saml2/metadata`, Client Protocol
 is `saml`. Now edit the settings of your newly created Client as follows:
 
-Setting | Value
---------|-------
-Client Signature Required | OFF
-Root URL | `https://bookstack.example.com/`
-Valid Redirect URIs | `https://bookstack.example.com/*`
-Base URL | `https://bookstack.example.com/`
+| Setting                   | Value                             |
+|---------------------------|-----------------------------------|
+| Client Signature Required | OFF                               |
+| Root URL                  | `https://bookstack.example.com/`  |
+| Valid Redirect URIs       | `https://bookstack.example.com/*` |
+| Base URL                  | `https://bookstack.example.com/`  |
 
 Fine Grain SAML Endpoint Configuration:
 
-Setting | Value
---------|-------
-Assertion Consumer Service POST Binding URL | `https://bookstack.example.com/saml2/acs`
-Logout Service Redirect Binding URL | `https://bookstack.example.com/saml2/sls`
+| Setting                                     | Value                                     |
+|---------------------------------------------|-------------------------------------------|
+| Assertion Consumer Service POST Binding URL | `https://bookstack.example.com/saml2/acs` |
+| Logout Service Redirect Binding URL         | `https://bookstack.example.com/saml2/sls` |
 
-<br /> <br />
 
 Save this. Now go to the "Mappers"-Tab. Create a new Mapper:
 
-Setting | Value
---------|------
-Name | username
-Mapper Type | user property
-Property | username
-Friendly Name | Username
-SAML Attribute Name | user.username
-SAML Attribute NameFormat | basic
+| Setting                   | Value         |
+|---------------------------|---------------|
+| Name                      | username      |
+| Mapper Type               | user property |
+| Property                  | username      |
+| Friendly Name             | Username      |
+| SAML Attribute Name       | user.username |
+| SAML Attribute NameFormat | basic         |
 
 
 Save this. Create another Mapper:
 
-Setting | Value
---------|-------
-Name | email
-Mapper Type | user property
-Property | email
-Friendly Name | User Email
-SAML Attribute Name | user.email
-SAML Attribute NameFormat | basic
-
+| Setting                   | Value         |
+|---------------------------|---------------|
+| Name                      | email         |
+| Mapper Type               | user property |
+| Property                  | email         |
+| Friendly Name             | User Email    |
+| SAML Attribute Name       | user.email    |
+| SAML Attribute NameFormat | basic         |
 
 Also hit save on this one. Now we are almost done with the Keycloak Config. There is just one
 more Setting we need to change, and that is the following:

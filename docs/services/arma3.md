@@ -1,11 +1,7 @@
 # Arma 3 Server
 
-!!! warning ""
-	This Admin Guide is being rewritten at the moment!
-
-
 ### Customize your image
-* Create a custom `entrypoint.sh`, to start the arma 3 server automaticly:
+* Create a custom `entrypoint.sh`, to start the Arma 3 server automatically:
   ```shell
   #!/bin/bash
 
@@ -91,11 +87,8 @@ I suggest you create a new account for this:
   ./arma3server install
   ```
 
-  ![first picture of the installation process](../img/services/arma3_install_1.png){: loading=lazy }
-  ![second picture of the installation process](../img/services/arma3_install_2.png){: loading=lazy }
 
-
-### Importent configuration files
+### Important configuration files
 ```shell
 # things that need to be done to start the server (e. g. mods)
 /srv/games/arma3/lgsm/config-lgsm/arma3server/arma3server.cfg

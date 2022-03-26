@@ -27,3 +27,10 @@ The http server is then listening on port 8000.
   ```
 * If possible the service should use either mariadb or postgresql.
   If it makes sense, other databases (e.g. sqlite) are also quiet fine.
+* YAML arrays should be quoted, regardless which data is stored:
+  ```yaml
+  volumes:
+    - "/srv/service_name/data:/data"
+  ports:
+    - "[::1]:8000:1234"
+  ```

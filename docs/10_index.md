@@ -9,7 +9,7 @@ Basically, I only make web-based applications available via IPv6. To ensure IPv4
 a web application firewall or page rules if necessary, the Cloudflare proxy is used.
 
 To ensure that the WAF / Page Rules cannot be bypassed, my web server expects a mTLS client certificate from the
-Cloudflare Origin Pull CA, the [setup at Cloudflare is described here](https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull/set-up).
+Cloudflare Origin Pull CA, the setup at Cloudflare is described [here](https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull/set-up).
 
 All https requests from cloudflare go to a `nginx` which acts as a reverse proxy on the host.
 From there the requests will be passed to the docker container which is responsible for the service.

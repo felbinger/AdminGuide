@@ -1,5 +1,9 @@
 # Matrix
 
+!!! warning ""
+	Rewrite required!
+
+
 ```yaml
 version: '3.9'
 
@@ -130,18 +134,17 @@ If you have an Instance of *Keycloak* running, you can use it as an external Aut
 At first, we have to create the Client in Keycloak. Create a new Client. Use `matrix.domain.de` as Client ID
 and `openid` as Protocol. Edit your newly created Client as follows:
 
-Setting | Value
---------|-------
-Access Type | confidential
-Direct Access Grants Enabled | OFF
-Root URL | `https://matrix.domain.de`
-Valid Redirect URIs | `https://matrix.domain.de` <br /> `http://matrix.domain.de`
-Base URL | `https://matrix.domain.de`
-Web Origins | +
+| Setting                      | Value                                                  |
+|------------------------------|--------------------------------------------------------|
+| Access Type                  | confidential                                           |
+| Direct Access Grants Enabled | OFF                                                    |
+| Root URL                     | `https://matrix.domain.de`                             |
+| Valid Redirect URIs          | `https://matrix.domain.de`   `http://matrix.domain.de` |
+| Base URL                     | `https://matrix.domain.de`                             |
+| Web Origins                  | +                                                      |
 
 Now go to the "Credentials" Tab and save the Client Secret; we will need it later.
 
-<br />
 
 Now we have to edit the `homeserver.yaml` file. I suggest you search for the Values because the file is very long.
 Uncomment / add and edit the following lines:

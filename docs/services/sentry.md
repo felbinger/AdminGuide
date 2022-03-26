@@ -1,5 +1,8 @@
 # Sentry
 
+!!! warning ""
+	Rewrite required!
+
 Setting up Sentry
 =================
 
@@ -34,43 +37,42 @@ Protocol is `saml`.
 Now edit the Client. Leave all Settings as they are, except for the following:
 
 
-Setting | Value
---------|--------
-Client Signature required | OFF
-Valid redirect URIs | `https://sentry.example.com/*`
-Base URL | `https://sentry.example.com`
+| Setting                   | Value                          |
+|---------------------------|--------------------------------|
+| Client Signature required | OFF                            |
+| Valid redirect URIs       | `https://sentry.example.com/*` |
+| Base URL                  | `https://sentry.example.com`   |
 
 
 "Fine Grain SAML Endpoint Configuration":
 
-Setting | Value
---------|------
-Assertion Consumer Service POST Binding URL | `https://sentry.example.com/saml/acs/sentry/`
-Logout Service Redirect Binding URL | `https://sentry.example.com/saml/sls/sentry/`
+| Setting                                     | Value                                         |
+|---------------------------------------------|-----------------------------------------------|
+| Assertion Consumer Service POST Binding URL | `https://sentry.example.com/saml/acs/sentry/` |
+| Logout Service Redirect Binding URL         | `https://sentry.example.com/saml/sls/sentry/` |
 
-<br /> <br />
 Save this. Now go to the "Mappers"-Tab. Create a new Mapper:
 
-Setting | Value
---------|------
-Name | username
-Mapper Type | user property
-Property | username
-Friendly Name | Username
-SAML Attribute Name | user.username
-SAML Attribute NameFormat | basic
+| Setting                   | Value         |
+|---------------------------|---------------|
+| Name                      | username      |
+| Mapper Type               | user property |
+| Property                  | username      |
+| Friendly Name             | Username      |
+| SAML Attribute Name       | user.username |
+| SAML Attribute NameFormat | basic         |
 
 
 Save this. Create another Mapper:
 
-Setting | Value
---------|-------
-Name | email
-Mapper Type | user property
-Property | email
-Friendly Name | User Email
-SAML Attribute Name | user.email
-SAML Attribute NameFormat | basic
+| Setting                   | Value         |
+|---------------------------|---------------|
+| Name                      | email         |
+| Mapper Type               | user property |
+| Property                  | email         |
+| Friendly Name             | User Email    |
+| SAML Attribute Name       | user.email    |
+| SAML Attribute NameFormat | basic         |
 
 
 Also hit save on this one. Now we are almost done with the Keycloak Config. There is just one

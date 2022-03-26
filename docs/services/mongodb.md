@@ -1,20 +1,21 @@
 # MongoDB
 
-!!! warning ""
-	This Admin Guide is being rewritten at the moment!
-
-
-
-[mongodb documentation](https://hub.docker.com/_/mongo)
 ```yaml
+version: '3.9'
+services:
   mongodb:
     image: mongo
     restart: always
-    environment:
-      - "MONGO_INITDB_ROOT_USERNAME=root"
-      - "MONGO_INITDB_ROOT_PASSWORD=S3cr3T"
+    env_file: .mongodb.env
+    ports:
+      - "[::1]:27017:27017"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "/srv/mongodb/transfer:/data/transfer"
       - "/srv/mongodb/data:/data/db"
+```
+
+```shell
+# .mongodb.env
+MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=S3cr3T
 ```

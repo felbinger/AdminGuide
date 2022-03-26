@@ -1,31 +1,23 @@
 # Prometheus
 
-!!! warning ""
-	This Admin Guide is being rewritten at the moment!
+A lot of applications ([checkout the list of applications](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)) 
+have an endpoint which can be used to query metrics.  
 
-
-
-A lot of applications ([checkout the list of applications](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)) have an endpoint which can be used to query metrics.  
-
-If they aren't specificly made for prometheus you can [write an exporter](https://prometheus.io/docs/instrumenting/writing_exporters/)
+If they aren't specific made for prometheus you can [write an exporter](https://prometheus.io/docs/instrumenting/writing_exporters/)
 to make them prometheus compatible (e.g. for [nextcloud](https://github.com/xperimental/nextcloud-exporter),
 [jitsi](https://github.com/an2ic3/jitsi2prometheus)).
 
 Simply add the prometheus service definition to the `docker-compose.yml`, in which the monitoring services are defined.
 ```yaml
+version: '3.9'
+
+services:
   prometheus:
     image: prom/prometheus
     restart: always
     volumes:
-      - '/srv/main/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
-      - 'prometheus-data:/prometheus'
-    networks:
-      - monitoring
-
-# ...
-
-volumes:
-  prometheus-data:
+      - '/srv/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
+      - '/srv/prometheus/data:/prometheus'
 ```
 
 The `prometheus.yml` contain a list of metrics endpoints, that should be queried:

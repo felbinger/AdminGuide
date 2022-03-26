@@ -1,11 +1,11 @@
 # OpenVPN
 
 !!! warning ""
-	This Admin Guide is being rewritten at the moment!
-
-
+	Rewrite required!
 
 ```yaml
+version: '3.9'
+
 services:
   openvpn:
     image: kylemanna/openvpn
@@ -15,7 +15,7 @@ services:
     cap_add:
      - NET_ADMIN   
     volumes:
-     - /srv/openvpn/conf:/etc/openvpn
+     - /srv/openvpn:/etc/openvpn
 ```
 
 First you need to initialize the configuration files and certificates. 

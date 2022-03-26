@@ -1,10 +1,5 @@
 # Jupiter
 
-!!! warning ""
-	This Admin Guide is being rewritten at the moment!
-
-
-
 ```yaml
 version: '3.9'
 

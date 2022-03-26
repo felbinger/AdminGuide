@@ -3,16 +3,10 @@
 !!! warning ""
 	This Admin Guide is being rewritten at the moment!
 
+```yaml
+version: '3.9'
 
-
-### Check out the [Official Guide](https://docs.gitlab.com/omnibus/docker/).
-
-Setting up Gitlab
-==================
-
-Setting up Gitlab with Docker-Compose isn't really that hard. Look at this Example:
-
-```
+services:
   gitlab:
     image: 'gitlab/gitlab-ce'
     restart: always
