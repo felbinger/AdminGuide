@@ -17,3 +17,13 @@ The http server is then listening on port 8000.
 <br>
 <br>
 **Please review every script from the Internet before executing it!**
+
+### Contribution Guidelines
+* Web Services are exposed to `[::1]:8000`
+* Environment Variables are in an env_file (and not in the `docker-compose.yml`) with the following format:
+  ```shell
+  # .servicename.env
+  KEY=value
+  ```
+* If possible the service should use either mariadb or postgresql.
+  If it makes sense, other databases (e.g. sqlite) are also quiet fine.
