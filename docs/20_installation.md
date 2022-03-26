@@ -78,7 +78,7 @@ If you don't already have an SSH Key it is recommended to create one:
     ```
 === "other"
     ```bash
-    # a list off all types, witch are supported by your system: (second line)
+    # a list off all types, which are supported by your system: (second line)
     ssh-keygen -h
 
     ssh-keygen -t <type>

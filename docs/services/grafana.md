@@ -1,8 +1,5 @@
 # Grafana
 
-!!! warning ""
-	This Admin Guide is being rewritten at the moment!
-
 ```yaml
 version: '3.9'
 
@@ -22,26 +19,22 @@ Unfortunately you need to copy some file out of the container before you can use
 ```shell
 sudo mkdir -p /srv/main/grafana
 
-# start the container without volumes
 sudo docker-compose up -d grafana
 
-sudo docker cp main_grafana_1:/var/lib/grafana \
+sudo docker cp grafana-grafana-1:/var/lib/grafana \
   /srv/main/grafana/lib
 
-sudo docker cp main_grafana_1:/etc/grafana \
+sudo docker cp grafana-grafana-1:/etc/grafana \
   /srv/main/grafana/etc
 
-# adjust permissions
 sudo chown -R 472:472 /srv/main/grafana/
-
-sudo docker-compose rm -fs grafana
 ```
 
 Next you can remove the comments in front of the volumes and start up the container.  
-The default login for grafana is `admin`:`admin`.
+The default credentials are `admin`:`admin`.
 
-### Datasources and Dashboards
-Finally you can add datasources and create dashboards:
+### Data sources and Dashboards
+Finally, you can add data sources and create dashboards:
 
 !!! info ""
     Checkout the [officially supported datasources](https://grafana.com/docs/grafana/latest/datasources/#supported-data-sources)
@@ -106,5 +99,5 @@ org_role = "Viewer"
 
 All members of `cn=grafana,ou=groups,dc=domain,dc=de` get the Viewer role, members that are also in `cn=editor,cn=grafana,ou=groups,dc=domain,dc=de` get the Editor role...
 
-## OpenID/KeyCloak
+## OpenID / KeyCloak
 Checkout [janikvonrotz.ch/2020/08/27/grafana-oauth-with-keycloak-and-how-to-validate-a-jwt-token](https://janikvonrotz.ch/2020/08/27/grafana-oauth-with-keycloak-and-how-to-validate-a-jwt-token/)

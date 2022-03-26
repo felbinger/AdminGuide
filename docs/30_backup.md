@@ -65,8 +65,8 @@ while [[ -n $(pidof -x $(which borg)) ]]; do
 done
 
 # pack backup repository
-tar -cvf /home/user/backup_repository.tar /home/borg
+tar -cvf /tmp/backup_repository.tar /home/borg
 
-chown user:user /home/user/backup_repository.tar
-chmod 664 /home/user/backup_repository.tar
+chown user:user /tmp/backup_repository.tar
+chmod 664 /tmp/backup_repository.tar
 ```

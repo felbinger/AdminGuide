@@ -1,9 +1,5 @@
 # Matrix
 
-!!! warning ""
-	Rewrite required!
-
-
 ```yaml
 version: '3.9'
 
@@ -88,21 +84,21 @@ Don't forget to uncomment the sqlite database which is used by default:
 
 Now you can start the service using `docker-compose up -d matrix`.
 
-Create a new user:
+If you don't want to use OpenID Connect (e.g. with Keycloak), you may now create users:
 ```yaml
-docker-compose exec matrix register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://matrix.domain.de
+docker-compose exec synapse register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://matrix.domain.de
 ```
 
 ### Reset password of user 
 
 If you want to reset the password run 
 ```shell
-docker-compose exec -u www-data matrix hash_password -p PASSWORD
+docker-compose exec -u www-data synapse hash_password -p PASSWORD
 ```
 
 After the command is done you will get a password hash as stdout. 
 
-Once you have generated the password hash you can update the value in the database. First start a shell in the postgress container with. 
+Once you have generated the password hash you can update the value in the database. First start a shell in the postgres container with. 
 ```shell
 docker-compose exec postgres /bin/bash
 ```
@@ -116,7 +112,9 @@ PGPASSWORD=S3cr3T \
 
 ### Federation 
 
-To enable cross-server communication you need to set an SRV DNS record.
+!!! info ""
+	Even though you can use a srv dns record to do this, we suggest taking a look 
+	at [hosting your .well-known in cloudflare workers](well-known.md). 
 
 ```
 ;; SRV Records
@@ -124,9 +122,6 @@ _matrix._tcp.matrix.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
 ```
 
 ![DNS configuration](../img/services/matrix-dns.jpg){: loading=lazy }
-
-
-Note You can also host your own Matrix WebClient. [Host your own Matrix WebClient ](element.md)
 
 ### SSO with Keycloak
 
@@ -156,10 +151,10 @@ enable_registration: false
 password_config.enabled: false
 
 oidc_providers:
-# For use with Keycloak
+# Keycloak
   - idp_id: keycloak
     idp_name: YOURNAME
-    issuer: "https://id.domain.de/auth/realms/YOURREALM"
+    issuer: "https://id.domain.de/realms/main"
     client_id: "matrix.domain.de"
     client_secret: "YOURSECRET"
     scopes: ["profile"]
@@ -168,7 +163,7 @@ oidc_providers:
 **It is very important to remove the `openid` Scope which is preset. Things will not work if the
 `openid` Scope is set.**
 
-Now restart your Matrix Server. You should now be able to login with your Keycloak as an SSO Provider.
+Now restart your Matrix Server. You should now be able to log in with your Keycloak as an SSO Provider.
 
 ### Bridge Setup
 For the bridge setup simply follow the instructions at the [docs](https://docs.mau.fi/bridges/python/signal/setup-docker.html)
