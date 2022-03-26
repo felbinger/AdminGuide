@@ -1,7 +1,7 @@
 # Bookstack
 
 !!! warning ""
-	This Admin Guide is being rewritten at the moment!
+	This article should be rewritten!
 
 ```yaml
 version: '3.9'

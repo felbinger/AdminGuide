@@ -1,144 +1,39 @@
 # Jitsi
 
-!!! warning ""
-	This Admin Guide is being rewritten at the moment!
-
-
+!!! info ""
+	Due to the fact that the dockerized jitsi service is really painful, we suggest you use a separate virtual server for this.  
+	We have setup scripts for [jitsi](https://github.com/secshellnet/docs/blob/main/scripts/jitsi.sh)
+	and [jitsi-oidc](https://github.com/secshellnet/docs/blob/main/scripts/jitsi-oidc.sh).
 
 Checkout the [official guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker)
 
-I suggest you create a new stack for jitsi:
 ```shell
-# create directories
-mkdir -p /home/admin/{services,images}/jitsi/ /srv/jitsi
-
-# create stack network
-docker network inspect ${name} >/dev/null 2>&1 || \
-docker network create --subnet 192.168.110.0/24 jitsi
-```
-
-Afterwards you can download the required files from the [jitsi/docker-jitsi-meet](https://github.com/jitsi/docker-jitsi-meet) github repository
-```
-wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/docker-compose.yml -O /home/admin/services/jitsi/docker-compose.yml
-wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/env.example -O /home/admin/services/jitsi/.env
+mkdir -p /home/admin/jitsi/
+wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/docker-compose.yml -O /home/admin/jitsi/docker-compose.yml
+wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/env.example -O /home/admin/jitsi/.env
 
 # generate new secrets
-cd /home/admin/services/jitsi/
+cd /home/admin/jitsi/
 curl https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/gen-passwords.sh | bash
 
 # change configuration directory
 sed -i 's|CONFIG=.*|CONFIG=/srv/jitsi|g' .env
 ```
 
-Next step is to configure the .env file.
-
-## Use Traefik
-Modify web services:
-<ul>
-  <li>
-    remove port forwardings
-  </li>
-  <li>
-    add traefik labels
-  </li>
-  <li>
-    connect network: proxy
-  </li>
-</ul>
-
-After your changes the web service should look like this:
+Next step is to configure the `.env` file and adjust the port forwardings in the jitsi/web container:
 ```yaml
     web:
         image: jitsi/web:latest
         restart: ${RESTART_POLICY}
-        # removed ports forwarding
-        # added traefik labels
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.services.srv_jitsi.loadbalancer.server.port=80"
-            - "traefik.http.routers.r_jitsi.rule=Host(`jitsi.domain.de`)"
-            - "traefik.http.routers.r_jitsi.entrypoints=websecure"
-            - "traefik.http.routers.r_jitsi.tls.certresolver=myresolver"
+        ports:
+            - '[::1]:${HTTP_PORT}:80'
         volumes:
             - ${CONFIG}/web:/config:Z
-            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
-        environment:
-            - ENABLE_LETSENCRYPT
-            - ...
-            - TOKEN_AUTH_URL
-        networks:
-            # added proxy network
-            proxy:
-              external:
-                name: proxy
-            meet.jitsi:
-                aliases:
-                    - ${XMPP_DOMAIN}
+            ...
 ```
 
 ## OpenID Connect
 See [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
-
-## Use LDAP Auth Backend
-Modify prosody service:
-<ul>
-  <li>
-    connect network: database
-  </li>
-  <li>
-    configure ldap credentials
-  </li>
-</ul>
-
-
-After your changes the prosody service should look like this:
-```yaml
-    # XMPP server
-    prosody:
-        image: jitsi/prosody:latest
-        restart: ${RESTART_POLICY}
-        expose:
-            - '5222'
-            - '5347'
-            - '5280'
-        volumes:
-            - ${CONFIG}/prosody/config:/config:Z
-            - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
-        environment:
-            - AUTH_TYPE
-            - ...
-            - TZ
-        networks:
-            database:
-            meet.jitsi:
-                aliases:
-                    - ${XMPP_SERVER}
-```
-
-The LDAP section of your `.env` should look like this (the not included keys are irrelevant if you don't use ldaps inside the docker network):
-```shell
-# LDAP url for connection
-LDAP_URL=ldap://ldap
-
-# LDAP base DN. Can be empty
-LDAP_BASE=DC=domain,DC=com
-
-# LDAP user DN. Do not specify this parameter for the anonymous bind
-LDAP_BINDDN=CN=admin,DC=domain,DC=com
-
-# LDAP user password. Do not specify this parameter for the anonymous bind
-LDAP_BINDPW=S3cr3T
-
-# LDAP filter. Tokens example:
-# %1-9 - if the input key is user@mail.domain.com, then %1 is com, %2 is domain and %3 is mail
-# %s - %s is replaced by the complete service string
-# %r - %r is replaced by the complete realm string
-#LDAP_FILTER=(sAMAccountName=%u)
-# This filter only grants members of the jitsi group access
-LDAP_FILTER=(&(objectclass=person)(&(memberof=cn=jitsi,ou=groups,dc=domain,dc=de))(uid=%u))
-
-# ...
-```
 
 ## Configuration
 All configurations are stored in the `/srv/jitsi` directory:
@@ -209,9 +104,10 @@ You can export the metrics by using a prometheus exporter:
     jitsi2prometheus:
         image: ghcr.io/an2ic3/jitsi2prometheus
         restart: always
+		ports:
+			- "[::1]:8000:8080"
         networks:
             meet.jitsi:
-            monitoring
 ```
 
 Don't forget to add your jitsi2prometheus instance to the prometheus configuration:
@@ -221,5 +117,5 @@ scrape_configs:
    ...
   - job_name: 'jitsi'
     static_configs:
-      - targets: ['jitsi2prometheus:8080']
+      - targets: ['[::1]:8080']
 ```
