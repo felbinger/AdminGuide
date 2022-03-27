@@ -2,7 +2,7 @@
 
 As mentioned in the introduction we are going to use a nginx as reverse proxy.
 
-The installation is quiet simple:
+The installation is quite simple:
 ```shell
 sudo apt install nginx-full
 ```
