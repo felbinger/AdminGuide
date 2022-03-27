@@ -7,9 +7,9 @@ The installation is quite simple:
 sudo apt install nginx-full
 ```
 
-To verify the mTLS client certificates, we need to cloudflare origin pull ca:
+To verify the mTLS client certificates, we need the cloudflare origin pull ca:
 ```shell
-wget https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem -O /etc/ssl/cloudflare_ca.crt
+wget -O /etc/ssl/cloudflare_ca.crt https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem
 ```
 
 If we want to add a service we have to follow this procedure:
