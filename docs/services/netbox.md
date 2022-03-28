@@ -1,21 +1,32 @@
 # NetBox
 
-!!! warning ""
-	Rewrite required!
-
-First clone the netbox release, then overwrite some settings:
 ```shell
+apt install -y git
+
 git clone -b release https://github.com/netbox-community/netbox-docker.git /home/admin/netbox
 
+# hostname of netbox is shown on the website, so it should be overwritten
+# also the default configuration is using docker volumes, which I don't like, so let's overwrite them
 cat <<_EOF > /home/admin/netbox/docker-compose.override.yml
 version: '3.4'
 
 services:
   netbox:
+    hostname: netbox.domain.de
     ports:
-      - "[::1]:8083:8080"
+      - "[::1]:8000:8080"
+
+  postgres:
+    volumes:
+      - "/srv/netbox/postgres:/var/lib/postgresql/data"
+
+  redis:
+    volumes:
+      - "/srv/netbox/redis:/data"
 _EOF
 
+# I also don't like it, that the netbox environment variables contain passwords for
+# the database and redis so let's change them (redis) and enable trust auth for postgres
 cat <<_EOF > /home/admin/netbox/env/postgres.env
 POSTGRES_DB=netbox
 POSTGRES_HOST_AUTH_METHOD=trust
@@ -26,8 +37,12 @@ cat <<_EOF > /home/admin/netbox/env/redis.env
 REDIS_PASSWORD=$(cat /dev/urandom | tr -dc A-Za-z0-9 | fold -w32 | head -n1)
 _EOF
 
+# load the redis password into the environment variables, to be able to print it out in the next step.
 source /home/admin/netbox/env/redis.env
 
+# NetBox also put's in a default SECRET_KEY, which is used by django to make sessions.
+# If you don't change this an authentication bypass might be possible!!!
+# We also set another superuser password, please change it right after the first login.
 cat <<_EOF > /home/admin/netbox/env/netbox.env
 DB_PASSWORD=irrelevant
 REDIS_PASSWORD=${REDIS_PASSWORD}
