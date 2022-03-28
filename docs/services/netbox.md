@@ -83,9 +83,11 @@ Create a mapper in the created keycloak client:
 |--------------------------|-------------------------------|
 | Name                     | aud                           |
 | Mapper Type              | Audience                      |
-| Included Custom Audience | <name of the keycloak client> |
+| Included Custom Audience | name of the keycloak client   |
 | Add to ID token          | OFF                           |
 | Add to access token      | ON                            |
+
+![Keycloak Clients -> Client ID -> Mappers -> aud](../img/services/netbox_keycloak_client_aud_mapper.png){: loading=lazy }
 
 Extend `/home/admin/netbox/env/netbox.env`:
 ```env
