@@ -107,3 +107,6 @@ SOCIAL_AUTH_KEYCLOAK_ACCESS_TOKEN_URL = \
 
 The public key can be aquired in the keycloak realm settings:
 ![Keycloak Realm Settings -> Keys -> Public Key of RS256 Key](../img/services/netbox_keycloak_realm_keys.png){: loading=lazy }
+
+## Netbox Contextmenues
+I recommend you take a look at this [contextmenu addon](https://github.com/PieterL75/netbox_contextmenus/).
