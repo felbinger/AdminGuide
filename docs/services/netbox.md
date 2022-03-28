@@ -78,6 +78,7 @@ EMAIL_USE_TLS=false
 Set `User Info Signed Response Algorithm` and `Request Object Signature Algorithm` in the keycloak client (in the category: Fine Grain OpenID Connect Configuration ) to RS256.
 
 Create a mapper in the created keycloak client:
+
 | Setting                  | Value                         |
 |--------------------------|-------------------------------|
 | Name                     | aud                           |
