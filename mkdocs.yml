@@ -47,7 +47,8 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - admonition
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - attr_list
   - pymdownx.arithmatex:
       generic: true
