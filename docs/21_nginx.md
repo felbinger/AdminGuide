@@ -1,6 +1,6 @@
 # NGINX setup
 
-As mentioned in the introduction we are going to use a nginx as reverse proxy.
+As mentioned in the introduction we are going to use an nginx as reverse proxy.
 
 The installation is quite simple:
 ```shell
@@ -12,12 +12,12 @@ To verify the mTLS client certificates, we need the cloudflare origin pull ca:
 wget -O /etc/ssl/cloudflare_ca.crt https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem
 ```
 
-If we want to add a service we have to follow this procedure:
+If we want to add a service, we have to follow this procedure:
 
 1. Host the service, don't forget to adjust the port number.
 2. Add a new ipv6 address for this service.
 3. Configure the DNS (AAAA record).
-4. Generate the origin server certificate in the Cloudflare dashboard and save them on the server.
+4. Generate the origin server certificate in the Cloudflare dashboard and save the files on the server.
 5. Create and enable the nginx vhost for the domain.
 6. Test the nginx configuration and reload the nginx daemon.
 
@@ -59,7 +59,7 @@ Let's do this for the service [hedgedoc](services/hedgedoc.md):
    ```
    So now we can add the generated address to our interface. 
    ```
-   ip -6 address add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/80 dev eth0
+   ip -6 address add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev eth0
    ```
    Don't forget to add it to the `/etc/network/interfaces` configuration,
    otherwise the address isn't persistent over reboots. Your configuration should look like this:
@@ -72,10 +72,10 @@ Let's do this for the service [hedgedoc](services/hedgedoc.md):
        address 2001:db8:1234:5678::1/64
        gateway 2001:db8::1
        # hedgedoc
-       post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/128 dev ens18    # <---- this line
+       post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev eth0
    ```
    
-3. Now open the Cloudflare dashboard and go to the domain you would like to use to access your service.
+3. Now open the Cloudflare dashboard and navigate to the domain you would like to use to access your service.
    Go to DNS and add the `AAAA` dns record for the subdomain you'd like:
    ![Image of dns record creation](img/nginx/create_dns_record.png){: loading=lazy }
    (*ignore that this domain has changed, should be `hedgedoc.admin-guide.com`*)
@@ -88,8 +88,10 @@ Let's do this for the service [hedgedoc](services/hedgedoc.md):
    Make sure to save the resulting origin certificate in `/etc/ssl/hedgedoc.admin-guide.com.crt` 
    and the private key in `/etc/ssl/hedgedoc.admin-guide.com.key`.
 
-5. The vhost configuration is most of the time the same:  
-   Don't forget to adjust the port number in the proxy_pass to the service you created.  
+5. In most cases the vhost configurations are similar to each other. 
+   Don't forget to adjust the port number in the proxy_pass directive according
+   to the configured port number of the service you created.    
+   `/etc/nginx/sites-available/hedgedoc.admin-guide.com`:
    ```nginx
    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
    server {
@@ -114,25 +116,21 @@ Let's do this for the service [hedgedoc](services/hedgedoc.md):
        add_header Strict-Transport-Security "max-age=63072000" always;
    
        location / {
-               proxy_pass http://[::1]:8000/;
-               proxy_http_version 1.1;
-               proxy_set_header Upgrade $http_upgrade;
-               proxy_set_header Connection 'upgrade';
-               proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
-               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-               proxy_set_header X-Forwarded-Proto $scheme;
-               proxy_set_header Host $host;
-               proxy_cache_bypass $http_upgrade;
+           proxy_pass http://[::1]:8000/;
+           proxy_set_header X-Real-IP $remote_addr;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header X-Forwarded-Proto $scheme;
+           proxy_set_header Host $host;
        }
    }
    ```
    Don't forget to enable the vhost:
    ```shell
-   ln -s /etc/nginx/sites-available/hedgedoc.admin-guide.com /etc/nginx/sites-enabled/
+   ln -s /etc/nginx/sites-available/hedgedoc.admin-guide.com \
+      /etc/nginx/sites-enabled/
    ```
 
-6. Lastly we test the nginx configuration and apply it, if the test shows no errors:
+7. Lastly we test the nginx configuration and apply it, if the test shows no errors:
    ```shell
-   sudo nginx -t
-   sudo systemctl reload nginx
+   sudo nginx -t && sudo systemctl reload nginx
    ```

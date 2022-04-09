@@ -32,7 +32,6 @@ ff02::2           ip6-allrouters
 <ipv6>            <fqdn.domain.tld> <hostname>  # <--
 ```
 
-In this case I decided to use the hostname `server` and assign the fully qualified domain name `fqdn.domain.tld` to it.
 To apply the changes, you need to restart the server.
 
 ## The Admin Group
@@ -55,7 +54,7 @@ usermod -aG sudo,admin nicof2000
 ```
 
 ## Setup SSH Keys
-SSH keys are a fundamental for secure connection to your server.
+SSH keys are a fundamental for secure connections to your server.
 
 ### Create SSH Keys
 If you don't already have an SSH Key it is recommended to create one:
@@ -89,7 +88,7 @@ There are multiple options to add your public keys to the file `~/.ssh/authorize
 
 === "Client Side"
     One option is to use `ssh-copy-id` on the client machine (and authenticate yourself with for example a password),
-    and the ssh client automatically copy the keys there.
+    and the ssh client automatically copies the keys there.
 
     === "default key"
         ```bash
@@ -99,10 +98,6 @@ There are multiple options to add your public keys to the file `~/.ssh/authorize
         ```bash
         ssh-copy-id -i <keyfile> <user>@<ip>
         ```
-    
-    !!! note ""
-        `ssh-copy-id` uses the description of your public key.
-
 
 === "Server Side"
     Another options is to append your public key manually to the `~/.ssh/authorized_keys` file in the following format `ssh-<type> <public_key> [description]`:
@@ -157,6 +152,6 @@ echo 'alias dc="sudo docker-compose "' >> ~/.bashrc
 
 ## DNS Setup
 As I already mentioned in the introduction, you need to use the Cloudflare proxy for this guide.
-This means you need to use the Cloudflare name servers, check out 
+This means, you need to use the Cloudflare name servers, check out 
 [support.cloudflare.com](https://support.cloudflare.com/hc/en-us/articles/205195708-Changing-your-domain-nameservers-to-Cloudflare) 
 for a guide on how to do this.

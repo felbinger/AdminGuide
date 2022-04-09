@@ -1,17 +1,17 @@
 # Backup
 
-I suspended all backup projects ([GBM](https://github.com/felbinger/GBM),
-[PyBackup](https://github.com/felbinger/PyBackup), [DBM](https://github.com/felbinger/dbm)). 
-My suggestion is, to use [borg backup](https://borgbackup.readthedocs.io/en/stable/).
+I suspended all backup projects ([PyBackup](https://github.com/felbinger/PyBackup),
+[GBM](https://github.com/felbinger/GBM), [DBM](https://github.com/felbinger/dbm)).  
+You can use [borg backup](https://borgbackup.readthedocs.io/en/stable/) instead.
 
 ## [Borg Backup](https://borgbackup.readthedocs.io/en/stable/#easy-to-use)
 
-You can create a borg repository using:
+A borg repository can be created by executing:
 ```shell
 borg init -e repokey /home/borg
 ```
 
-Don't forget to export the repokey and save it somewhere safe:
+Don't forget to export the repokey and save it somewhere safe (not on the server!):
 ```shell
 borg key export /home/borg /home/user/borg.repokey
 ```
@@ -43,6 +43,8 @@ source /root/.borg.sh
 
 # date in format: YYYY-MM-DD_HH-MM round to 15 minutes blocks
 DATE=$(date +"%Y-%m-%d_%H")-$(echo "$(date +%M) - ($(date +%M)%15)" | bc)
+
+borg create --stats --progress -C lzma,5 /home/borg::${DATE} ${PATHS[@]}
 ```
 ```shell
 # /root/.borg.sh
@@ -52,7 +54,7 @@ export BORG_PASSPHRASE="<your_borg_repository_passphrase>"
 The script is being executed by a crontab every night:
 ```
 # run borg backup at 4 am
-0 4 * * * /bin/bash /root/backup.sh >/dev/null 2>&1
+0 4 * * * /bin/bash /root/backup.sh &> /dev/null
 ```
 
 I also created a script to pack the whole borg repository into a tar file:
@@ -69,7 +71,8 @@ while [[ -n $(pidof -x $(which borg)) ]]; do
   sleep 60
 done
 
-tar -cvf ${EXPORT_DIR}/.backup_repository.tar /home/borg
+mkdir -p ${EXPORT_DIR}
+tar -cf ${EXPORT_DIR}/.backup_repository.tar /home/borg
 if [ $? != 0 ]; then
   exit 1
 fi

@@ -1,7 +1,6 @@
 # Internal Networks
 
-As already mentioned you can create internal networks.  
-You can use these for example to enable communication with a database in a seperate service file (e.g. `/home/admin/mariadb/docker-compose.yml`).
+You can use internal networks to enable communication between services e.g. with a database in a separate service file (e.g. `/home/admin/mariadb/docker-compose.yml`).
 
 ![Schematic with internal networks](img/internal_networks.png){: loading=lazy }
 
