@@ -23,21 +23,21 @@ If we want to add a service we have to follow this procedure:
 
 ## Example
 
-Let's do this for the service [hackmd](services/hackmd.md):
+Let's do this for the service [hedgedoc](services/hedgedoc.md):
 
 1. Create the service directory:
    ```shell
-   mkdir -p /home/admin/hackmd
+   mkdir -p /home/admin/hedgedoc
    ```
-   Add the adjusted service definition (especially the port number!!!) and environment files from [here](services/hackmd.md).
+   Add the adjusted service definition (especially the port number!!!) and environment files from [here](services/hedgedoc.md).
    ```shell
-   vim /home/admin/hackmd/docker-compose.yml
-   vim /home/admin/hackmd/.mariadb.env
-   vim /home/admin/hackmd/.hackmd.env
+   vim /home/admin/hedgedoc/docker-compose.yml
+   vim /home/admin/hedgedoc/.postgres.env
+   vim /home/admin/hedgedoc/.hedgedoc.env
    ```
    Start the service:
    ```shell
-   sudo docker-compose -f /home/admin/hackmd/docker-compose.yml up -d
+   sudo docker-compose -f /home/admin/hedgedoc/docker-compose.yml up -d
    ```
 
 2. Generate a new random suffix for the ipv6 address.  
@@ -71,30 +71,33 @@ Let's do this for the service [hackmd](services/hackmd.md):
        # ipv6 address of the host
        address 2001:db8:1234:5678::1/64
        gateway 2001:db8::1
-       # hackmd
+       # hedgedoc
        post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/128 dev ens18    # <---- this line
    ```
    
 3. Now open the Cloudflare dashboard and go to the domain you would like to use to access your service.
    Go to DNS and add the `AAAA` dns record for the subdomain you'd like:
-   ![Image of dns record creation](img/nginx/create_dns_record.png)
+   ![Image of dns record creation](img/nginx/create_dns_record.png){: loading=lazy }
+   (*ignore that this domain has changed, should be `hedgedoc.admin-guide.com`*)
 
 4. Next go to SSL/TLS -> Origin Server and create a new certificate for the subdomain:
-   ![Image of certificate creation](img/nginx/create_certificate.png)
-   ![Image 2 of certificate creation](img/nginx/create_certificate2.png)
-   Make sure to save the resulting origin certificate in `/etc/ssl/hackmd.admin-guide.com.crt` 
-   and the private key in `/etc/ssl/hackmd.admin-guide.com.key`.
+   ![Image of certificate creation](img/nginx/create_certificate.png){: loading=lazy }
+   (*ignore that this domain has changed, should be `hedgedoc.admin-guide.com`*)
+   ![Image 2 of certificate creation](img/nginx/create_certificate2.png){: loading=lazy }
+   (*ignore that this domain has changed, should be `hedgedoc.admin-guide.com`*)  
+   Make sure to save the resulting origin certificate in `/etc/ssl/hedgedoc.admin-guide.com.crt` 
+   and the private key in `/etc/ssl/hedgedoc.admin-guide.com.key`.
 
 5. The vhost configuration is most of the time the same:  
    Don't forget to adjust the port number in the proxy_pass to the service you created.  
    ```nginx
    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
    server {
-       server_name hackmd.admin-guide.com;
+       server_name hedgedoc.admin-guide.com;
        listen [2001:db8:1234:5678:5eca:dc9d:fd4e:6564]:443 ssl http2;
    
-       ssl_certificate /etc/ssl/hackmd.admin-guide.com.crt;
-       ssl_certificate_key /etc/ssl/hackmd.admin-guide.com.key;
+       ssl_certificate /etc/ssl/hedgedoc.admin-guide.com.crt;
+       ssl_certificate_key /etc/ssl/hedgedoc.admin-guide.com.key;
        ssl_session_timeout 1d;
        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
        ssl_session_tickets off;
@@ -125,7 +128,7 @@ Let's do this for the service [hackmd](services/hackmd.md):
    ```
    Don't forget to enable the vhost:
    ```shell
-   ln -s /etc/nginx/sites-available/hackmd.admin-guide.com /etc/nginx/sites-enabled/
+   ln -s /etc/nginx/sites-available/hedgedoc.admin-guide.com /etc/nginx/sites-enabled/
    ```
 
 6. Lastly we test the nginx configuration and apply it, if the test shows no errors:

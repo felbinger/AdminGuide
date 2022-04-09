@@ -14,6 +14,12 @@ Cloudflare Origin Pull CA, the setup at Cloudflare is described [here](https://d
 All https requests from cloudflare go to a `nginx` which acts as a reverse proxy on the host.
 From there the requests will be passed to the docker container which is responsible for the service.
 
+![Schematic](img/introduction.png){: loading=lazy }
+
+You can also use internal networks (e.g. to provide a database for all services):  
+
+![Schematic with internal networks](img/internal_networks.png){: loading=lazy }
+
 ## Structure
 
 Every service has its own directory in `/home/admin/<service>` and `/srv/<service>`.
