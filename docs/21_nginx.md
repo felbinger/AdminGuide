@@ -78,13 +78,10 @@ Let's do this for the service [hedgedoc](services/hedgedoc.md):
 3. Now open the Cloudflare dashboard and navigate to the domain you would like to use to access your service.
    Go to DNS and add the `AAAA` dns record for the subdomain you'd like:
    ![Image of dns record creation](img/nginx/create_dns_record.png){: loading=lazy }
-   (*ignore that this domain has changed, should be `hedgedoc.admin-guide.com`*)
-
+   
 4. Next go to SSL/TLS -> Origin Server and create a new certificate for the subdomain:
    ![Image of certificate creation](img/nginx/create_certificate.png){: loading=lazy }
-   (*ignore that this domain has changed, should be `hedgedoc.admin-guide.com`*)
    ![Image 2 of certificate creation](img/nginx/create_certificate2.png){: loading=lazy }
-   (*ignore that this domain has changed, should be `hedgedoc.admin-guide.com`*)  
    Make sure to save the resulting origin certificate in `/etc/ssl/hedgedoc.admin-guide.com.crt` 
    and the private key in `/etc/ssl/hedgedoc.admin-guide.com.key`.
 
