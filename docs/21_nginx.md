@@ -2,6 +2,7 @@
 
 As mentioned in the introduction we are going to use an nginx as reverse proxy.
 
+## Installation
 The installation is quite simple:
 ```shell
 sudo apt install nginx-full
@@ -21,6 +22,7 @@ To verify the mTLS client certificates, we need the cloudflare origin pull ca:
 wget -O /etc/ssl/cloudflare_ca.crt https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem
 ```
 
+## Adding a new Service
 If we want to add a service, we have to follow this procedure:
 
 1. Host the service, don't forget to adjust the port number.
