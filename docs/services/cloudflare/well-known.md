@@ -17,8 +17,8 @@ This Cloudflare worker provides the following routes for all sites that are rout
 
 ## Matrix
 
-1. Uncomment `main.ts` line 8-9.
-2. Add imports:
+1. Uncomment `main.ts` line 8 to 9.
+2. Add imports to `main.ts`:
    ```typescript
    import {onlyRootDomain} from "./utils";
    import {matrixClient, matrixServer} from "./matrix";
