@@ -106,7 +106,7 @@ Next, you can update the password with the command
 ```shell
 PGPASSWORD=S3cr3T \
   psql -U postgres -d synapse -c \
-  "UPDATE users SET password_hash='\$2a\$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' \
+  "UPDATE users SET password_hash='$2a$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' \
   WHERE name='@test:test.com';"
 ```
 
