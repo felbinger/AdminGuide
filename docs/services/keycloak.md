@@ -87,7 +87,7 @@ server {
 }
 ```
 
-```
+```nginx
 # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
 server {
     server_name id.secshell.net;
