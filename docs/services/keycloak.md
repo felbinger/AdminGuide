@@ -14,7 +14,7 @@ services:
   keycloak:
     image: ghcr.io/secshellnet/keycloak
     restart: always
-    command: start
+    command: start --optimized
     env_file: .keycloak.env
     ports:
       - "[::1]:8000:8080"
