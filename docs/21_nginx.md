@@ -11,6 +11,9 @@ sudo apt install nginx-full
 I noticed, that nginx starts too fast on system boot. 
 The ipv6 addresses which are added using `post-up` are not available at this time.
 That's why we delay the start of nginx as mentioned [here](https://docs.ispsystem.com/ispmanager-business/troubleshooting-guide/if-nginx-does-not-start-after-rebooting-the-server). 
+
+![Result of `systemctl status nginx`](img/nginx/nginx-failed-ipv6-not-assignable.png){: loading=lazy }
+
 Edit `/lib/systemd/system/nginx.service` and add this line before the other `ExecStartPre` option:
 ```shell
 # make sure the ipv6 addresses (which have been added with post-up) are there (only required for enabled nginx service on system boot)
