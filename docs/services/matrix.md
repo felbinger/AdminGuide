@@ -82,7 +82,7 @@ Don't forget to uncomment the sqlite database which is used by default:
 # database: /data/homeserver.db
 ```
 
-Now you can start the service using `docker-compose up -d synapse`.
+Now you can start the services using `docker-compose up -d`.
 
 If you don't want to use OpenID Connect (e.g. with Keycloak), you may now create users:
 ```yaml
