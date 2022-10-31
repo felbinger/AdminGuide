@@ -58,7 +58,7 @@ POSTGRES_INITDB_ARGS=-E UTF8 --lc-collate=C --lc-ctype=C
 Before starting this container you need to generate a configuration file. 
 This command generates a `homeserver.yaml` configuration file under `/srv/matrix`
 ```yaml
-docker run -it --rm -v "/srv/matrix/synapse:/data" -e "SYNAPSE_SERVER_NAME=matrix.domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse generate
+docker run -it --rm -v "/srv/matrix/synapse:/data" -e "SYNAPSE_SERVER_NAME=domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse generate
 ```
 
 Afterwards you should configure the postgresql database:
@@ -82,11 +82,11 @@ Don't forget to uncomment the sqlite database which is used by default:
 # database: /data/homeserver.db
 ```
 
-Now you can start the service using `docker-compose up -d matrix`.
+Now you can start the service using `docker-compose up -d synapse`.
 
 If you don't want to use OpenID Connect (e.g. with Keycloak), you may now create users:
 ```yaml
-docker-compose exec synapse register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://matrix.domain.de
+docker-compose exec synapse register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://domain.de
 ```
 
 ### Reset password of user 
@@ -126,16 +126,16 @@ _matrix._tcp.matrix.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
 ### SSO with Keycloak
 
 If you have an Instance of *Keycloak* running, you can use it as an external Authentication Provider.
-At first, we have to create the Client in Keycloak. Create a new Client. Use `matrix.domain.de` as Client ID
+At first, we have to create the Client in Keycloak. Create a new Client. Use `synapse.domain.de` as Client ID
 and `openid` as Protocol. Edit your newly created Client as follows:
 
 | Setting                      | Value                                                  |
 |------------------------------|--------------------------------------------------------|
 | Access Type                  | confidential                                           |
 | Direct Access Grants Enabled | OFF                                                    |
-| Root URL                     | `https://matrix.domain.de`                             |
-| Valid Redirect URIs          | `https://matrix.domain.de`   `http://matrix.domain.de` |
-| Base URL                     | `https://matrix.domain.de`                             |
+| Root URL                     | `https://synapse.domain.de`                            |
+| Valid Redirect URIs          | `https://synapse.domain.de` `http://synapse.domain.de` |
+| Base URL                     | `https://synapse.domain.de`                            |
 | Web Origins                  | +                                                      |
 
 Now go to the "Credentials" Tab and save the Client Secret; we will need it later.
@@ -155,7 +155,7 @@ oidc_providers:
   - idp_id: keycloak
     idp_name: YOURNAME
     issuer: "https://id.domain.de/realms/main"
-    client_id: "matrix.domain.de"
+    client_id: "synapse.domain.de"
     client_secret: "YOURSECRET"
     scopes: ["profile"]
 ```
