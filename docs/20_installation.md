@@ -133,21 +133,10 @@ Docker itself already provides a very good script:
 curl -fsSL https://get.docker.com | sudo bash
 ```
 
-Finally, you need to install Docker Compose:
+Instead of typing `sudo docker compose up -d` all the time you can use this alias and type `dc up -d`:
 
 ```shell
-sudo curl -L -o /usr/local/bin/docker-compose \
-  "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)"
-sudo chmod +x /usr/local/bin/docker-compose
-```
-On an ARM Maschine you need:
-```shell
-pip install docker-compose
-```
-Instead of typing `sudo docker-compose up -d` all the time you can use this alias and type `dc up -d`:
-
-```shell
-echo 'alias dc="sudo docker-compose "' >> ~/.bashrc
+echo 'alias dc="sudo docker compose "' >> ~/.bashrc
 ```
 
 ## DNS Setup
