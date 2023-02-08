@@ -24,6 +24,6 @@ Services which are accessible over the web (https) have:
 * a tls certificate in `/etc/ssl/<domain>.crt`, and
 * a private key in `/etc/ssl/<domain>.key`
 
-`/home/admin/<service>/.<service_name>.env` contains the environment variables needed for the service.
+`/home/admin/<service>/.<service_name>.env` contains the (secret) environment variables needed for the service.
 This helps to prevent leaks, for example while sharing the screen. Be aware that these two service identifier can differ
 (e.g. in the matrix service where the `service` is `matrix`, but the `service_name` is `synapse`).
