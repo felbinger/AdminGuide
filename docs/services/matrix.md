@@ -166,4 +166,4 @@ oidc_providers:
 Now restart your Matrix Server. You should now be able to log in with your Keycloak as an SSO Provider.
 
 ### Bridge Setup
-For the bridge setup simply follow the instructions at the [docs](https://docs.mau.fi/bridges/python/signal/setup-docker.html)
+For the bridge setup simply follow the instructions at the [docs]([https://docs.mau.fi/bridges/python/signal/setup-docker.html](https://docs.mau.fi/bridges/general/docker-setup.html))
