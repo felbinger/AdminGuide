@@ -17,7 +17,7 @@ services:
 
 ```shell
 # .pgadmin.env
-PGADMIN_DEFAULT_EMAIL=admin@domain.tld
+PGADMIN_DEFAULT_EMAIL=admin@domain.de
 PGADMIN_DEFAULT_PASSWORD=S3cr3T
 ```
 

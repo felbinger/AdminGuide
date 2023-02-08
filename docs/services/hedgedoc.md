@@ -15,6 +15,9 @@ services:
     image: quay.io/hedgedoc/hedgedoc
     restart: always
     env_file: .hedgedoc.env
+    environment:
+      - "CMD_DOMAIN=hedgedoc.domain.de"
+      - "CMD_PROTOCOL_USESSL=true"
     ports:
       - "[::1]:8000:3000"
     volumes:
@@ -31,6 +34,4 @@ POSTGRES_DB=hedgedoc
 ```shell
 # .hedgedoc.env
 CMD_DB_URL=postgres://hedgedoc@postgres/hedgedoc
-CMD_DOMAIN=<domain>
-CMD_PROTOCOL_USESSL=true
 ```

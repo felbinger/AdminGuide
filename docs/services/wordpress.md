@@ -15,6 +15,8 @@ services:
     image: wordpress
     restart: always
     env_file: .wordpress.env
+    environment:
+      - "WORDPRESS_DB_HOST=mysql:3306"
     volumes:
       - "/srv/wordpress/plugins:/var/www/html/wp-content/plugins"
       - "/srv/wordpress/themes:/var/www/html/wp-content/themes"
@@ -32,7 +34,6 @@ MYSQL_DATABASE=wordpress
 
 ```shell
 # .wordpress.env
-WORDPRESS_DB_HOST=mysql:3306
 WORDPRESS_DB_USER=wordpress
 WORDPRESS_DB_PASSWORD=S3cr3T
 WORDPRESS_DB_NAME=wordpress

@@ -8,15 +8,11 @@ services:
   influxdb:
     image: influxdb
     restart: always
-    env_file: .influxdb.env
+    environment:
+      - "INFLUXDB_GRAPHITE_ENABLED=1"
     #volumes:
     #  - "/srv/influxdb/data:/var/lib/influxdb"
     #  - "/srv/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf"
-```
-
-```shell
-# .influxdb.env
-INFLUXDB_GRAPHITE_ENABLED=1
 ```
 
 Unfortunately you need to copy some file out of the container before you can use influxdb:

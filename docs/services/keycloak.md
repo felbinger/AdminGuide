@@ -16,6 +16,10 @@ services:
     restart: always
     command: start
     env_file: .keycloak.env
+    environment:
+      - "KC_DB_URL_HOST=postgres"
+      - "KC_PROXY=edge"
+      - "KC_HOSTNAME_STRICT=false"
     ports:
       - "[::1]:8000:8080"
     volumes:
@@ -32,12 +36,9 @@ POSTGRES_DB=keycloak
 
 ```shell
 # .keycloak.env
-KC_DB_URL_HOST=postgres
 KC_DB_USERNAME=keycloak
-KC_DB_PASSWORD=none
+KC_DB_PASSWORD=irrelevant
 KC_DB_URL_DATABASE=keycloak
-KC_PROXY=edge
-KC_HOSTNAME_STRICT=false
 KEYCLOAK_ADMIN=kcadmin
 KEYCLOAK_ADMIN_PASSWORD=S3cr3T
 ```

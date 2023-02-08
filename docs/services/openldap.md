@@ -15,6 +15,9 @@ services:
     image: howardlau1999/openldap-bcrypt
     restart: always
     env_file: .ldap.env
+    environment:
+      - "LDAP_ORGANISATION=Company Name"
+      - "LDAP_DOMAIN=domain.de"
     ports:
       - "[::1]:389:389"
       - "[::1]:636:636"
@@ -25,22 +28,16 @@ services:
   ldapadmin:
     image: marcelcoding/phpldapadmin
     restart: always
-    env_file: .ldapadmin.env
+    environment:
+      - "LDAP_HOST=ldap"
+      - "LDAP_BIND_DN=cn=admin,dc=domain,dc=de"
     ports:
       - "[::1]:8000:80"
 ```
 
 ```shell
 # .ldap.env
-LDAP_ORGANISATION=Company Name
-LDAP_DOMAIN=domain.de
 LDAP_ADMIN_PASSWORD=S3cr3T
-```
-
-```shell
-# .ldapadmin.env
-LDAP_HOST=ldap
-LDAP_BIND_DN=cn=admin,dc=domain,dc=de
 ```
 
 ## Custom Schemas

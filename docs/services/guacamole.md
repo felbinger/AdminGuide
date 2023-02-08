@@ -21,6 +21,9 @@ services:
     image: guacamole/guacamole
     restart: always
     env_file: .guacamole.env
+    environment:
+      - "GUACD_HOSTNAME=guacd"
+      - "POSTGRES_HOSTNAME=postgres"
     ports:
       - "[::1]:8000:8080"
 ```
@@ -34,11 +37,9 @@ POSTGRES_DB=guacamole
 
 ```shell
 # .guacamole.env
-GUACD_HOSTNAME=guacd
-POSTGRES_HOSTNAME=postgres
-POSTGRES_DATABASE=guacamole 
 POSTGRES_USER=guacamole  
-POSTGRES_PASSWORD=none
+POSTGRES_PASSWORD=irrelevant
+POSTGRES_DATABASE=guacamole
 #TOTP_ENABLED=true
 ```
 

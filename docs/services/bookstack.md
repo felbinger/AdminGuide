@@ -18,6 +18,9 @@ services:
     image: linuxserver/bookstack
     restart: always
     env_file: .bookstack.env
+    environment:
+      - "DB_HOST=mariadb"
+      - "APP_URL=https://bookstack.domain.de"
     volumes:
       - '/srv/bookstack:/config'
     ports:
@@ -34,11 +37,9 @@ MYSQL_PASSWORD=S3cr3T
 
 ```shell
 # .bookstack.env
-DB_HOST=mariadb
 DB_USER=bookstack
 DB_PASS=S3cr3T
 DB_DATABASE=bookstack
-APP_URL=https://bookstack.example.com
 ```
 
 You should now be able to log in under the given domain. The default credentials are `admin@admin.com`:`password`.

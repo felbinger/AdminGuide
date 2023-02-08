@@ -15,6 +15,12 @@ services:
     image: teamspeak
     restart: always
     env_file: .teamspeak3.env
+    environment:
+      - "TS3SERVER_DB_PLUGIN=ts3db_mariadb"
+      - "TS3SERVER_DB_SQLCREATEPATH=create_mariadb"
+      - "TS3SERVER_DB_HOST=mariadb"
+      - "TS3SERVER_DB_WAITUNTILREADY=30"
+      - "TS3SERVER_LICENSE=accept"
     volumes:
       - "/srv/teamspeak3/data:/var/ts3server/"
     ports:
@@ -41,14 +47,9 @@ MYSQL_PASSWORD=S3cr3T
 
 ```shell
 # .teamspeak3.env
-TS3SERVER_DB_PLUGIN=ts3db_mariadb
-TS3SERVER_DB_SQLCREATEPATH=create_mariadb
-TS3SERVER_DB_HOST=mariadb
 TS3SERVER_DB_USER=teamspeak
 TS3SERVER_DB_PASSWORD=S3cr3t
 TS3SERVER_DB_NAME=teamspeak
-TS3SERVER_DB_WAITUNTILREADY=30
-TS3SERVER_LICENSE=accept
 ```
 
 After the first start of the containers, the root password for mariadb, the server query credentials 
@@ -59,7 +60,7 @@ Make sure to save them in a safe place.
 If you forgot your server query admin password you can reset it using the following command:
 
 ```shell
-sudo docker-compose run teamspeak3 ts3server inifile=/var/run/ts3server/ts3server.ini serveradmin_password=NEW_PASSWORD
+sudo docker-compose run --rm teamspeak3 ts3server inifile=/var/run/ts3server/ts3server.ini serveradmin_password=NEW_PASSWORD
 ```
 
 Afterwards you can connect to port 10011 using telnet or netcat to generate for example new privilege tokens:

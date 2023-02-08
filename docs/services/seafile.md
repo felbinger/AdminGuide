@@ -20,6 +20,11 @@ services:
     image: seafileltd/seafile-mc  
     restart: always
     env_file: .seafile.env
+    environment:
+      - "DB_HOST=mariadb"
+      - "TIME_ZONE=Europe/Berlin"
+      - "SEAFILE_SERVER_LETSENCRYPT=false"
+      - "SEAFILE_SERVER_HOSTNAME=seafile.domain.de"
     volumes:
       - "/srv/seafile/data:/shared"
     ports:
@@ -33,11 +38,7 @@ MYSQL_ROOT_PASSWORD=S3cr3T
 
 ```shell
 # .seafile.env
-DB_HOST=mariadb
 DB_ROOT_PASSWD=S3cr3T
-TIME_ZONE=Europe/Berlin
 SEAFILE_ADMIN_EMAIL=admin@domain.de
 SEAFILE_ADMIN_PASSWORD=S3cr3T
-SEAFILE_SERVER_LETSENCRYPT=false
-SEAFILE_SERVER_HOSTNAME=seafile.domain.de
 ```
