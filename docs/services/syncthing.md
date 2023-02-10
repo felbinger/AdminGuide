@@ -1,6 +1,6 @@
 # Syncthing
 
-```yml
+```yaml
 version: '3.9'
 
 services:

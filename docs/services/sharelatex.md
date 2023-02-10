@@ -9,12 +9,26 @@ services:
     image: sharelatex/sharelatex
     restart: always
     env_file: .sharelatex.env
+    environment:
+      - "SHARELATEX_APP_NAME=ShareLaTeX"
+      - "SHARELATEX_REDIS_HOST=redis"
+      - "REDIS_HOST=redis"
+      - "ENABLED_LINKED_FILE_TYPES=url,project_file"
+      - "ENABLE_CONVERSIONS=true"
+      - "EMAIL_CONFIRMATION_DISABLED=true"
+      - "TEXMFVAR=/var/lib/sharelatex/tmp/texmf-var"
+      - "SHARELATEX_SITE_URL=https://overleaf.domain.de"
+      - "SHARELATEX_NAV_TITLE=ShareLaTeX"
+      - "SHARELATEX_LEFT_FOOTER=[]"
+      - "SHARELATEX_RIGHT_FOOTER=[]"
+      #- "SHARELATEX_HEADER_IMAGE_URL=http://somewhere.com/mylogo.png"
+      #- "SHARELATEX_EMAIL_FROM_ADDRESS=team@sharelatex.com"
+      #- "SHARELATEX_CUSTOM_EMAIL_FOOTER=This system is run by department x"
     ports:
       - "[::1]:8000:80"
     volumes:
       - /srv/sharelatex/data:/var/lib/sharelatex
 
-  # requirements for ShareLaTeX
   mongo:
     image: mongo
     restart: always
@@ -36,20 +50,7 @@ services:
 
 ```shell
 # .sharelatex.env
-SHARELATEX_APP_NAME=ShareLaTeX
 SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex
-SHARELATEX_REDIS_HOST=redis
-REDIS_HOST=redis
-ENABLED_LINKED_FILE_TYPES=url,project_file
-ENABLE_CONVERSIONS=true
-EMAIL_CONFIRMATION_DISABLED=true
-TEXMFVAR=/var/lib/sharelatex/tmp/texmf-var
-SHARELATEX_SITE_URL=https://overleaf.domain.de
-SHARELATEX_NAV_TITLE=ShareLaTeX
-SHARELATEX_LEFT_FOOTER=[]
-SHARELATEX_RIGHT_FOOTER=[]
-#SHARELATEX_HEADER_IMAGE_URL=http://somewhere.com/mylogo.png
-#SHARELATEX_EMAIL_FROM_ADDRESS=team@sharelatex.com
 #SHARELATEX_EMAIL_SMTP_HOST=smtp.mydomain.com
 #SHARELATEX_EMAIL_SMTP_PORT=587
 #SHARELATEX_EMAIL_SMTP_SECURE=false
@@ -57,7 +58,6 @@ SHARELATEX_RIGHT_FOOTER=[]
 #SHARELATEX_EMAIL_SMTP_PASS=
 #SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true
 #SHARELATEX_EMAIL_SMTP_IGNORE_TLS=false
-#SHARELATEX_CUSTOM_EMAIL_FOOTER=This system is run by department x
 ```
 
 ### Installation of texlive-full

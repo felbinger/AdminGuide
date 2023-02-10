@@ -7,7 +7,6 @@ services:
   grafana:
     image: grafana/grafana
     restart: always
-    env_file: .grafana.env
     #volumes:
     #  - "/srv/main/grafana/lib:/var/lib/grafana"
     #  - "/srv/main/grafana/etc:/etc/grafana"
@@ -45,9 +44,9 @@ Finally, you can add data sources and create dashboards:
 
 
 ### Plugins
-You may specify a list of plugins which you would like to install in the `.grafana.env`:
+You may specify a list of plugins which you would like to install in the `environments` section of the yaml file:
 ```
-GF_INSTALL_PLUGINS=grafana-piechart-panel
+    - "GF_INSTALL_PLUGINS=grafana-piechart-panel"
 ```
 
 ### LDAP Auth
