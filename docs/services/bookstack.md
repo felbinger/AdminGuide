@@ -1,8 +1,5 @@
 # Bookstack
 
-!!! warning ""
-	This article should be rewritten!
-
 ```yaml
 version: '3.9'
 
@@ -27,6 +24,20 @@ services:
       - "[::1]:8000:80"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
+          - "traefik.http.routers.r_bookstack.entrypoints=websecure"
+    ```
+
 ```shell
 # .mariadb.env
 MYSQL_RANDOM_ROOT_PASSWORD=yes
@@ -50,22 +61,22 @@ Now here's how to set up SAML2 Authentication with a *Keycloak* Server.
 
 At first, we have to configure Keycloak properly.
 
-Create a new Client. Client ID is `https://bookstack.example.com/saml2/metadata`, Client Protocol
+Create a new Client. Client ID is `https://bookstack.domain.de/saml2/metadata`, Client Protocol
 is `saml`. Now edit the settings of your newly created Client as follows:
 
 | Setting                   | Value                             |
 |---------------------------|-----------------------------------|
 | Client Signature Required | OFF                               |
-| Root URL                  | `https://bookstack.example.com/`  |
-| Valid Redirect URIs       | `https://bookstack.example.com/*` |
-| Base URL                  | `https://bookstack.example.com/`  |
+| Root URL                  | `https://bookstack.domain.de/`  |
+| Valid Redirect URIs       | `https://bookstack.domain.de/*` |
+| Base URL                  | `https://bookstack.domain.de/`  |
 
 Fine Grain SAML Endpoint Configuration:
 
 | Setting                                     | Value                                     |
 |---------------------------------------------|-------------------------------------------|
-| Assertion Consumer Service POST Binding URL | `https://bookstack.example.com/saml2/acs` |
-| Logout Service Redirect Binding URL         | `https://bookstack.example.com/saml2/sls` |
+| Assertion Consumer Service POST Binding URL | `https://bookstack.domain.de/saml2/acs` |
+| Logout Service Redirect Binding URL         | `https://bookstack.domain.de/saml2/sls` |
 
 
 Save this. Now go to the "Mappers"-Tab. Create a new Mapper:
@@ -124,7 +135,7 @@ SAML2_EXTERNAL_ID_ATTRIBUTE=user.username
 SAML2_DISPLAY_NAME_ATTRIBUTES=user.username
 
 # Identity Provider entityID URL
-SAML2_IDP_ENTITYID=https://keycloak.example.com/auth/realms/YOURREALM
+SAML2_IDP_ENTITYID=https://keycloak.domain.de/auth/realms/YOURREALM
 
 # Auto-load metatadata from the IDP
 # Setting this to true negates the need to specify the next three options
@@ -132,12 +143,12 @@ SAML2_AUTOLOAD_METADATA=false
 
 # Identity Provider single-sign-on service URL
 # Not required if using the autoload option above.
-SAML2_IDP_SSO=https://keycloak.example.com/auth/realms/YOURREALM/protocol/saml
+SAML2_IDP_SSO=https://keycloak.domain.de/auth/realms/YOURREALM/protocol/saml
 
 # Identity Provider single-logout-service URL
 # Not required if using the autoload option above.
 # Not required if your identity provider does not support SLS.
-SAML2_IDP_SLO=https://keycloak.example.com/auth/realms/YOURREALM/protocol/saml
+SAML2_IDP_SLO=https://keycloak.domain.de/auth/realms/YOURREALM/protocol/saml
 
 # Identity Provider x509 public certificate data.
 # Not required if using the autoload option above.

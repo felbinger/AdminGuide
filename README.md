@@ -20,7 +20,7 @@ The http server is then listening on port 8000.
 
 ### Contribution Guidelines
 * Web Services are exposed to `[::1]:8000`
-* Environment Variables are in an env_file (and not in the `docker-compose.yml`) with the following format:
+* Secret Environment Variables are in an env_file (and not in the `docker-compose.yml` itself, to prevent leaks) with the following format:
   ```shell
   # .servicename.env
   KEY=value
@@ -34,3 +34,10 @@ The http server is then listening on port 8000.
   ports:
     - "[::1]:8000:1234"
   ```
+
+## TODO
+* Startseite / Installation entzerren!
+* Startseite proxy => isntallation
+* über include markdown für redundate infos (nginx ipv6 z.B.) nachdenken
+
+* TODO traefik cloudflare zeug rausfinden (origin pulls / wildcard origin server certs)
