@@ -19,3 +19,17 @@ services:
       - "/srv/calibre/config:/config"
       - "/srv/calibre/books:/books"
 ```
+
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:8083"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_calibre.loadbalancer.server.port=8083"
+          - "traefik.http.routers.r_calibre.rule=Host(`calibre.domain.de`)"
+          - "traefik.http.routers.r_calibre.entrypoints=websecure"
+    ```

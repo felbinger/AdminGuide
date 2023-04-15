@@ -1,29 +1,33 @@
-# Introduction
+# Startseite
 
-This guide describes my current preferred method to make a services accessible behind Cloudflare proxy.
+Diese Informationssammlung beschreibt das von mir eingesetzten Verfahren zum 
+Aufsetzen eines Linux Servers mit Anwendungen in Docker Containern. Hauptsächlich 
+handelt es sich in meinem Fall um webbasierte Anwendungen. Diese werden mit einem 
+Reverse Proxy ([Traefik](https://traefik.io/) als Docker Container, oder 
+[nginx](https://www.nginx.com/) auf dem Host) erreichbar gemacht.
 
-Basically, I only make web-based applications available via IPv6. To ensure IPv4 reachability, and to be able to use
-a web application firewall or page rules if necessary, the Cloudflare proxy is used.
+## Lokales HTTP Routing
+Nachdem die Anfragen den Reverse Proxy auf unserem eigenen Host erreicht haben, werden 
+diese je nach verwendetem Reverse Proxy über lokal gebundene Ports oder Docker Labels
+an den Container weitergeleitet, der den Dienst bereitstellt.
 
-To ensure that the WAF / Page Rules cannot be bypassed, my web server expects a mTLS client certificate from the
-Cloudflare Origin Pull CA, the setup for Cloudflare is described [here](https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull/set-up).
+## Verzeichnisstruktur
+Jeder bereitgestellte Dienst erhält zwei Verzeichnisse:  
+1. Im Verzeichnis `/home/admin/<service>` liegt die Containerdefinition (`docker-compose.yml`),  
+2. die Daten des Dienstes werden im Verzeichnis `/srv/<service>` gespeichert.
 
-All https requests from Cloudflare go to an `nginx` which acts as a reverse proxy on the host.
-From there, the requests will be passed to the docker container, which is responsible for the service.
+### Umgebungsvariablen
+Schützenswerte Umgebungsvariablen (Passwörter, API Tokens, ...) werden nicht in der 
+Containerdefinition abgelegt, sondern in einer separaten `env`-Datei, um die Gefahr einer 
+Offenlegung dieser (z. B. beim Teilen des Bildschirms) zu reduzieren. Diese werden entsprechend 
+des Container-Namen im docker-compose Kontext benannt.
 
-![Schematic](img/introduction.png){: loading=lazy }
-
-
-## Structure
-
-Every service has its own directory in `/home/admin/<service>` and `/srv/<service>`.
-
-Services which are accessible over the web (https) have:
-
-* an nginx vhost in `/etc/nginx/sites-available/<domain>`,
-* a tls certificate in `/etc/ssl/<domain>.crt`, and
-* a private key in `/etc/ssl/<domain>.key`
-
-`/home/admin/<service>/.<service_name>.env` contains the (secret) environment variables needed for the service.
-This helps to prevent leaks, for example while sharing the screen. Be aware that these two service identifier can differ
-(e.g. in the matrix service where the `service` is `matrix`, but the `service_name` is `synapse`).
+Im folgenden Beispiel-Dienst (`service: example`, `service_name: example_srv`) würde die 
+`env`-Datei unter dem Pfad `/home/admin/example/.example_srv.env` angelegt werden.
+```yaml
+# /home/admin/example/docker-compose.yml
+services:
+  example_srv:
+    image: ...
+    env_file: .example_srv.env
+```

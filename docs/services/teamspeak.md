@@ -8,6 +8,10 @@ services:
     image: mariadb
     restart: always
     env_file: .mariadb.env
+    environment:
+      - "MYSQL_RANDOM_ROOT_PASSWORD=yes"
+      - "MYSQL_DATABASE=teamspeak"
+      - "MYSQL_USER=teamspeak"
     volumes:
       - "/srv/teamspeak3/mariadb:/var/lib/mysql"
   
@@ -17,6 +21,8 @@ services:
     env_file: .teamspeak3.env
     environment:
       - "TS3SERVER_DB_PLUGIN=ts3db_mariadb"
+      - "TS3SERVER_DB_USER=teamspeak"
+      - "TS3SERVER_DB_NAME=teamspeak"
       - "TS3SERVER_DB_SQLCREATEPATH=create_mariadb"
       - "TS3SERVER_DB_HOST=mariadb"
       - "TS3SERVER_DB_WAITUNTILREADY=30"
@@ -37,19 +43,28 @@ services:
       - "/srv/sinusbot/data:/opt/sinusbot/data"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:8087"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_sinusbot.loadbalancer.server.port=8087"
+          - "traefik.http.routers.r_sinusbot.rule=Host(`sinusbot.domain.de`)"
+          - "traefik.http.routers.r_sinusbot.entrypoints=websecure"
+    ```
+
 ```shell
 # .mariadb.env
-MYSQL_RANDOM_ROOT_PASSWORD=yes
-MYSQL_DATABASE=teamspeak
-MYSQL_USER=teamspeak
 MYSQL_PASSWORD=S3cr3T
 ```
 
 ```shell
 # .teamspeak3.env
-TS3SERVER_DB_USER=teamspeak
 TS3SERVER_DB_PASSWORD=S3cr3t
-TS3SERVER_DB_NAME=teamspeak
 ```
 
 After the first start of the containers, the root password for mariadb, the server query credentials 

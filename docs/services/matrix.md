@@ -8,6 +8,10 @@ services:
     image: postgres
     restart: always
     env_file: .postgres.env
+    environment:
+      - "POSTGRES_DB=synapse"
+      - "POSTGRES_USER=synapse"
+      - "POSTGRES_INITDB_ARGS=-E UTF8 --lc-collate=C --lc-ctype=C"
     volumes:
       - "/srv/matrix/postgres:/var/lib/postgresql/data"
 
@@ -50,15 +54,15 @@ services:
 
 ```shell
 # .postgres.env
-POSTGRES_HOST_AUTH_METHOD=trust
-POSTGRES_DB=synapse
-POSTGRES_INITDB_ARGS=-E UTF8 --lc-collate=C --lc-ctype=C
+POSTGRES_PASSWORD=S3cr3T
 ```
 
 Before starting this container you need to generate a configuration file. 
 This command generates a `homeserver.yaml` configuration file under `/srv/matrix`
-```yaml
-docker run -it --rm -v "/srv/matrix/synapse:/data" -e "SYNAPSE_SERVER_NAME=domain.de" -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse generate
+```shell
+docker run -it --rm -v "/srv/matrix/synapse:/data" \
+  -e "SYNAPSE_SERVER_NAME=domain.de" \
+  -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse generate
 ```
 
 Afterwards you should configure the postgresql database:
@@ -66,8 +70,8 @@ Afterwards you should configure the postgresql database:
 database:
   name: psycopg2
   args:
-    user: postgres
-    password: irrelevant
+    user: synapse
+    password: S3cr3T
     database: synapse
     host: postgres
     cp_min: 5

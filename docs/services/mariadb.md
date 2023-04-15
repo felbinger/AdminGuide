@@ -5,7 +5,7 @@ version: '3.9'
 
 services:
   mariadb:
-    image: mariadb   
+    image: mariadb
     restart: always
     env_file: .mariadb.env
     volumes:

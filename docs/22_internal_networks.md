@@ -1,18 +1,29 @@
 # Internal Networks
 
-You can use internal networks to enable communication between services e.g. with a database in a separate service file (e.g. `/home/admin/mariadb/docker-compose.yml`).
+Die im AdminGuide aufgeführten Services erhalten grundsätzlich
+alle ihre eigene Datenbank. Dies erfordert zum einen mehr Ressourcen,
+als eine zentrale Datenbank, zum anderen erfordert es beim Exportieren
+der Datenbanken für ein Backup die Behandlung mehrerer Datenbankserver.
+
+Möchte man einen Datenbank für alle Dienste nutzen so sollte dieser als 
+eigener Service definiert werden und über ein docker-internes Netzwerk
+mit den anderen Diensten kommunizieren.
 
 ![Schematic with internal networks](img/internal_networks.png){: loading=lazy }
 
-You can create these internal networks by issuing the following command:
+Das interne Netzwerk kann mit dem folgenden Befehl erstellt werden:
 ```shell
 sudo docker network create --subnet 172.20.255.0/24 database
 ```
 
-Your `docker-compose.yml` files may look like this:
+## Beispielkonfiguration
+In diesem Beispiel wird eine zentrale MariaDB Datenbank verwendet.
+Die beiden Dienste (Nextcloud, HedgeDoc) nutzen ein docker-internes 
+Netzwerk zur Kommunikation mit der Datenbank. 
 
-MariaDB:  
+### MariaDB
 ```yaml
+# /home/admin/mariadb/docker-compose.yml
 version: '3.9'
 
 services:
@@ -30,37 +41,9 @@ networks:
     external: true
 ```
 
-Nextcloud:  
+### HedgeDoc
 ```yaml
-version: '3.9'
-
-services:
-  redis:
-    image: redis
-    restart: always 
-    networks:
-      - "default"
-
-  nextcloud:
-    image: nextcloud
-    restart: always
-    env_file: .nextcloud.env
-    volumes:
-      - "/srv/nextcloud:/var/www/html"
-    ports:
-      - "[::1]:8001:80"
-    networks:
-      - "default"
-      - "database"
-
-networks:
-  default:
-  database:
-    external: true
-```
-
-HedgeDoc:  
-```yaml
+# /home/admin/hedgedoc/docker-compose.yml
 version: '3.9'
 
 services:
@@ -76,6 +59,41 @@ services:
       - "database"
 
 networks:
+  database:
+    external: true
+```
+
+### Nextcloud
+Im Falle von Nextcloud wird der `nextcloud` Container neben dem 
+`database` Netzwerk auch noch in das `default` Netzwerk aufgenommen.
+Dieser Netzwerk ermöglicht die Kommunikation mit der in der gleichen
+Containerdefinition existierenden Redis Instanz. Wird in einem Service
+kein Netzwerk angegeben (wie dies beim `redis` Service der Fall ist)
+wird dieser in das `default` Netzwerk aufgenommen.
+
+```yaml
+# /home/admin/nextcloud/docker-compose.yml
+version: '3.9'
+
+services:
+  redis:
+    image: redis
+    restart: always 
+
+  nextcloud:
+    image: nextcloud
+    restart: always
+    env_file: .nextcloud.env
+    volumes:
+      - "/srv/nextcloud:/var/www/html"
+    ports:
+      - "[::1]:8001:80"
+    networks:
+      - "default"
+      - "database"
+
+networks:
+  default:
   database:
     external: true
 ```

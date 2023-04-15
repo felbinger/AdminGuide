@@ -31,6 +31,20 @@ services:
       - "[::1]:8000:80"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_seafile.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_seafile.rule=Host(`seafile.domain.de`)"
+          - "traefik.http.routers.r_seafile.entrypoints=websecure"
+    ```
+
 ```shell
 # .mariadb.env
 MYSQL_ROOT_PASSWORD=S3cr3T

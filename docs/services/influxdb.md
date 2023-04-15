@@ -19,7 +19,7 @@ Unfortunately you need to copy some file out of the container before you can use
 ```shell
 sudo mkdir -p /srv/main/influxdb
 
-sudo docker-compose up -d influxdb
+sudo docker compose up -d influxdb
 
 sudo docker cp influxdb-influxdb-1:/var/lib/influxdb \
   /srv/main/influxdb/lib

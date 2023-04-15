@@ -8,6 +8,9 @@ services:
     image: postgres
     restart: always
     env_file: .postgres.env
+    environment:
+      - "POSTGRES_DB=guacamole"
+      - "POSTGRES_USER=guacamole"
     volumes:
       - "/srv/guacamole/postgres:/var/lib/postgresql/data"
 
@@ -24,23 +27,35 @@ services:
     environment:
       - "GUACD_HOSTNAME=guacd"
       - "POSTGRES_HOSTNAME=postgres"
+      - "POSTGRES_USER=guacamole"
+      - "POSTGRES_DATABASE=guacamole"
+      #- "TOTP_ENABLED=true"
     ports:
       - "[::1]:8000:8080"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:8080"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_guacamole.loadbalancer.server.port=8080"
+          - "traefik.http.routers.r_guacamole.rule=Host(`guacamole.domain.de`)"
+          - "traefik.http.routers.r_guacamole.entrypoints=websecure"
+    ```
+
 ```shell
 # .postgres.env
-POSTGRES_HOST_AUTH_METHOD=trust
-POSTGRES_USER=guacamole
-POSTGRES_DB=guacamole
+POSTGRES_PASSWORD=S3cr3T
 ```
 
 ```shell
 # .guacamole.env
-POSTGRES_USER=guacamole  
-POSTGRES_PASSWORD=irrelevant
-POSTGRES_DATABASE=guacamole
-#TOTP_ENABLED=true
+POSTGRES_PASSWORD=S3cr3T
 ```
 
 ## OpenID Connect / Keycloak

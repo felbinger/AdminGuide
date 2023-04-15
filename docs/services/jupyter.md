@@ -7,36 +7,34 @@ services:
   jupyter:
     image: jupyter/scipy-notebook
     restart: always
-    environment: .jupyter.env
+    environment:
+      - "JUPYTER_ENABLE_LAB=yes"
     ports: 
       - "[::1]:8000:8888"
     volumes:
-      - "/srv/jupyter/work:/home/jovyan/work/"
+      - "/srv/jupyter:/home/jovyan/work/"
 ```
 
-```shell
-# .jupyter.env
-JUPYTER_ENABLE_LAB=yes
-```
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:8888"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_jupyter.loadbalancer.server.port=8888"
+          - "traefik.http.routers.r_jupyter.rule=Host(`jupyter.domain.de`)"
+          - "traefik.http.routers.r_jupyter.entrypoints=websecure"
+    ```
 
-You have to set a password for your Jupyter Environment. For this you have to put in a token which you can find in the logs
-of your container with `docker-compose logs jupyter`. There is an example domain which ends with `?token=******`. 
-You have to copy this token and create a password on the website with it.
+Nach dem Initialen Start von Jupyter Notebook befindet sich 
+ein Link mit einem Access Token in den Containerlogs 
+(`docker compose logs jupyter`), kopieren Sie diesen 
+Token (`?token=******`) um ein Passwort auf der Website festzulegen.
 
-### Reset Password
-If you have forgotten your password, you can sign in with the token or you can change the
-password. To change the password you go into the container terminal with
+Das Passwort kann auch mit folgendem Befehl zurückgesetzt werden:
 ```shell
-docker-compose exec jupyter bash
-```
-and then you type
-```shell
-jupyter server password
-```
-There you can change your password
-
-### Fix the permissions
-You have to adjust the permissions for your `/work` folder. You do this with this command
-```shell
-chown 1000:1000 /srv/jupyter/work/
+docker compose exec jupyter jupyter server password
 ```

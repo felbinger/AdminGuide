@@ -32,6 +32,20 @@ sudo chown -R 472:472 /srv/main/grafana/
 Next you can remove the comments in front of the volumes and start up the container.  
 The default credentials are `admin`:`admin`.
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:3000"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_grafana.loadbalancer.server.port=3000"
+          - "traefik.http.routers.r_grafana.rule=Host(`grafana.domain.de`)"
+          - "traefik.http.routers.r_grafana.entrypoints=websecure"
+    ```
+
 ### Data sources and Dashboards
 Finally, you can add data sources and create dashboards:
 

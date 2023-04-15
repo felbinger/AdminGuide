@@ -13,6 +13,12 @@ services:
       - "SHARELATEX_APP_NAME=ShareLaTeX"
       - "SHARELATEX_REDIS_HOST=redis"
       - "REDIS_HOST=redis"
+      - "SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex"
+      #- "SHARELATEX_EMAIL_SMTP_HOST=smtp.mydomain.com"
+      #- "SHARELATEX_EMAIL_SMTP_PORT=587"
+      #- "SHARELATEX_EMAIL_SMTP_SECURE=false"
+      #- "SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true"
+      #- "SHARELATEX_EMAIL_SMTP_IGNORE_TLS=false"
       - "ENABLED_LINKED_FILE_TYPES=url,project_file"
       - "ENABLE_CONVERSIONS=true"
       - "EMAIL_CONFIRMATION_DISABLED=true"
@@ -27,7 +33,7 @@ services:
     ports:
       - "[::1]:8000:80"
     volumes:
-      - /srv/sharelatex/data:/var/lib/sharelatex
+      - "/srv/sharelatex/data:/var/lib/sharelatex"
 
   mongo:
     image: mongo
@@ -48,16 +54,24 @@ services:
       - "/srv/sharelatex/redis:/data"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_sharelatex.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_sharelatex.rule=Host(`sharelatex.domain.de`)"
+          - "traefik.http.routers.r_sharelatex.entrypoints=websecure"
+    ```
+
 ```shell
 # .sharelatex.env
-SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex
-#SHARELATEX_EMAIL_SMTP_HOST=smtp.mydomain.com
-#SHARELATEX_EMAIL_SMTP_PORT=587
-#SHARELATEX_EMAIL_SMTP_SECURE=false
 #SHARELATEX_EMAIL_SMTP_USER=
 #SHARELATEX_EMAIL_SMTP_PASS=
-#SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true
-#SHARELATEX_EMAIL_SMTP_IGNORE_TLS=false
 ```
 
 ### Installation of texlive-full
