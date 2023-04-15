@@ -8,8 +8,12 @@ services:
     image: mariadb
     restart: always
     env_file: .mariadb.env
+    environment:
+      - "MYSQL_RANDOM_ROOT_PASSWORD=yes"
+      - "MYSQL_DATABASE=bookstack"
+      - "MYSQL_USER=bookstack"
     volumes:
-      - "/srv/teamspeak3/mariadb:/var/lib/mysql"
+      - "/srv/bookstack/mariadb:/var/lib/mysql"
 	
   bookstack:
     image: linuxserver/bookstack
@@ -17,9 +21,11 @@ services:
     env_file: .bookstack.env
     environment:
       - "DB_HOST=mariadb"
+      - "DB_USER=bookstack"
+      - "DB_DATABASE=bookstack"
       - "APP_URL=https://bookstack.domain.de"
     volumes:
-      - '/srv/bookstack:/config'
+      - "/srv/bookstack/config:/config"
     ports:
       - "[::1]:8000:80"
 ```
@@ -40,17 +46,12 @@ services:
 
 ```shell
 # .mariadb.env
-MYSQL_RANDOM_ROOT_PASSWORD=yes
-MYSQL_DATABASE=bookstack
-MYSQL_USER=bookstack
 MYSQL_PASSWORD=S3cr3T
 ```
 
 ```shell
 # .bookstack.env
-DB_USER=bookstack
 DB_PASS=S3cr3T
-DB_DATABASE=bookstack
 ```
 
 You should now be able to log in under the given domain. The default credentials are `admin@admin.com`:`password`.

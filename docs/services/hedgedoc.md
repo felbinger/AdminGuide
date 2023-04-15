@@ -8,6 +8,9 @@ services:
     image: postgres
     restart: always
     env_file: .postgres.env
+    environment:
+      - "POSTGRES_DB=hedgedoc"
+      - "POSTGRES_USER=hedgedoc"
     volumes:
       - "/srv/hedgedoc/postgres:/var/lib/postgresql/data"
 
@@ -24,14 +27,26 @@ services:
       - "/srv/hedgedoc/uploads:/hedgedoc/public/uploads"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:3000"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_hedgedoc.loadbalancer.server.port=3000"
+          - "traefik.http.routers.r_hedgedoc.rule=Host(`hedgedoc.domain.de`)"
+          - "traefik.http.routers.r_hedgedoc.entrypoints=websecure"
+    ```
+
 ```shell
 # .postgres.env
-POSTGRES_HOST_AUTH_METHOD=trust
-POSTGRES_USER=hedgedoc
-POSTGRES_DB=hedgedoc
+POSTGRES_PASSWORD=S3cr3T
 ```
 
 ```shell
 # .hedgedoc.env
-CMD_DB_URL=postgres://hedgedoc@postgres/hedgedoc
+CMD_DB_URL=postgres://hedgedoc:S3cr3T@postgres/hedgedoc
 ```

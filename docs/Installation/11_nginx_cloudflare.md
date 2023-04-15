@@ -12,7 +12,6 @@ Die Ausstellung der Zertifikate über das Cloudflare Dashboard kann den folgende
 ![Cloudflare Origin Server Zertifikatserstellung](../img/installation/cloudflare_origin-cert.png){: loading=lazy }
 ![Cloudflare Origin Server Zertifikatserstellung](../img/installation/cloudflare_origin-cert2.png){: loading=lazy }
 
-
 Die entstehenden Privaten Schlüssel und Zertifikate werden im Verzeichnis `/etc/ssl/` auf dem Server gespeichert. 
 
 Anschließend wird nginx auf dem Server installiert
@@ -46,20 +45,7 @@ Die [Einrichtung bei Cloudflare ist in deren Dokumentation](https://developers.c
 configuration/authenticated-origin-pull/set-up) beschreiben:
 ![Cloudflare Origin Pull](../img/installation/cloudflare_origin-pull.png){: loading=lazy }
 
-## IPv6 Adresse pro Virtual-Host
-Sofern geplant ist, jedem Virtual Host eine eigene IPv6 Adresse zu geben empfielt sich
-den nginx systemd-Service um einige Sekunden zu verzögern, sodass sichergestellt werden 
-kann, dass das System die IPv6 Adressen der Netzwerkschnittstelle bereits hinzugefügt hat.
-Dieses Verfahren wurde auch [hier](https://docs.ispsystem.com/ispmanager-business/troubleshooting-guide/if-nginx-does-not-start-after-rebooting-the-server) beschrieben.
-
-![Result of `systemctl status nginx`](../img/nginx/nginx-failed-ipv6-not-assignable.png){: loading=lazy }
-
-Dazu muss in der Datei `/lib/systemd/system/nginx.service` vor der ersten `ExecStartPre` Zeile folgendes hinzugefügt werden:
-```shell
-# make sure the additional ipv6 addresses (which have been added with post-up) 
-# are already on the interface (only required for enabled nginx service on system boot)
-ExecStartPre=/bin/sleep 5
-```
+{% include-markdown "../../includes/installation/nginx-multiple-ipv6.md" %}
 
 ### Konfiguration für neue Dienste
 
@@ -74,19 +60,12 @@ Folgende Schritte sind notwendig, um ein neues HTTP Routing zu konfigurieren:
 #### Dienst aufsetzen
 ...
 
-#### Port-Binding von Dienst auf IPv6 Localhost (`::1`) des Hosts
-Die Containerdefinition muss ein entsprechenden Eintrag erhalten, sodass der Port 
-auf dem der Container den Dienst bereitstellt auf dem Hostsystem lokal verfügbar ist.
-Dabei darf natürlich nur die linke Seite (hier 8081) verändert werden.
-```yaml
-    ports:
-      - "[::1]:8081:80"
-```
+{% include-markdown "../../includes/installation/local-port-binding.md" %}
 
 #### Optional: Sofern für die gewünschte Domain noch kein Zertifikat existiert, dieses Ausstellen.
 siehe oben!
 
-{% include-markdown "../../includes/additional_ipv6.md" %}
+{% include-markdown "../../includes/installation/additional_ipv6.md" %}
 
 #### nginx Virtual-Host konfigurieren und aktivieren
 Anschließend wird die Virtual Host Konfiguration unter dem Pfad
@@ -130,4 +109,4 @@ server {
 }
 ```
 
-{% include-markdown "../../includes/nginx_enable_test_apply_vhost.md" %}
+{% include-markdown "../../includes/installation/nginx_enable_test_apply_vhost.md" %}

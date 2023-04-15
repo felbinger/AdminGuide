@@ -9,7 +9,7 @@ services:
     restart: always
     ports:
       - "[::1]:8000:3000"
-      - "22222:22"
+      - "2222:22"
     volumes:
       - "/srv/gitea:/data"
       - "/etc/timezone:/etc/timezone:ro"

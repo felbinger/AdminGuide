@@ -34,14 +34,28 @@ services:
       - "[::1]:8000:80"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_nextcloud.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_nextcloud.rule=Host(`nextcloud.domain.de`)"
+          - "traefik.http.routers.r_nextcloud.entrypoints=websecure"
+    ```
+
 ```shell
 # .postgres.env
-POSTGRES_PASSWORD=pgSecret
+POSTGRES_PASSWORD=S3cr3T
 ```
 
 ```shell
 # .nextcloud.env
-POSTGRES_PASSWORD=pgSecret
+POSTGRES_PASSWORD=S3cr3T
 NEXTCLOUD_ADMIN_USER=username
 NEXTCLOUD_ADMIN_PASSWORD=p4ssw0rd
 ```

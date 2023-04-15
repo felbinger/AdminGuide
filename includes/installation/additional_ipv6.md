@@ -1,4 +1,4 @@
-#### Optional: Eigene IPv6 Adresse für Virtual Host konfigurieren
+### Optional: Eigene IPv6 Adresse für Virtual Host konfigurieren
 Sofern eine eigene IPv6 Adresse für diesen Dienst verwendet werden soll,
 wird diese der entsprechenden Netzwerkschnittstelle hinzugefügt, sodass 
 diese in nginx verwendet werden kann. 

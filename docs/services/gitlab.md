@@ -19,6 +19,20 @@ services:
       - "/srv/gitlab/data:/var/opt/gitlab"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_gitlab.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_gitlab.rule=Host(`gitlab.domain.de`)"
+          - "traefik.http.routers.r_gitlab.entrypoints=websecure"
+    ```
+
 !!! info ""
 	The `external_url` has to be `http://...` when using a reverse proxy which handles tls, otherwise gitlab tries
     to redirect the incoming http connection to https which ends in a never ending redirect cycle.

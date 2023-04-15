@@ -1,24 +1,21 @@
 # Basisinstallation
 
-Jeder der diesen Informationssammlung nutzt, sollte in der Lage sein, seinen 
-Linux Server Grundlegend einzurichten und abzusichern. Daher verzichte ich hier
+Jeder, der diese Informationssammlung nutzt, sollte in der Lage sein, seinen
+Linux Server grundlegend einzurichten und abzusichern. Daher verzichte ich hier
 auf Standardanleitungen und stelle lediglich die spezifischen Konzepte vor.
 
 ## Admin Gruppe
-Ich gehe Grundsätzlich davon aus, dass ich auf keinem System der alleine Administrator 
-bin, weshalb auf alle Systeme eine Admin Gruppe existiert, die Rechte auf das Verzeichnis
-`/home/admin` hat. 
+Ich gehe grundsätzlich davon aus, dass ich auf keinem System der alleine 
+Administrator bin, weshalb auf alle Systeme eine Admin-Gruppe existiert, 
+die Rechte auf das Verzeichnis `/home/admin` hat. 
 
 ```shell
-# Gruppe Admin mit gid 997 anlegen
 groupadd -g 997 admin
-# Verzeichnis mit Schreibrechten für Nutzer und Gruppe anlegen
 mkdir -m 775 /home/admin
-# Verzeichnis dem Benutzer root und der Gruppe admin zuordnen
 chown root:admin /home/admin
 ```
 
-Die Personalisierten Accounts der Systemadministratoren erhalten neben der `sudo` 
+Die personalisierten Accounts der Systemadministratoren erhalten neben der `sudo` 
 Gruppenmitgliedschaft auch die Gruppe `admin`:
 ```shell
 adduser nicof2000
@@ -113,29 +110,31 @@ stream {
 
 ![Schaubild](../img/schaubild_cloudflare-vs-transparent-proxy.png){: loading=lazy }
 
-Kein vorgeschalteter Proxy:
+Aus meiner Sicht ergibt die Verwendung eines eigenen 
+vorgeschaltenen Proxies nur Sinn, wenn mehr als ein Server
+administriert wird und über eine IPv6 Adresse webbasierte 
+Dienste bereitstellt.
 
-| Vorteile | Nachteile |
-|----------|-----------|
-|keine Abhängigkeit zu anderen Systemen|Notwendigkeit für Dual Stack auf Endsystem um Nutzern ohne IPv4 Adresse (ja die gibt es!) / ohne IPv6 Adresse den Zugriff zu ermöglichen.|
+Wird lediglich ein System betreut (wie z.B. der oben erwähnte 
+Cloudserver), kann die zugewiesene IPv4 Adresse natürlich auf 
+den Ports 80 und 443 verwendet werden und dann auf den Reverse
+Proxy zeigen. Dadurch entfällt die Abhängigkeit zu anderen Systemen.
 
-Cloudflare Proxy:
+Sofern der Cloudserver über keine eigene IPv4 Adresse oder keine 
+eigenen IPv6 Adressen verfügt, sollte ein Proxy vorgeschaltet werden, 
+um den Nutzern, die keine IPv4/IPv6 Adresse verfügen den Zugriff zu 
+ermöglichen.
 
-| Vorteile | Nachteile |
-|----------|-----------|
-| [Web Application Firewall](https://developers.cloudflare.com/waf/managed-rules/)| Datenverkehr der Nutzer liegt bei Cloudflare unverschlüsselt vor.|
-|[Page Rules](https://www.cloudflare.com/features-page-rules/)|Unterstützt in kostenlosen Version keine gestackten Subdomains (`sub.sub.domain.de`)|
-|DDoS Schutz||
-|Kein DualStack notwendig, Cloudflare verfügt über beide Adressfamilien, wodurch es allen Nutzern ermöglicht wird den Server zu erreicghen||
+Wird Cloudflare Proxy verwendet erkauft man sich neben der Erreichbarkeit 
+diverse Vorteile (DDoS Protection, 
+[Web Application Firewall](https://developers.cloudflare.com/waf/managed-rules/), 
+[Page Rules](https://www.cloudflare.com/features-page-rules/)).
 
-
-Eigener transparenter Proxy:
-
-| Vorteile | Nachteile |
-|----------|-----------|
-|Kein DualStack notwendig, der IPv4-to-IPv6 Proxy verfügt über beide Adressfamilien, wodurch es allen Nutzern ermöglicht wird den Server zu erreichen||
-|kein Aufbrechen der TLS Verschlüsselung $\rightarrow$ keine TLS Zertifikate auf IPv4-to-IPv6 Proxy notwendig||
-
+Jedoch sollte man einige Details beachten, bevor man sich auf Cloudflare festlegt.
+Der Datenverkehr der Nutzer liegt bei Cloudflare unverschlüsselt vor, da diese die 
+TLS Pakete terminieren. In der kostenfreien Version von Cloudflare Proxy können 
+des Weiteren keine gestackten Subdomains (`sub.sub.domain.de`) eingerichtet werden, 
+da dafür kein TLS Zertifikat angefordert werden kann.
 
 ### Reverse Proxy
 Sowohl nginx, als auch Traefik, sind beide stark verbreitete Proxies. Sie werden von 
@@ -158,7 +157,7 @@ manuell über acme.sh ausstellen werden müssen.
 
 Traefik bringt des Weiteren ein Dashboard mit, welches einen komfortablen Überblick über 
 die existierenden Services und Router gibt. Dieses Dashboard sollte natürlich, sofern extern
-erreichbar, entsprechend geschützt sein, um das ungewollte Teilen von Informationen zu vermeiden.
+erreichbar, entsprechend geschützt sein, um das ungewollte Leaken von Informationen zu vermeiden.
 
 Einer der wichtigsten Aspekte für die Wahl des Reverse Proxies ist aber möglicherweise, dass
 Traefik Zugriff auf den Docker Socket des Hosts benötigt, um die Container Labels auslesen zu können,
@@ -174,10 +173,10 @@ eingehängt ist.
     Die "Virtual-Host" Konfigurationsdateien liegen im Verzeichnis `/etc/nginx/sites-available/`
     unter der Domain, die Sie erreichbar machen.
 
-    Wird nginx als Reverse Proxy eingesetzt beziehe ich die Zertifikate mithilfe des Shellskriptes
-    [`acme.sh`](https://github.com/acmesh-official/acme.sh), welches ich unter dem root-Nutzer laufen lasse.
-    Die resultierenden Privaten Schlüssel und Zertifkate werden im Verzeichnis `/root/.acme.sh/` gespeichert 
-    und direkt von dort in der nginx Virtual-Host Konfiguration eingebunden.
+    TLS Zertifikate beziehe ich mithilfe des Shellskriptes [`acme.sh`](https://github.com/acmesh-official/acme.sh), 
+    welches ich unter dem root-Nutzer laufen lasse. Die resultierenden privaten Schlüssel 
+    und Zertifkate werden im Verzeichnis `/root/.acme.sh/` gespeichert und direkt von 
+    dort in der nginx Virtual-Host Konfiguration eingebunden.
 
 === "Traefik"
     Da Traefik als Docker Container bereitgestellt wird, gilt die oben genannte Verzeichnisstruktur:
@@ -197,8 +196,9 @@ eingehängt ist.
     die Firewall Logs auf Layer 3 auswerten kann, statt den [TLS SNI Header](
     https://en.wikipedia.org/wiki/Server_Name_Indication) zu betrachten um den beteiligten 
     Webserver in Erfahrung zu bringen.  
-    Da ich in diesen Netzwerken bisher immer auf nginx gesetzt habe, weiß ich nicht ob Traefik
-    dieses Feature (jedem Router eine eigene IPv6 Adresse zuzuweisen) ebenfalls unterstützt.
+    Da ich in diesen Netzwerken bisher immer auf nginx gesetzt habe, 
+    habe ich nie geprüft, ob Traefik dieses Feature (jedem HTTP Router 
+    eine eigene IPv6 Adresse zuzuweisen) ebenfalls unterstützt.
 
 Prinzipiell ist die genutzte [ACME Challenge](https://letsencrypt.org/docs/challenge-types/) irrelevant, da ich
 auch interne Dienste betreibe, die nicht aus dem Internet erreichbar sind, verwende ich prinzipiell die ACME-DNS-01 

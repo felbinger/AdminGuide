@@ -14,6 +14,19 @@ For development purposes, a 10.4 [Dockerfile](https://github.com/Ziehnert/Typo3-
       - "/srv/typo3/conf:/var/www/html/typo3conf/"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_typo3.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_typo3.rule=Host(`typo3.domain.de`)"
+          - "traefik.http.routers.r_typo3.entrypoints=websecure"
+    ```
 
 After the installation, you won't be able to access the backend unless you specify the proxy in a new config file:
 ```php

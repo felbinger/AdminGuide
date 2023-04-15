@@ -2,6 +2,7 @@
 
 ```yaml
 version: '3.9'
+
 services:
   mongodb:
     image: mongo

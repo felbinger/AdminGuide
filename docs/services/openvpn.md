@@ -2,7 +2,7 @@
 
 !!! info ""
 	Depending on what exactly you would like to do with openvpn, we suggest you don't host it inside a docker container.
-	Either host it on the host directly, or use other existing infrastructure (e.g. a router like pfSense)
+	Either host it on the host directly, or use other existing infrastructure (e.g. a router like pfSense or VyOS)
 
 ```yaml
 version: '3.9'

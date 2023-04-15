@@ -8,9 +8,6 @@
 # env files for secrets
 ```
 
-
-
-## Reverse Proxy
 === "nginx"
     ```yaml
         ports:

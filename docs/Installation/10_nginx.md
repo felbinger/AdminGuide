@@ -1,77 +1,11 @@
 # nginx ohne Proxy
 
 Wenn nginx ohne vorgeschalteten Proxy eingesetzt werden soll, benötigt man TLS Zertifikate, die im 
-Browser validiert werden können. Kostenlose TLS Zertifikate können über Anbieter wie ZeroSSL 
-oder Let's Encrypt bezogen werden. In unserem Fall beziehen wir diese von Let's Encrypt mithilfe von
-[acme.sh](https://github.com/acmesh-official/acme.sh).
+Browser validiert werden können. 
 
-```shell
-# mit root-Rechten ausführen
-apt install nginx-full
+{% include-markdown "../../includes/installation/nginx_base.md" %}
 
-# acme.sh installieren und default ca auf Let's Encrypt setzen
-curl https://get.acme.sh | sh -s email=acme@domain.de
-ln -s /root/.acme.sh/acme.sh /usr/bin/acme.sh
-acme.sh --install-cronjob
-
-acme.sh --server "https://acme-v02.api.letsencrypt.org/directory" --set-default-ca
-```
-
-## IPv6 Adresse pro Virtual-Host
-Sofern geplant ist, jedem Virtual Host eine eigene IPv6 Adresse zu geben empfielt sich
-den nginx systemd-Service um einige Sekunden zu verzögern, sodass sichergestellt werden 
-kann, dass das System die IPv6 Adressen der Netzwerkschnittstelle bereits hinzugefügt hat.
-Dieses Verfahren wurde auch [hier](https://docs.ispsystem.com/ispmanager-business/troubleshooting-guide/if-nginx-does-not-start-after-rebooting-the-server) beschrieben.
-
-![Result of `systemctl status nginx`](../img/nginx/nginx-failed-ipv6-not-assignable.png){: loading=lazy }
-
-Dazu muss in der Datei `/lib/systemd/system/nginx.service` vor der ersten `ExecStartPre` Zeile folgendes hinzugefügt werden:
-```shell
-# make sure the additional ipv6 addresses (which have been added with post-up) 
-# are already on the interface (only required for enabled nginx service on system boot)
-ExecStartPre=/bin/sleep 5
-```
-
-### Konfiguration für neue Dienste
-
-Folgende Schritte sind notwendig, um ein neues HTTP Routing zu konfigurieren:
-1. Dienst aufsetzen.
-2. Port-Binding von Dienst auf IPv6 Localhost (`::1`) des Hosts.
-3. TLS Zertifkat über acme.sh anfordern.
-4. Optional: Eigene IPv6 Adresse für Virtual Host konfigurieren.
-5. nginx Virtual-Host konfigurieren und aktivieren.
-6. Konfiguration testen und nginx neu laden.
-
-#### Dienst aufsetzen
-...
-
-#### Port-Binding von Dienst auf IPv6 Localhost (`::1`) des Hosts
-Die Containerdefinition muss ein entsprechenden Eintrag erhalten, sodass der Port 
-auf dem der Container den Dienst bereitstellt auf dem Hostsystem lokal verfügbar ist.
-Dabei darf natürlich nur die linke Seite (hier 8081) verändert werden.
-```yaml
-    ports:
-      - "[::1]:8081:80"
-```
-
-#### TLS Zertifkat über acme.sh anfordern
-
-Für acme.sh müssen die erforderlichen Umgebungsvariablen für die gewünschte 
-[ACME Challenge](https://letsencrypt.org/docs/challenge-types/) gesetzt 
-sein. Für die DNS API's der Anbieter empfielt sich ein Blick in 
-[diese Tabelle](https://github.com/acmesh-official/acme.sh/wiki/dnsapi).
-
-```shell
-# Beispielkonfiguration für Cloudflare DNS API
-export CF_Account_ID=
-export CF_Zone_ID=
-export CF_Token=
-acme.sh --issue --keylength ec-384 --dns dns_cf -d service.domain.de
-```
-
-{% include-markdown "../../includes/additional_ipv6.md" %}
-
-#### nginx Virtual-Host konfigurieren und aktivieren
+### nginx Virtual-Host konfigurieren und aktivieren
 Anschließend wird die Virtual Host Konfiguration unter dem Pfad
 `/etc/nginx/sites-available/domain` angelegt. Dabei müssen hauptsächlich die 
 mit Pfeil markierten Zeilen beachtet werden.
@@ -124,4 +58,4 @@ server {
 }
 ```
 
-{% include-markdown "../../includes/nginx_enable_test_apply_vhost.md" %}
+{% include-markdown "../../includes/installation/nginx_enable_test_apply_vhost.md" %}

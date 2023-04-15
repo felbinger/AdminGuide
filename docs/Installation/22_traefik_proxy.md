@@ -89,76 +89,8 @@ networks:
     external: true
 ```
 
-Nun müssen noch einige Konfigurationen angelegt werden:
-```yaml
-# /srv/traefik/middlewares.yml 
-http:
-  middlewares:
-    mw_compress:
-      compress: true
-    mw_hsts:
-      headers:
-        contentTypeNosniff: true
-        browserXssFilter: true
-        forceSTSHeader: true
-        sslRedirect: true
-        stsPreload: true
-        stsSeconds: 315360000
-        stsIncludeSubdomains: true
-        customResponseHeaders:
-        X-Forwarded-Proto: https
-        X-Frame-Options: sameorigin
-```
+{% include-markdown "../../includes/installation/traefik/config.md" %}
 
-```yaml
-# /srv/traefik/dynamic.yml
-tls:
-  options:
-    default:
-      minVersion: VersionTLS12
-      sniStrict: true
-      cipherSuites:
-        # TLS 1.3
-        - TLS_AES_256_GCM_SHA384
-        - TLS_CHACHA20_POLY1305_SHA256
-        - TLS_AES_128_GCM_SHA256
-        # TLS 1.2
-        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
-```
+{% include-markdown "../../includes/installation/traefik/docker-network.md" %}
 
-Anschließend legen wir das `proxy` Docker Netzwerk an und starten Traefik.
-```shell
-docker network create proxy
-docker compose up -d
-```
-
-### Konfiguration für neue Dienste
-Für das einbinden eines webbasierten Dienstes in Traefik sind lediglich zwei Schritte notwenig.
-
-Zunächst muss das `proxy`-Netzwerk dem Container hinzugefügt werden. Dabei ist zu beachten, dass
-- sofern dieser mit anderen Containern in der gleichen Containerdefinition - interagieren muss,
-ebenfalls das `default`-Netzwerk benötigt, welches der Standardwert für Container ohne explizite 
-Netzwerkkonfiguration ist:
-```yaml
-    networks:
-      - "proxy"
-      #- "default"
-```
-
-Außerdem müssen die Docker Labels für das HTTP Routing gesetzt werden:
-```yaml
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.srv_service-name.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_service-name.rule=Host(`service.domain.de`)"
-      - "traefik.http.routers.r_service-name.entrypoints=websecure"
-```
-
-!!! warning ""
-    Hierbei sollte umbedingt darauf geachtet werden, dass weder service (Präfix `srv_`), 
-    noch router-Bezeichnungen (Präfix `r_`) doppelt verwendet werden, da dies zu schwer
-    bemerkbaren Fehlern führen kann.
-
-    Außerdem sollte auf die korrekte Konfiguration des Service Ports geachtet werden (hier 80). 
+{% include-markdown "../../includes/installation/traefik/new.md" %}

@@ -15,7 +15,6 @@ services:
     environment:
       # this forwards 80 and 8080 to web:80
       - "TOR_HIDDEN_SERVICE_WEB=80 web:80;8080 web:80"
-env_file: .docky-onion.env
     volumes:
       - "/srv/docky-onion:/var/lib/tor/hidden_services"
 

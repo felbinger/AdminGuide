@@ -63,6 +63,20 @@ services:
       - "PAPERLESS_URL=https://paperless.domain.de"
 ```
 
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:8000"
+    ```
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_paperless.loadbalancer.server.port=8000"
+          - "traefik.http.routers.r_paperless.rule=Host(`paperless.domain.de`)"
+          - "traefik.http.routers.r_paperless.entrypoints=websecure"
+    ```
+
 ```shell
 # .postgres.env
 POSTGRES_USER=paperless
