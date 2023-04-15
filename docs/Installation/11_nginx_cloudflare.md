@@ -86,23 +86,7 @@ Dabei darf natürlich nur die linke Seite (hier 8081) verändert werden.
 #### Optional: Sofern für die gewünschte Domain noch kein Zertifikat existiert, dieses Ausstellen.
 siehe oben!
 
-#### Optional: Eigene IPv6 Adresse für Virtual Host konfigurieren
-Sofern eine eigene IPv6 Adresse für diesen Dienst verwendet werden soll,
-wird diese der entsprechenden Netzwerkschnittstelle hinzugefügt, sodass 
-diese in nginx verwendet werden kann. 
-
-```shell
-# /etc/network/interfaces
-
-# ...
-
-iface eth0 inet6 static
-    # ipv6 address of the host
-    address 2001:db8:1234:5678::1/64
-    gateway 2001:db8::1
-    # service.domain.de
-    post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev eth0
-```
+{% include-markdown "../../includes/additional_ipv6.md" %}
 
 #### nginx Virtual-Host konfigurieren und aktivieren
 Anschließend wird die Virtual Host Konfiguration unter dem Pfad
@@ -146,13 +130,4 @@ server {
 }
 ```
 
-#### Konfiguration aktivieren, testen und anwenden.
-Nun muss noch der Link zu `/etc/nginx/sites-enabled/` angelegt werden, 
-bevor die Konfiguration von nginx getestet werden kann und anschließend
-nginx neu geladen werden kann, sofern der Test keine Fehler ergeben hat:
-```shell
-ln -s /etc/nginx/sites-available/service.domain.de \
-    /etc/nginx/sites-enabled/
-
-nginx -t && systemctl reload nginx
-```
+{% include-markdown "../../includes/nginx_enable_test_apply_vhost.md" %}
