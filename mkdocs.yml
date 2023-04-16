@@ -4,8 +4,7 @@ repo_name: felbinger/AdminGuide
 repo_url: https://github.com/felbinger/AdminGuide/
 site_description: "Linux Server Administrator Guide"
 site_author: https://github.com/felbinger
-remote_branch: gh-pages
-edit_uri: https://github.dev/felbinger/AdminGuide/blob/master/docs
+edit_uri: https://github.dev/felbinger/AdminGuide/blob/main/docs
 
 theme:
   name: 'material'
