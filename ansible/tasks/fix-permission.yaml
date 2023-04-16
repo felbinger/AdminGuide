@@ -1,0 +1,15 @@
+---
+- name: Add fix-permission.sh
+  ansible.builtin.template:
+    src: fix-permission.sh
+    dest: /root/fix-permission.sh
+    mode: '750'
+  become: true
+
+- name: Create crontab for fix-permission.sh
+  ansible.builtin.cron:
+    name: "fix permission"
+    minute: "0"
+    hour: "0"
+    job: "/bin/bash /root/fix-permission.sh &> /dev/null"
+  become: true

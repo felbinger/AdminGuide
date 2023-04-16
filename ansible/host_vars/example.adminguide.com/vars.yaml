@@ -1,0 +1,10 @@
+---
+docker: true
+nginx: true
+users:
+  - nicof2000
+vhosts:
+  - domain: example.admin-guide.com
+    internal: true
+  - domain: example2.admin-guide.com
+    internal: false
