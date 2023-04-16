@@ -56,7 +56,7 @@ The http server is then listening on port 8000.
 * Add reverse proxy setup instructions according to template.
 
 #### Rewrite required:
-* Sentry
+* Sentry - or remove!
 * Prometheus
 * Netbox
 * Matrix (Federations, Bridges, ...)
@@ -67,11 +67,11 @@ The http server is then listening on port 8000.
 * Bookstack (SAML)
 
 #### Test if still working
-* Typo 3
+* Typo 3 - remove if not
 * Seafile
 * Privatebin
-* OpenVPN
-* OpenLDAP
+* OpenVPN - remove if not
+* OpenLDAP - remove if not
 * Jupyter
 * Gitlab
-* docky-onion
+* docky-onion - remove if not
