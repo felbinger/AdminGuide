@@ -1,0 +1,33 @@
+---
+- name: "Set interface and ip address as fact next tasks"
+  ansible.builtin.set_fact: |
+    address="{{ vhost.nginx_proxy.ipv6_addr }}/{{ vhost.nginx_proxy.ipv6_prefix | default('128') }}"
+    interface="{{ vhost.interface | default('ens18') }}"
+
+- name: "Adding IPv6 address to {{ interface }}"
+  ansible.builtin.command: "ip -6 address add {{ address }} dev {{ interface }}"
+  become: true
+
+- name: "Add IPv6 address to /etc/network/interface"
+  ansible.builtin.blockinfile:
+    path: /etc/network/interfaces
+    insertafter: EOF
+    block: |2
+          # {{ vhost.nginx_proxy.domain }}
+          up ip -6 address add {{ address }} dev {{ interface }}
+    backup: true
+  become: true
+
+- name: "Create netbox ipv6 addresse for {{ inventory_hostname }}"
+  netbox.netbox.netbox_ip_address:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ netbox_token }}"
+    data:
+      address: "{{ address }}"
+      dns_name: "{{ vhost.nginx_proxy.domain }}"
+      assigned_object:
+        name: "{{ interface }}"
+        virtual_machine: "{{ inventory_hostname }}"
+    state: present
+  delegate_to: localhost
+  when: netbox_url and netbox_token

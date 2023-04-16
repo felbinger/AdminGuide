@@ -1,0 +1,40 @@
+---
+- name: "Check if vhost for {{ vhost.nginx_proxy.domain }} exists"
+  ansible.builtin.stat:
+    path: "/etc/nginx/sites-available/{{ vhost.nginx_proxy.domain }}"
+  register: nginx_vhost
+
+- name: "Check if private key for {{ vhost.nginx_proxy.domain }} exist"
+  ansible.builtin.stat:
+    path: "/root/.acme.sh/{{ vhost.nginx_proxy.domain }}_ecc/{{ vhost.nginx_proxy.domain }}.key"
+  register: nginx_vhost_certificates_key
+  become: true
+
+- name: "Check if fullchain certificate for {{ vhost.nginx_proxy.domain }} exist"
+  ansible.builtin.stat:
+    path: "/root/.acme.sh/{{ vhost.nginx_proxy.domain }}_ecc/fullchain.cer"
+  register: nginx_vhost_certificates_cer
+  become: true
+
+- name: "Add the ipv6 address {{ vhost.nginx_proxy.ipv6_addr }} for {{ vhost.nginx_proxy.domain }}"
+  ansible.builtin.include_tasks: add_ipv6_address.yaml
+  when: vhost.nginx_proxy.ipv6_addr not in ansible_facts["all_ipv6_addresses"]
+
+- name: "Create vhost {{ vhost.nginx_proxy.domain }}"
+  ansible.builtin.include_tasks: create-vhost.yaml
+  when: not nginx_vhost.stat.exists or
+        not nginx_vhost_certificates_cer.stat.exists or
+        not nginx_vhost_certificates_key.stat.exists
+
+- name: "Enable nginx vhost {{ vhost.nginx_proxy.domain }}"
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ vhost.nginx_proxy.domain }}"
+    dest: "/etc/nginx/sites-enabled/{{ vhost.nginx_proxy.domain }}"
+    state: link
+  become: true
+
+- name: "Test nginx configuration"
+  ansible.builtin.command: nginx -t
+  become: true
+  notify: "Reload nginx"
+  changed_when: false

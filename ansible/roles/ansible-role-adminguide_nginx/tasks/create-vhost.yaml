@@ -1,0 +1,36 @@
+---
+- name: "Create nginx vhost for {{ vhost.nginx_proxy.domain }}"
+  ansible.builtin.template:
+    src: "vhost.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ vhost.nginx_proxy.domain }}"
+    mode: '644'
+  when: not nginx_vhost.stat.exists
+  become: true
+
+- name: "Set splitted domain as fact next tasks"
+  ansible.builtin.set_fact: |
+    splitted="{{ vhost.nginx_proxy.domain.split('.') }}"
+
+- name: "Set dns zone as fact for credential selection"
+  ansible.builtin.set_fact: |
+    zone="{{ splitted[-2] }}.{{ splitted[-1] }}"
+
+- name: "Issue certificate for {{ vhost.nginx_proxy.domain }}"
+  # the usage of shell is required to pass environment variables
+  ansible.builtin.shell: "/root/.acme.sh/acme.sh --issue --keylength ec-384 --dns dns_cf -d {{ vhost.nginx_proxy.domain }}"
+  environment:
+    CF_Token: "{{ nginx_cf_token[zone] }}"
+    CF_Account_ID: "{{ nginx_cf_account_id[zone] }}"
+    CF_Zone_ID: "{{ nginx_cf_zone_id[zone] }}"
+  when: not nginx_vhost_certificates_cer.stat.exists or
+        not nginx_vhost_certificates_key.stat.exists
+  become: true
+
+- name: "Configure DNS"
+  community.general.cloudflare_dns:
+    zone: "{{ zone }}"
+    record: "{{ splitted[-3] | default('@') }}"
+    type: AAAA
+    value: "{{ vhost.nginx_proxy.ipv6_addr }}"
+    proxied: false
+    api_token: "{{ nginx_cf_token[zone] }}"
