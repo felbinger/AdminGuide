@@ -29,26 +29,26 @@ services:
 #    depends_on:
 #      - "signald"
 #    volumes:
-#      - "/srv/mautrix-signal:/data:Z"
-#      - "/srv/signald:/signald/:z"
+#      - "/srv/matrix/mautrix-signal:/data"
+#      - "/srv/signald:/signald"
 #
 #  signald:
 #    image: docker.io/signald/signald
 #    restart: always
 #    volumes: 
-#      - "/srv/signald:/signald:z"
+#      - "/srv/signald:/signald"
 
 #  mautrix-telegram:
 #    image: dock.mau.dev/mautrix/telegram
 #    restart: always
 #    volumes:
-#      - "/srv/comms/mautrix-telegram:/data:Z"
+#      - "/srv/matrix/mautrix-telegram:/data"
 
 #  mautrix-whatsapp:
 #    image: dock.mau.dev/mautrix/whatsapp
 #    restart: always
 #    volumes:
-#      - "/srv/matrix/mautrix-whatsapp:/data:Z"
+#      - "/srv/matrix/mautrix-whatsapp:/data"
 #      - "/etc/timezone:/etc/timezone:ro"
 ```
 
