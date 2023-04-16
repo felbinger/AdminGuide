@@ -90,7 +90,7 @@ Now you can start the services using `docker-compose up -d`.
 
 If you don't want to use OpenID Connect (e.g. with Keycloak), you may now create users:
 ```yaml
-docker-compose exec synapse register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://domain.de
+sudo docker compose exec synapse register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://synapse.domain.de
 ```
 
 ### Reset password of user 
