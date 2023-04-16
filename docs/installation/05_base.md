@@ -167,14 +167,14 @@ da dafür kein TLS Zertifikat angefordert werden kann.
 
 ### Reverse Proxy
 
-Sowohl nginx, als auch Traefik, sind beide stark verbreitete Proxies. Sie werden von
+Sowohl nginx als auch Traefik, sind beide stark verbreitete Proxies. Sie werden von
 großen Unternehmen wie Google, Cloudflare, Dropbox und Mozilla verwendet. Ich habe
 mich nach reichlicher Überlegung dazu entschieden beide Varianten vorzustellen, da
-sowohl Traefik, als auch nginx Vorteile hat.
+sowohl Traefik, als auch nginx ihre Vorteile haben.
 
 !!! info ""
-Hinsichtlich Traefik betrachten wir lediglich den dynamisches Modus,
-bei dem das HTTP Routing über die Docker Labels konfiguriert wird.
+    Hinsichtlich Traefik betrachten wir lediglich den dynamischen Modus,
+    bei dem das HTTP Routing über die Docker Labels konfiguriert wird.
 
 Die Ersteinrichtung von Traefik empfinde ich, vor allem auf den ACME Client bezogen,
 als schwieriger als die von nginx. Mit nginx wird acme.sh (ein separates Skript)
@@ -197,8 +197,8 @@ beispielsweise ein neuer Container erstellt werden kann, bei dem das Host-Dateis
 eingehängt ist.
 
 === "nginx"
-Da nginx nicht als Docker Container bereitgestellt wird, sondern direkt auf dem Host
-installiert wird, gilt hier eine andere Verzeichnisstruktur.
+    Da nginx nicht als Docker Container bereitgestellt wird, sondern direkt auf dem Host
+    installiert wird, gilt hier eine andere Verzeichnisstruktur.
 
     Die "Virtual-Host" Konfigurationsdateien liegen im Verzeichnis `/etc/nginx/sites-available/`
     unter der Domain, die Sie erreichbar machen.
@@ -209,7 +209,7 @@ installiert wird, gilt hier eine andere Verzeichnisstruktur.
     dort in der nginx Virtual-Host Konfiguration eingebunden.
 
 === "Traefik"
-Da Traefik als Docker Container bereitgestellt wird, gilt die oben genannte Verzeichnisstruktur:
+    Da Traefik als Docker Container bereitgestellt wird, gilt die oben genannte Verzeichnisstruktur:
 
     * Containerdefinition: `/home/admin/traefik/docker-compose.yml`  
     * Env-Vars (hier DNS API Token): `/home/admin/traefik/.traefik.env`  
@@ -221,14 +221,14 @@ Da Traefik als Docker Container bereitgestellt wird, gilt die oben genannte Verz
     Containers gespeichert.
 
 !!! note ""
-In komplexeren Server-Infrastrukturen kann es sinnvoll sein, jedem Virtual Host eine
-eigene dedizierte IPv6 Adresse zuzuweisen. Dies hat den großen Vorteil, das man z. B.
-die Firewall Logs auf Layer 3 auswerten kann, statt den [TLS SNI Header](
-https://en.wikipedia.org/wiki/Server_Name_Indication) zu betrachten um den beteiligten
-Webserver in Erfahrung zu bringen.  
-Da ich in diesen Netzwerken bisher immer auf nginx gesetzt habe,
-habe ich nie geprüft, ob Traefik dieses Feature (jedem HTTP Router
-eine eigene IPv6 Adresse zuzuweisen) ebenfalls unterstützt.
+    In komplexeren Server-Infrastrukturen kann es sinnvoll sein, jedem Virtual Host eine
+    eigene dedizierte IPv6 Adresse zuzuweisen. Dies hat den großen Vorteil, das man z. B.
+    die Firewall Logs auf Layer 3 auswerten kann, statt den [TLS SNI Header](
+    https://en.wikipedia.org/wiki/Server_Name_Indication) zu betrachten, um den beteiligten
+    Webserver in Erfahrung zu bringen.  
+    Da ich in diesen Netzwerken bisher immer auf nginx gesetzt habe,
+    habe ich nie geprüft, ob Traefik dieses Feature (jedem HTTP Router
+    eine eigene IPv6 Adresse zuzuweisen) ebenfalls unterstützt.
 
 Prinzipiell ist die genutzte [ACME Challenge](https://letsencrypt.org/docs/challenge-types/) irrelevant, da ich
 auch interne Dienste betreibe, die nicht aus dem Internet erreichbar sind, verwende ich prinzipiell die ACME-DNS-01
