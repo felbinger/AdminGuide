@@ -266,7 +266,7 @@ Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch
 
 Es ermöglicht die zentrale Konfiguration von HTTP Seiten, die auf allen Domains,
 die durch Cloudflare Proxy gerouted werden aufgerufen werden können. Dies ist vor 
-allem für Seiten wie die [`.well-knwown/security.txt`](https://securitytxt.org) oder
+allem für Seiten wie die [`.well-known/security.txt`](https://securitytxt.org) oder
 `robots.txt` Interessant, doch auch die `.well-known` Einträge für Matrix können so 
 gesetzt werden.
 
