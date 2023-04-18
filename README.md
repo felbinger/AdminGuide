@@ -59,7 +59,7 @@ The http server is then listening on port 8000.
 * Sentry - or remove!
 * Prometheus
 * Netbox
-* Matrix (Federations, Bridges, ...)
+* Matrix (Keycloak SSO, if you want more information to bridges (setup instructions))
 * Jitsi
 * Guacamole OIDC Integration (doesn't work like this...)
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
