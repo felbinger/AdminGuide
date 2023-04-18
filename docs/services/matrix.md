@@ -58,7 +58,7 @@ services:
           - "[::1]:8000:8080"
     ```
 
-    ```shell
+    ```nginx
     # /etc/nginx/sites-available/synapse.domain.de.conf
     # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
     server {
@@ -109,7 +109,7 @@ services:
     müssen auf der Homeserver Domain (hier `domain.de`) hinterlegt sein, damit 
     die Matrix Federation funktioniert und Clients details zum Homeserver erhalten.
 
-    ```shell
+    ```nginx
     # /etc/nginx/sites-available/domain.de.conf
     # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
     server {
@@ -241,7 +241,7 @@ diese Dateien damit nicht in die Quere.
 
 Wird nginx als Reverse Proxy betrieben so müssen lediglich diese 
 beiden locations in den V-Host für `domain.de` eingefügt werden.
-```
+```nginx
 location /.well-known/matrix/server {
     add_header content-type application/json;
     add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
