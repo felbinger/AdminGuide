@@ -48,7 +48,24 @@ The http server is then listening on port 8000.
 ## TODO
 * Can traefik assign each http router a seperate ipv6 address?
 * How to configure authenticated origin pulls with traefik and cloudflare?
-* Describe how we can give traefik a origin server wildcard tls certificate, instead of using ACME with LEGO.
+* Describe how we can give traefik a origin server wildcard tls certificate, instead of using ACME with LEGO.  
+  should work like this:
+  ```shell
+  commands:
+    # ...
+    - "--tls.certificatesresolvers.myresolver1.acme=false"
+    - "--tls.certificatesresolvers.myresolver1.certFile=/certs/domain1.crt"
+    - "--tls.certificatesresolvers.myresolver1.keyFile=/certs/domain1.key"
+    - "--tls.certificatesresolvers.myresolver1.domains[0]=domain1.com"
+    - "--tls.certificatesresolvers.myresolver2.acme=false"
+    - "--tls.certificatesresolvers.myresolver2.certFile=/certs/domain2.crt"
+    - "--tls.certificatesresolvers.myresolver2.keyFile=/certs/domain2.key"
+    - "--tls.certificatesresolvers.myresolver2.domains[0]=domain2.com"
+  # ...
+  volumes:
+    # ...
+    - "/srv/traefik/certs:/certs"
+  ```
 * Test the trafik setup - I wrote it from what I remembered last time doing it...
 * Think about splitting the three [traefik container definition](./docs/Installation/) into seperate files (to avoid duplicate configuration fragments).
 
