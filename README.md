@@ -85,10 +85,10 @@ The http server is then listening on port 8000.
 
 #### Test if still working
 * Typo 3 - remove if not
-* Seafile
-* Privatebin
+* Seafile  - remove if not
+* Privatebin  - remove if not
 * OpenVPN - remove if not
 * OpenLDAP - remove if not
+* docky-onion - remove if not
 * Jupyter
 * Gitlab
-* docky-onion - remove if not
