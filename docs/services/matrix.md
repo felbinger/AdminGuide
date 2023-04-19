@@ -197,7 +197,7 @@ Nun kann der Matrix Homeserver bereits mit dem Befehl `docker compose up -d` ges
 
 ### Lokalen Nutzer anlegen
 Ein neuer Nutzer lässt sich mit diesem Befehl erzeugen:
-```yaml
+```shell
 sudo docker compose exec synapse register_new_matrix_user \
   -u USERNAME -p PASSWORD \
   -a -c /data/homeserver.yaml https://synapse.domain.de
