@@ -1,9 +1,9 @@
 # docky-onion
 
-To provide [tor hidden services](https://2019.www.torproject.org/docs/onion-services) through docker you can 
-use [docky-onion](https://github.com/use-to/docky-onion) to make any of your services accessible through 
-[tor](https://www.torproject.org/). Here is an example `docker-compose.yml` to serve a [nginx](https://www.nginx.com/) 
-as hidden service on port `80` and `8080`:
+Um einen [tor hidden services](https://2019.www.torproject.org/docs/onion-services) mit docker zu verwenden, kann man
+[docky-onion](https://github.com/use-to/docky-onion) verwenden, um jeden Dienst in [tor](https://www.torproject.org/)
+erreichbar zu machen. Hier ein Beispiel: `docker-compose.yml` um [nginx](https://www.nginx.com/) 
+als hidden service auf port `80` und `8080` zur verfügung zustellen:
 
 ```yaml
 version: "3.9"
@@ -25,11 +25,12 @@ services:
       - docky-onion
 ```
 
-After you start the containers using `docker compose up -d` docky-onion will proxy nginx into the tor network. 
-Now we need to look up the `.onion`-address using `docker compose exec docky-onion lookup`.
-This will print something like the following:
+Nach dem Starten des Containers mit dem Befehl `docker compose up -d` wird docky-onion den nginx proxy im Tor-Netzwerk
+erreichbar machen.
+Jetzt können wir die `.onion`-Adresse mithilfe von `docker compose exec docky-onion lookup` nachschauen.
+Die Ausgabe sollte wie folgt (oder ähnlich) aussehen:
 ```
 WEB => j3c7wmyv6b3q3uvowetwwygb7h57k2bjhtnwp2zfamda2ij2vanyhmid.onion
 ```
 
-Please note that you will get multiple `.onion`-address for each service you want to serve.
+MERKE: Man bekommt mehrere `.onion`-Adressen für jeden Dienst, welcher im Tor-Netzwerk erreichbar ist.

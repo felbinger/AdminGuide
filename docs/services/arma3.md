@@ -1,6 +1,10 @@
 # Arma 3 Server
 
-Based on Linux Game Server Manager, with the required packages for extdb3...
+Arma 3 ist ein militärischer Taktik-Shooter, welcher in einer offenen Welt auf einer fiktiven
+Inselgruppe im Mittelmeer spielt. Spieler übernehmen die Rolle von Soldaten und können alleine oder im Mehrspielermodus
+Missionen planen und ausführen, während sie realistische Ausrüstung, Waffen und Fahrzeuge nutzen.
+
+Basiert auf Linux Game Server Manager, mit den benötigten Paketen für extdb3...
 
 ### Setup Instructions (Example for Arma 3 Exile Mod)
 1. Install Docker

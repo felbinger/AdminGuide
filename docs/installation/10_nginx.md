@@ -1,6 +1,6 @@
 # nginx ohne Proxy
 
-Wenn nginx ohne vorgeschalteten Proxy eingesetzt werden soll, benötigt man TLS Zertifikate, die im 
+Wenn nginx ohne vorgeschalteten Proxy eingesetzt werden soll, benötigt man TLS Zertifikate, welche im 
 Browser validiert werden können. 
 
 {% include-markdown "../../includes/installation/nginx_base.md" %}

@@ -1,5 +1,7 @@
 # Bookstack
 
+Bookstack verwendet die Idee von Büchern, um Seiten zu organisieren und Informationen zu speichern.
+
 ```yaml
 version: '3.9'
 
