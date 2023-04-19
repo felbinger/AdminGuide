@@ -84,7 +84,7 @@ services:
         ssl_stapling_verify on;
 
         location / {
-            return 301 https://app.element.io\$request_uri;
+            return 301 https://app.element.io$request_uri;
         }
 
         location ~* ^(\/_matrix|\/_synapse\/client) {
