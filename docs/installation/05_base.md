@@ -26,8 +26,9 @@ usermod -aG sudo,admin nicof2000
 
 ## Docker
 
-Die Installation von Docker - wie in der Docker Dokumentation bereits sehr gut beschrieben, -
-verwenden wie zusätzlich einen Alias der uns den Tippaufwand für `sudo docker compose` erspart:
+Die Installation von Docker - wie in der [Docker Dokumentation](https://docs.docker.com/engine/install/debian/) 
+bereits sehr gut beschrieben, - verwenden wie zusätzlich einen Alias der uns den 
+Tippaufwand für `sudo docker compose` erspart:
 
 ```shell
 curl -fsSL https://get.docker.com | sudo bash
