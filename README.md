@@ -82,6 +82,7 @@ The http server is then listening on port 8000.
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
 * Gitea (OIDC)
 * Bookstack (SAML)
+* Keycloak (Admin Webinterface Protection for Traefik as Reverse Proxy)
 
 #### Test if still working
 * Typo 3 - remove if not

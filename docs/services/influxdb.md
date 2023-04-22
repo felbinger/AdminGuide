@@ -15,7 +15,8 @@ services:
     #  - "/srv/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf"
 ```
 
-Unfortunately you need to copy some file out of the container before you can use influxdb:
+Da der Container die, in den Volumes liegenden Daten, 
+nicht kopiert müssen wir das zuvor manuell erledigen:
 ```shell
 sudo mkdir -p /srv/main/influxdb
 
@@ -28,4 +29,5 @@ sudo docker cp influxdb-influxdb-1:/etc/influxdb/influxdb.conf \
   /srv/main/influxdb/influxdb.conf
 ```
 
-Afterwards you can remove the comments in front of the volumes and start up the container.
+Entfernen Sie anschließend die Kommantare vor den 
+Volumes in der Containerdefinition (`docker-compose.yml`).
