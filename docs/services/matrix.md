@@ -113,7 +113,7 @@ services:
     # /etc/nginx/sites-available/domain.de.conf
     # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
     server {
-        server_name domain.de
+        server_name domain.de;
         listen 0.0.0.0:443 ssl http2;
         listen [::]:443 ssl http2;
 
