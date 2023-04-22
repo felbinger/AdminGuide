@@ -17,16 +17,16 @@ services:
 
 Da der Container die, in den Volumes liegenden Daten, 
 nicht kopiert müssen wir das zuvor manuell erledigen:
-```shell
-sudo mkdir -p /srv/main/influxdb
+```sh
+sudo mkdir -p /srv/influxdb
 
 sudo docker compose up -d influxdb
 
 sudo docker cp influxdb-influxdb-1:/var/lib/influxdb \
-  /srv/main/influxdb/lib
+  /srv/influxdb/lib
 
 sudo docker cp influxdb-influxdb-1:/etc/influxdb/influxdb.conf \
-  /srv/main/influxdb/influxdb.conf
+  /srv/influxdb/influxdb.conf
 ```
 
 Entfernen Sie anschließend die Kommantare vor den 
