@@ -5,7 +5,7 @@
 	We have setup scripts for [jitsi](https://github.com/secshellnet/docs/blob/main/scripts/jitsi.sh)
 	and [jitsi-oidc](https://github.com/secshellnet/docs/blob/main/scripts/jitsi-oidc.sh).
 
-Checkout the [official guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker)
+Bei Problemen den [official guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker) lesen.
 
 ```shell
 mkdir -p /home/admin/jitsi/
@@ -20,7 +20,7 @@ curl https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/gen-passwo
 sed -i 's|CONFIG=.*|CONFIG=/srv/jitsi|g' .env
 ```
 
-Next step is to configure the `.env` file and adjust the port forwardings in the jitsi/web container:
+Als Nächstes konfigurieren wir die `.env` Datei und richten die Port-Weiterleitungen für den jitsi/web Container:
 ```yaml
     web:
         image: jitsi/web:latest
@@ -33,13 +33,13 @@ Next step is to configure the `.env` file and adjust the port forwardings in the
 ```
 
 ## OpenID Connect
-See [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
+Siehe [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
 
 ## Configuration
-All configurations are stored in the `/srv/jitsi` directory:
+Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert: 
 <ul>
   <li>
-    You can't modify <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
+    Du kannst <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
   </li>
   <li>
     You can update the settings of your interface by modifying <code>/srv/jitsi/web/interface_config.js</code>
