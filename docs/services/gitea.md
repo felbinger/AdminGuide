@@ -1,5 +1,8 @@
 # Gitea
 
+Gitea ist eine webbasierte Git-Plattform, die es Benutzern ermöglicht, Code-Repositories zu hosten, zu verwalten und zu 
+teilen.
+
 ```yaml
 version: '3.9'
 

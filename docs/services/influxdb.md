@@ -1,5 +1,8 @@
 # InfluxDB
 
+InfluxDB ist eine Open-Source-Zeitreihendatenbank, die speziell für die Speicherung, Abfrage und Visualisierung von
+Zeitreihendaten optimiert ist.
+
 ```yaml
 version: '3.9'
 
@@ -15,7 +18,7 @@ services:
     #  - "/srv/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf"
 ```
 
-Unfortunately you need to copy some file out of the container before you can use influxdb:
+Bevor du InfluxDB verwenden kannst, musst du ein paar Dateien aus dem Container kopieren:
 ```shell
 sudo mkdir -p /srv/main/influxdb
 
@@ -28,4 +31,4 @@ sudo docker cp influxdb-influxdb-1:/etc/influxdb/influxdb.conf \
   /srv/main/influxdb/influxdb.conf
 ```
 
-Afterwards you can remove the comments in front of the volumes and start up the container.
+Nachdem du die Dateien kopiert hast, kannst du die Kommentare von den Volumes entfernen und den Container starten.

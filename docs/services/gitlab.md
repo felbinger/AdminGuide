@@ -1,5 +1,8 @@
 # GitLab
 
+GitLab ist eine Software für Code-Management und Versionierung. Außerdem bietet es eine Vielzahl an Tools für die
+Zusammenarbeit in Teams wie Issue-Tracking, CI/CD-Pipelines und Wikis.
+
 ```yaml
 version: '3.9'
 

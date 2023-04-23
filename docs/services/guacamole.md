@@ -1,5 +1,8 @@
 # Guacamole
 
+Guacamole ist ein Webanwendungsdienst, welcher es ermöglicht, über einen Webbrowser auf entfernte Computer oder Server
+zuzugreifen, ohne dass spezielle Client-Software installiert werden muss.
+
 ```yaml
 version: '3.9'
 
@@ -74,6 +77,6 @@ OPENID_SCOPE=openid profile
 JAVA_OPTS=-Dhttp.agent=irrelevant
 ```
 
-Add a new OIDC client in Keycloak:  
+Um einen neuen OIDC Client in Keycloak hinzuzufügen:
 - Standard Flow Enabled: off
 - Implicit Flow Enabled: on
