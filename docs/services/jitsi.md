@@ -1,7 +1,7 @@
 # Jitsi
 
 !!! info ""
-	Dadurch, dass der dockerized Jitsi service nicht unbedingt sehr angenehm ist, empfehlen wir dafür einen separaten 
+	Dadurch, dass der dockerized Jitsi service nicht unbedingt sehr angenehm ist, empfehlen wir dafür einen separaten
 	virtuellen Server.
 	Hierfür haben wir folgende Skripte [jitsi](https://github.com/secshellnet/docs/blob/main/scripts/jitsi.sh)
 	und [jitsi-oidc](https://github.com/secshellnet/docs/blob/main/scripts/jitsi-oidc.sh).
@@ -36,14 +36,19 @@ Als Nächstes konfigurieren wir die `.env` Datei und richten die Port-Weiterleit
 ## OpenID Connect
 Siehe [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
 
-## Konfiguration
-Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert:
-- Du kannst `/srv/jitsi/web/config.js`, because it will be regenerated on container start, but you can update the
-  attributes in the .env file
-- You can update the settings of your interface by modifying `/srv/jitsi/web/interface_config.js`
+## Configuration
+All configurations are stored in the `/srv/jitsi` directory:
+<ul>
+  <li>
+    You can't modify <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
+  </li>
+  <li>
+    You can update the settings of your interface by modifying <code>/srv/jitsi/web/interface_config.js</code>
+  </li>
+</ul>
 
 
-## Erweiterungen der Jitsi Instanz
+## Erweiterung der Jitsi Instanz
 ### Etherpad
 Etherpad ermöglicht es Dokumente gemeinsam in Echtzeit zu bearbeiten.
 
@@ -85,15 +90,12 @@ Die Konfigurationen befinden sich in der [jibri.yml](https://github.com/jitsi/do
 welche man in dem zugehörigem GitHub repo findet.
 Wir empfehlen den Dienst in die `docker-compose.yml` zu kopieren.
 
-
-### JVB Statictics (für monitoring)
-
+### Aktiviere JVB Statictics (for monitoring)
 Die Colibri API von dem JVB Dienst kann aktiviert werden, indem man die JVB_ENABLE_APIS in der `.env` Datei
 auskommentiert.
-
 ```shell
-# Eine mit Kommata separierte Liste mit API Schnittstellen, welche gestartet werden soll wenn das JVB startet [default: none]
-# Siehe https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md für mehr Informationen
+# A comma separated list of APIs to enable when the JVB is started [default: none]
+# See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information
 JVB_ENABLE_APIS=rest,colibri
 ```
 
