@@ -36,11 +36,11 @@ Als Nächstes konfigurieren wir die `.env` Datei und richten die Port-Weiterleit
 ## OpenID Connect
 Siehe [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
 
-## Configuration
-All configurations are stored in the `/srv/jitsi` directory:
+## Konfiguration
+Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert: 
 <ul>
   <li>
-    You can't modify <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
+    Du kannst <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
   </li>
   <li>
     You can update the settings of your interface by modifying <code>/srv/jitsi/web/interface_config.js</code>
@@ -95,7 +95,7 @@ Die Colibri API von dem JVB Dienst kann aktiviert werden, indem man die JVB_ENAB
 auskommentiert.
 ```shell
 # A comma separated list of APIs to enable when the JVB is started [default: none]
-# See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information
+# Siehe https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md für mehr Informationen
 JVB_ENABLE_APIS=rest,colibri
 ```
 
