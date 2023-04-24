@@ -1,9 +1,10 @@
 # Jitsi
 
 !!! info ""
-	Due to the fact that the dockerized jitsi service is really painful, we suggest you use a separate virtual server for this.  
-	We have setup scripts for [jitsi](https://github.com/secshellnet/docs/blob/main/scripts/jitsi.sh)
-	and [jitsi-oidc](https://github.com/secshellnet/docs/blob/main/scripts/jitsi-oidc.sh).
+	Dadurch, dass der dockerized Jitsi service nicht unbedingt sehr angenehm ist, empfehlen wir dafür einen separaten 
+	virtuellen Server.
+	Hierfür haben wir folgende Skripte [jitsi](https://github.com/secshellnet/docs/blob/main/scripts/jitsi.sh)
+	und [jitsi-oidc](https://github.com/secshellnet/docs/blob/main/scripts/jitsi-oidc.sh).
 
 Bei Problemen den [official guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker) lesen.
 
@@ -35,7 +36,7 @@ Als Nächstes konfigurieren wir die `.env` Datei und richten die Port-Weiterleit
 ## OpenID Connect
 Siehe [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
 
-## Configuration
+## Konfiguration
 Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert: 
 <ul>
   <li>
@@ -47,13 +48,15 @@ Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert:
 </ul>
 
 
-## Extend your Jitsi instance
+## Erweiterungen der Jitsi Instanz
 ### Etherpad
-Etherpad allows you to edit documents collaboratively in real-time.
+Etherpad ermöglicht es Dokumente gemeinsam in Echtzeit zu bearbeiten.
 
-You can find the [etherpad.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/etherpad.yml) in which the service is defined, in the github repo.
-I suggest you copy the etherpad service to your `docker-compose.yml`.
-You can also add some environment variables to connect your own database. Your `.env` file should look like this:
+Die [etherpad.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/etherpad.yml), wo der Service beschrieben ist,
+befindet sich in deren GitHub repo.
+Wir empfehlen den Etherpad-Service in die `docker-copmpose.yml` zu kopieren.
+Außerdem kannst du die Umgebungsvariablen für das verbinden mit deiner eigenen Datenbank anlegen. Die `.env` Datei
+sollte ungefähr so aussehen:
 ```shell
 DB_TYPE=postgres
 DB_HOST=localhost
@@ -64,7 +67,8 @@ DB_PASS=S3cR3T
 #DB_CHARSET= This is only for MySQL
 #DB_FILENAME= Just for SQLite or DirtyDB
 ```
-Look also the [available database types](https://www.npmjs.com/package/ueberdb2). Now you have to put in these environment variables into your `docker-compose.yml`. This could look like this:
+Beachte [verfügbare Datenbank typen](https://www.npmjs.com/package/ueberdb2).
+Jetzt müssen die angelegten Umgebungsvariablen in die `docker-compose.yml` hinzugefügt werden. Ungefähr wie hier:
 ```yaml
     etherpad:
       environment:
@@ -79,27 +83,35 @@ Look also the [available database types](https://www.npmjs.com/package/ueberdb2)
 ```
 
 ### Jibri
-The [Jitsi Broadcasting Infrastructure](https://github.com/jitsi/jibri) provides services for recording or streaming.
+Die [Jitsi Broadcasting Infrastruktur](https://github.com/jitsi/jibri) ermöglicht das aufnehmen und streamen in einem
+Jitsi Meeting.
 
-You can find the [jibri.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/jibri.yml) in which the service is defined, in the github repo.  
-I suggest you copy the jibri service to your `docker-compose.yml`.
+Die Konfigurationen befinden sich in der [jibri.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/jibri.yml),
+welche man in dem zugehörigem GitHub repo findet.
+Wir empfehlen den Dienst in die `docker-compose.yml` zu kopieren
 
-### Enable JVB Statictics (for monitoring)
-You can enable the colibri api of the jvb service by simply comment out JVB_ENABLE_APIS in the .env file.
+
+### JVB Statictics (für monitoring)
+
+Die Colibri API von dem JVB Dienst kann aktiviert werden, indem man die JVB_ENABLE_APIS in der `.env` Datei
+auskommentiert.
+
+
 ```shell
 # A comma separated list of APIs to enable when the JVB is started [default: none]
-# See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information
+# Siehe https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md für mehr Informationen
 JVB_ENABLE_APIS=rest,colibri
 ```
 
-You can now request the statistics from the api:
+Die API ist nun verfügbar und du kannst die Daten abfragen:
 ```shell
 ip=$(docker inspect jitsi_jvb_1 | jq ".[0].NetworkSettings.Networks.jitsi.IPAddress" | tr -d '"')
 curl -s "http://${ip}:8080/colibri/stats" | jq
 ```
 
-## Export Metrics
+## Metrics exportieren
 You can export the metrics by using a prometheus exporter:
+
 ```yaml
     jitsi2prometheus:
         image: ghcr.io/an2ic3/jitsi2prometheus
