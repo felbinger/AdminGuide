@@ -52,6 +52,11 @@ services:
 #      - "/etc/timezone:/etc/timezone:ro"
 ```
 
+```shell
+# .postgres.env
+POSTGRES_PASSWORD=S3cr3T
+```
+
 === "nginx"
     ```yaml
         ports:
@@ -113,7 +118,7 @@ services:
     # /etc/nginx/sites-available/domain.de.conf
     # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
     server {
-        server_name domain.de
+        server_name domain.de;
         listen 0.0.0.0:443 ssl http2;
         listen [::]:443 ssl http2;
 
@@ -164,12 +169,7 @@ services:
     TODO `.well-known/matrix/{server,client}` auf `domain.de`
 
 
-```shell
-# .postgres.env
-POSTGRES_PASSWORD=S3cr3T
-```
-
-Als erstes, muss die homeserver Konfiguration generiert werden. Dazu wird folgender Befehl ausgeführt:
+Als erstes, muss die homeserver-Konfiguration generiert werden. Dazu wird folgender Befehl ausgeführt:
 ```shell
 docker run -it --rm -v "/srv/matrix/synapse:/data" \
   -e "SYNAPSE_SERVER_NAME=domain.de" \
@@ -200,7 +200,7 @@ Ein neuer Nutzer lässt sich mit diesem Befehl erzeugen:
 ```shell
 sudo docker compose exec synapse register_new_matrix_user \
   -u USERNAME -p PASSWORD \
-  -a -c /data/homeserver.yaml https://synapse.domain.de
+  -a -c /data/homeserver.yaml http://localhost:8008
 ```
 
 ### Passwort zurücksetzen 
