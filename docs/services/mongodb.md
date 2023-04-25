@@ -1,5 +1,8 @@
 # MongoDB
 
+MongoDB ist eine dokumentenorientierte NoSQL-Datenbank, die eine flexible und skalierbare Speicherlösung für
+strukturierte und unstrukturierte Daten bietet.
+
 ```yaml
 version: '3.9'
 

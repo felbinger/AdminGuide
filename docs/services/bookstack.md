@@ -107,17 +107,17 @@ At first, we have to configure Keycloak properly.
 Create a new Client. Client ID is `https://bookstack.domain.de/saml2/metadata`, Client Protocol
 is `saml`. Now edit the settings of your newly created Client as follows:
 
-| Setting                   | Value                             |
-|---------------------------|-----------------------------------|
-| Client Signature Required | OFF                               |
+| Setting                   | Value                           |
+|---------------------------|---------------------------------|
+| Client Signature Required | OFF                             |
 | Root URL                  | `https://bookstack.domain.de/`  |
 | Valid Redirect URIs       | `https://bookstack.domain.de/*` |
 | Base URL                  | `https://bookstack.domain.de/`  |
 
 Fine Grain SAML Endpoint Configuration:
 
-| Setting                                     | Value                                     |
-|---------------------------------------------|-------------------------------------------|
+| Setting                                     | Value                                   |
+|---------------------------------------------|-----------------------------------------|
 | Assertion Consumer Service POST Binding URL | `https://bookstack.domain.de/saml2/acs` |
 | Logout Service Redirect Binding URL         | `https://bookstack.domain.de/saml2/sls` |
 

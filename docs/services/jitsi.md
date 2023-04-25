@@ -13,11 +13,11 @@ mkdir -p /home/admin/jitsi/
 wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/docker-compose.yml -O /home/admin/jitsi/docker-compose.yml
 wget https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/env.example -O /home/admin/jitsi/.env
 
-# generate new secrets
+# generiert neue secrets
 cd /home/admin/jitsi/
 curl https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master/gen-passwords.sh | bash
 
-# change configuration directory
+# ändert den Konfigurationsordner
 sed -i 's|CONFIG=.*|CONFIG=/srv/jitsi|g' .env
 ```
 
@@ -55,7 +55,7 @@ Etherpad ermöglicht es Dokumente gemeinsam in Echtzeit zu bearbeiten.
 Die [etherpad.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/etherpad.yml), wo der Service beschrieben ist,
 befindet sich in deren GitHub repo.
 Wir empfehlen den Etherpad-Service in die `docker-copmpose.yml` zu kopieren.
-Außerdem kannst du die Umgebungsvariablen für das verbinden mit deiner eigenen Datenbank anlegen. Die `.env` Datei
+Außerdem kannst du die Umgebungsvariablen für das Verbinden mit deiner eigenen Datenbank anlegen. Die `.env` Datei
 sollte ungefähr so aussehen:
 ```shell
 DB_TYPE=postgres
@@ -96,9 +96,8 @@ Wir empfehlen den Dienst in die `docker-compose.yml` zu kopieren
 Die Colibri API von dem JVB Dienst kann aktiviert werden, indem man die JVB_ENABLE_APIS in der `.env` Datei
 auskommentiert.
 
-
 ```shell
-# A comma separated list of APIs to enable when the JVB is started [default: none]
+# Eine mit Kommata separierte Liste mit API Schnittstellen, welche gestartet werden soll wenn das JVB startet [default: none]
 # Siehe https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md für mehr Informationen
 JVB_ENABLE_APIS=rest,colibri
 ```
@@ -110,7 +109,7 @@ curl -s "http://${ip}:8080/colibri/stats" | jq
 ```
 
 ## Metrics exportieren
-You can export the metrics by using a prometheus exporter:
+Die Metrics kannst du mithilfe von dem Prometheus Exporter exportieren und einsehen:
 
 ```yaml
     jitsi2prometheus:
@@ -122,7 +121,9 @@ You can export the metrics by using a prometheus exporter:
             meet.jitsi:
 ```
 
-Don't forget to add your jitsi2prometheus instance to the prometheus configuration:
+Zum Hinzufügen der jitsi2prometheus Instanz in den prometheus muss folgendes in der prometheus Konfiguration hinzugefügt
+werden:
+
 ```yaml
 ...
 scrape_configs:
