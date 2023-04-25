@@ -57,131 +57,17 @@ services:
 POSTGRES_PASSWORD=S3cr3T
 ```
 
-=== "nginx"
-    ```yaml
-        ports:
-          - "[::1]:8000:8080"
-    ```
-
-    ```nginx
-    # /etc/nginx/sites-available/synapse.domain.de.conf
-    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
-    server {
-        server_name synapse.domain.de;
-        listen 0.0.0.0:443 ssl http2;
-        listen [::]:443 ssl http2;
-
-        ssl_certificate /root/.acme.sh/synapse.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/synapse.domain.de_ecc/synapse.domain.de.key;
-        ssl_session_timeout 1d;
-        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
-        ssl_session_tickets off;
-
-        # modern configuration
-        ssl_protocols TLSv1.3;
-        ssl_prefer_server_ciphers off;
-
-        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
-        add_header Strict-Transport-Security "max-age=63072000" always;
-
-        # OCSP stapling
-        ssl_stapling on;
-        ssl_stapling_verify on;
-
-        location / {
-            return 301 https://app.element.io$request_uri;
-        }
-
-        location ~* ^(\/_matrix|\/_synapse\/client) {
-            proxy_pass http://[::1]:8000;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection 'upgrade';
-            proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-For $remote_addr;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header Host $host;
-            proxy_cache_bypass $http_upgrade;
-
-            # Nginx by default only allows file uploads up to 1M in size
-            # Increase client_max_body_size to match max_upload_size defined in homeserver.yaml
-            client_max_body_size 50M;
-        }
-    }
-    ```
-
-    Die beiden Dateien `server` und `client` im Verzeichnis `.well-known/matrix` 
-    müssen auf der Homeserver Domain (hier `domain.de`) hinterlegt sein, damit 
-    die Matrix Federation funktioniert und Clients details zum Homeserver erhalten.
-
-    ```nginx
-    # /etc/nginx/sites-available/domain.de.conf
-    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
-    server {
-        server_name domain.de;
-        listen 0.0.0.0:443 ssl http2;
-        listen [::]:443 ssl http2;
-
-        ssl_certificate /root/.acme.sh/domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/domain.de_ecc/domain.de.key;
-        ssl_session_timeout 1d;
-        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
-        ssl_session_tickets off;
-
-        # modern configuration
-        ssl_protocols TLSv1.3;
-        ssl_prefer_server_ciphers off;
-
-        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
-        add_header Strict-Transport-Security "max-age=63072000" always;
-
-        # OCSP stapling
-        ssl_stapling on;
-        ssl_stapling_verify on;
-
-        location /.well-known/matrix/server {
-            add_header content-type application/json;
-            add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
-            add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
-            add_header access-control-allow-origin *;
-            return 200 '{"m.server":"synapse.domain.de:443"}';
-        }
-
-        location /.well-known/matrix/client {
-            add_header content-type application/json;
-            add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
-            add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
-            add_header access-control-allow-origin *;
-            return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
-        }
-    }
-    ```
-
-=== "Traefik"
-    ```yaml
-        labels:
-          - "traefik.enable=true"
-          - "traefik.http.services.srv_synapse.loadbalancer.server.port=8008"
-          - "traefik.http.routers.r_synapse.rule=Host(`synapse.domain.de`)"
-          - "traefik.http.routers.r_synapse.entrypoints=websecure"
-    ```
-
-    TODO `.well-known/matrix/{server,client}` auf `domain.de`
-
-
-Als erstes, muss die homeserver-Konfiguration generiert werden. Dazu wird folgender Befehl ausgeführt:
+Bevor du den Container startest, musst du eine Konfigurationsdatei erstellen.
+Der untenstehende Command erstellt eine `homeserver.yaml` Datei in dem Ordner `/srv/matrix`
 ```shell
 docker run -it --rm -v "/srv/matrix/synapse:/data" \
   -e "SYNAPSE_SERVER_NAME=domain.de" \
   -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse generate
 ```
 
-Anschließend wird die Datenbankkonfiguration in der `/srv/matrix/synapse/homeserver.yaml` angepasst:
+Danach solltest du die Postgresql Datenbank ähnlich wie hier konfigurieren:
 ```yaml
 database:
-# name: sqlite3
-# args:
-# database: /data/homeserver.db
   name: psycopg2
   args:
     user: synapse
@@ -192,92 +78,54 @@ database:
     cp_max: 10
 ```
 
-Nun kann der Matrix Homeserver bereits mit dem Befehl `docker compose up -d` gestartet werden.
+Nicht vergessen die sqlite Datenbank auszukommentieren, welche von Matrix als Standard verwendet wird.
+``` yaml
+#database:
+# name: sqlite3
+# args:
+# database: /data/homeserver.db
+```
 
+Jetzt kannst du den Service mit `docker-compose up -d` starten.
 
-### Lokalen Nutzer anlegen
-Ein neuer Nutzer lässt sich mit diesem Befehl erzeugen:
+Wenn du nicht OpenID Connect verwendet willst (z.B. mit Keycloak), kannst du wie folgt Benutzer erstellen:
+```yaml
+sudo docker compose exec synapse register_new_matrix_user -u USERNAME -p PASSWORD -a -c /data/homeserver.yaml https://synapse.domain.de
+```
+
+### Benutzerpasswort zurücksetzen
+
+Um ein Passwort zurückzusetzen, kannst du folgenden Befehl ausführen:
 ```shell
-sudo docker compose exec synapse register_new_matrix_user \
-  -u USERNAME -p PASSWORD \
-  -a -c /data/homeserver.yaml http://localhost:8008
+docker-compose exec -u www-data synapse hash_password -p PASSWORD
 ```
 
-### Passwort zurücksetzen 
-Zurücksetzen lassen sich die Passwörter lediglich über den Datenbank. 
-Zunächst wird ein neuer hash generiert, anschließend wird dieser 
-in der Datenbank für den jeweiligen Nutzer als Password ersetzt.
+Wenn der Befehl ausgeführt wurde, bekommst du ein passwort hash als stdout.
 
+Nachdem du ein Passwort hash erstellt hast, kannst du das Passwort in der Datenbank austauschen. 
+Dazu musst du zuerst eine Shell in dem Postgres Container starten.
 ```shell
-new=$(sudo docker compose exec -u www-data synapse hash_password -c /data/homeserver.yaml -p PASSWORD)
-sudo docker compose exec postgres psql -U postgres -d synapse -c \
-  "UPDATE users SET password_hash='${new}' WHERE name='@test:domain.de';"
+docker-compose exec postgres /bin/bash
+```
+Jetzt kannst du das Passwort updaten:
+```shell
+PGPASSWORD=S3cr3T \
+  psql -U postgres -d synapse -c \
+  "UPDATE users SET password_hash='$2a$12$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' \
+  WHERE name='@test:test.com';"
 ```
 
-### Federation 
-Federation ermöglicht die Kommunikation zwischen Nutzern verschiedener Homeserver.
-
-Wenn der Synapse Homeserver direkt auf der Domain aufgesetzt 
-ist die im Homeserver eingerichtet ist, funktioniert dies out-of-the-box.
-
-Wird der Synapse Server (hier: `synapse.domain.de`) nicht auf 
-der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht, 
-gibt es zwei Möglichkeiten die Ferderation einzurichten.
-
-Der `_matrix` SRV DNS Record kann hierfür genutzt werden. 
-Dies hat jedoch den Nachteil, das zwangsläufig die IP 
-Adresse des Matrix Servers geleakt wird, selbst wenn 
-Cloudflare Proxy verwendet wird, da synapse.domain.de 
-dann nicht geproxied werden kann.
+### Federation
 ```
-_matrix._tcp.domain.de. 1 IN SRV 10 5 443 synapse.domain.de.
+;; SRV Records
+_matrix._tcp.matrix.domain.de.    1    IN    SRV    10 5 443 matrix.domain.de.
 ```
-
-Die aus meiner Sicht bessere Alternative ist die Erstellung 
-von zwei Dateien im Verzeichnis `.well-known/matrix` des Webservers
-der Homeserver Domain. Selbst wenn andere Dienste auf dieser Domain 
-(z.B. eine Website, Nextcloud, ...) betrieben werden kommen sich 
-diese Dateien damit nicht in die Quere.
-
-Wird nginx als Reverse Proxy betrieben so müssen lediglich diese 
-beiden locations in den V-Host für `domain.de` eingefügt werden.
-```nginx
-location /.well-known/matrix/server {
-    add_header content-type application/json;
-    add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
-    add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
-    add_header access-control-allow-origin *;
-    return 200 '{"m.server":"synapse.domain.de:443"}';
-}
-
-location /.well-known/matrix/client {
-    add_header content-type application/json;
-    add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
-    add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
-    add_header access-control-allow-origin *;
-    return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
-}
-```
-Die Dateien können auch Manuell angelegt werden, falls die 
-Homeserver-Domain z. B. auf einen Webspace zeigt.
-
-Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch 
-[dieses](https://github.com/marcelcoding/.well-known) Projekt interessant.
-
-Es ermöglicht die zentrale Konfiguration von HTTP Seiten, die auf allen Domains,
-die durch Cloudflare Proxy gerouted werden aufgerufen werden können. Dies ist vor 
-allem für Seiten wie die [`.well-known/security.txt`](https://securitytxt.org) oder
-`robots.txt` Interessant, doch auch die `.well-known` Einträge für Matrix können so 
-gesetzt werden.
 
 ### SSO with Keycloak
 
-!!! info
-    REWRITE REQUIRED
-
-If you have an Instance of *Keycloak* running, you can use it as an external Authentication Provider.
-At first, we have to create the Client in Keycloak. Create a new Client. Use `synapse.domain.de` as Client ID
-and `openid` as Protocol. Edit your newly created Client as follows:
+Wenn du einen *Keycloak* Service am Laufen hast, kannst du diesen als externen Authentifizierungsanbieter verwenden. 
+Um diesen in Aktion zu bringen, müssen wir zuerst den Client in Keycloak erstellen. Als Client ID kannst du 
+`synapse.domain.de` verwenden und `openid` als Protokoll. Den Rest des Clients kannst du wie folgt bearbeiten:
 
 | Setting                      | Value                                                  |
 |------------------------------|--------------------------------------------------------|
@@ -288,11 +136,11 @@ and `openid` as Protocol. Edit your newly created Client as follows:
 | Base URL                     | `https://synapse.domain.de`                            |
 | Web Origins                  | +                                                      |
 
-Now go to the "Credentials" Tab and save the Client Secret; we will need it later.
+In dem "Credentials" Tab findest du den Client Secret. Diesen solltest du dir abspeichern, da wir ihn später noch
+brauchen.
 
-
-Now we have to edit the `homeserver.yaml` file. I suggest you search for the Values because the file is very long.
-Uncomment / add and edit the following lines:
+Jetzt müssen wir die `homeserver.yaml` Datei bearbeiten. Ich empfehle nach den Values zu suchen, da die Datei sehr lang
+ist. Bearbeite folgende Zeilen wie unten:
 
 ```
 server_name: "matrix.domain.de"
@@ -310,17 +158,11 @@ oidc_providers:
     scopes: ["profile"]
 ```
 
-**It is very important to remove the `openid` Scope which is preset. Things will not work if the
-`openid` Scope is set.**
 
-Now restart your Matrix Server. You should now be able to log in with your Keycloak as an SSO Provider.
+**Wenn du den `openid` Scope nicht entfernst wird es nicht funktion!**
+
+Wenn du den Matrix Server neu gestartet hast, solltest du dich mit Keycloak als SSO Provider anmelden können.
 
 ### Bridge Setup
-
-Matrix unterstützt durch sogenannte Bridges die Einbindung anderer Messenger, 
-wie WhatsApp, Telegram, Signal, ... Auf der [offiziellen Website von Matrix](https://matrix.org/bridges/)
-ist eine Liste mit allen unterstützten Anwendungen.
-
-Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für 
-die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen 
-[hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html](https://docs.mau.fi/bridges/general/docker-setup.html) zu finden
+Um die Bridges aufzusetzen, musst du nur den Anleitungen in den [docs]([https://docs.mau.fi/bridges/python/signal/setup-docker.html](https://docs.mau.fi/bridges/general/docker-setup.html))
+folgen.

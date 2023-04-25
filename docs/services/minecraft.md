@@ -1,5 +1,7 @@
 # Minecraft Server
 
+Minecraft ist ein Open-World Block Spiel. 
+
 ```yaml
 version: '3.9'
 
@@ -26,4 +28,3 @@ services:
       - "SPAWN_PROTECTION=0"
       - "SEED=2303273916051849791"
 ```
-

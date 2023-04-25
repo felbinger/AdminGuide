@@ -1,5 +1,8 @@
 # Keycloak
 
+Keycloak ist eine Software zur Verwaltung von Benutzer-Authentifizierung und Autorisierung, einschließlich
+Single-Sign-On und Social-Login, für Anwendungen und Services.
+
 ```yaml
 version: '3.9'
 

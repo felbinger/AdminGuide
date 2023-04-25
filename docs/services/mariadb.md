@@ -1,5 +1,7 @@
 # MariaDB
 
+MariaDB ist eine Datenbank, welche MySQL sehr ähnelt.
+
 ```yaml
 version: '3.9'
 
