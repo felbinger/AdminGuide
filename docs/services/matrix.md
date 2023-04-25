@@ -205,9 +205,9 @@ sudo docker compose exec synapse register_new_matrix_user \
   -a -c /data/homeserver.yaml http://localhost:8008
 ```
 
-### Passwort zurücksetzen
-Zurücksetzen lassen sich die Passwörter lediglich über den Datenbank.
-Zunächst wird ein neuer hash generiert, anschließend wird dieser
+### Passwort zurücksetzen 
+Zurücksetzen lassen sich die Passwörter lediglich über den Datenbank. 
+Zunächst wird ein neuer hash generiert, anschließend wird dieser 
 in der Datenbank für den jeweiligen Nutzer als Password ersetzt.
 
 ```shell
@@ -216,32 +216,32 @@ sudo docker compose exec postgres psql -U postgres -d synapse -c \
   "UPDATE users SET password_hash='${new}' WHERE name='@test:domain.de';"
 ```
 
-### Federation
+### Federation 
 Federation ermöglicht die Kommunikation zwischen Nutzern verschiedener Homeserver.
 
-Wenn der Synapse Homeserver direkt auf der Domain aufgesetzt
+Wenn der Synapse Homeserver direkt auf der Domain aufgesetzt 
 ist die im Homeserver eingerichtet ist, funktioniert dies out-of-the-box.
 
-Wird der Synapse Server (hier: `synapse.domain.de`) nicht auf
-der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht,
+Wird der Synapse Server (hier: `synapse.domain.de`) nicht auf 
+der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht, 
 gibt es zwei Möglichkeiten die Ferderation einzurichten.
 
-Der `_matrix` SRV DNS Record kann hierfür genutzt werden.
-Dies hat jedoch den Nachteil, das zwangsläufig die IP
-Adresse des Matrix Servers geleakt wird, selbst wenn
-Cloudflare Proxy verwendet wird, da synapse.domain.de
+Der `_matrix` SRV DNS Record kann hierfür genutzt werden. 
+Dies hat jedoch den Nachteil, das zwangsläufig die IP 
+Adresse des Matrix Servers geleakt wird, selbst wenn 
+Cloudflare Proxy verwendet wird, da synapse.domain.de 
 dann nicht geproxied werden kann.
 ```
 _matrix._tcp.domain.de. 1 IN SRV 10 5 443 synapse.domain.de.
 ```
 
-Die aus meiner Sicht bessere Alternative ist die Erstellung
+Die aus meiner Sicht bessere Alternative ist die Erstellung 
 von zwei Dateien im Verzeichnis `.well-known/matrix` des Webservers
-der Homeserver Domain. Selbst wenn andere Dienste auf dieser Domain
-(z.B. eine Website, Nextcloud, ...) betrieben werden kommen sich
+der Homeserver Domain. Selbst wenn andere Dienste auf dieser Domain 
+(z.B. eine Website, Nextcloud, ...) betrieben werden kommen sich 
 diese Dateien damit nicht in die Quere.
 
-Wird nginx als Reverse Proxy betrieben so müssen lediglich diese
+Wird nginx als Reverse Proxy betrieben so müssen lediglich diese 
 beiden locations in den V-Host für `domain.de` eingefügt werden.
 ```nginx
 location /.well-known/matrix/server {
@@ -260,16 +260,16 @@ location /.well-known/matrix/client {
     return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
 }
 ```
-Die Dateien können auch Manuell angelegt werden, falls die
+Die Dateien können auch Manuell angelegt werden, falls die 
 Homeserver-Domain z. B. auf einen Webspace zeigt.
 
-Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch
+Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch 
 [dieses](https://github.com/marcelcoding/.well-known) Projekt interessant.
 
 Es ermöglicht die zentrale Konfiguration von HTTP Seiten, die auf allen Domains,
-die durch Cloudflare Proxy gerouted werden aufgerufen werden können. Dies ist vor
+die durch Cloudflare Proxy gerouted werden aufgerufen werden können. Dies ist vor 
 allem für Seiten wie die [`.well-known/security.txt`](https://securitytxt.org) oder
-`robots.txt` Interessant, doch auch die `.well-known` Einträge für Matrix können so
+`robots.txt` Interessant, doch auch die `.well-known` Einträge für Matrix können so 
 gesetzt werden.
 
 ### SSO with Keycloak

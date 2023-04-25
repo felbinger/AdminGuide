@@ -1,5 +1,7 @@
 # Minecraft Server
 
+Minecraft ist ein Open-World Block Spiel. 
+
 ```yaml
 version: '3.9'
 

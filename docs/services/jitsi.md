@@ -1,7 +1,7 @@
 # Jitsi
 
 !!! info ""
-	Dadurch, dass der dockerized Jitsi service nicht unbedingt sehr angenehm ist, empfehlen wir dafür einen separaten
+	Dadurch, dass der dockerized Jitsi service nicht unbedingt sehr angenehm ist, empfehlen wir dafür einen separaten 
 	virtuellen Server.
 	Hierfür haben wir folgende Skripte [jitsi](https://github.com/secshellnet/docs/blob/main/scripts/jitsi.sh)
 	und [jitsi-oidc](https://github.com/secshellnet/docs/blob/main/scripts/jitsi-oidc.sh).
@@ -55,7 +55,7 @@ Etherpad ermöglicht es Dokumente gemeinsam in Echtzeit zu bearbeiten.
 Die [etherpad.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/etherpad.yml), wo der Service beschrieben ist,
 befindet sich in deren GitHub repo.
 Wir empfehlen den Etherpad-Service in die `docker-compose.yml` zu kopieren.
-Außerdem kannst du die Umgebungsvariablen für das Verbinden mit deiner eigenen Datenbank anlegen. Die `.env` Datei
+Außerdem kann man die Umgebungsvariablen für das Verbinden mit deiner eigenen Datenbank anlegen. Die `.env` Datei
 sollte ungefähr so aussehen:
 ```shell
 DB_TYPE=postgres
@@ -90,11 +90,12 @@ Die Konfigurationen befinden sich in der [jibri.yml](https://github.com/jitsi/do
 welche man in dem zugehörigem GitHub repo findet.
 Wir empfehlen den Dienst in die `docker-compose.yml` zu kopieren.
 
-### Aktiviere JVB Statictics (for monitoring)
+### JVB Statictics (für monitoring)
+
 Die Colibri API von dem JVB Dienst kann aktiviert werden, indem man die JVB_ENABLE_APIS in der `.env` Datei
 auskommentiert.
 ```shell
-# A comma separated list of APIs to enable when the JVB is started [default: none]
+# Eine mit Kommata separierte Liste mit API Schnittstellen, welche gestartet werden soll wenn das JVB startet [default: none]
 # Siehe https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md für mehr Informationen
 JVB_ENABLE_APIS=rest,colibri
 ```
