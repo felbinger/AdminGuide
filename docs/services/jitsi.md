@@ -37,15 +37,10 @@ Als Nächstes konfigurieren wir die `.env` Datei und richten die Port-Weiterleit
 Siehe [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
 
 ## Konfiguration
-Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert: 
-<ul>
-  <li>
-    Du kannst <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
-  </li>
-  <li>
-    You can update the settings of your interface by modifying <code>/srv/jitsi/web/interface_config.js</code>
-  </li>
-</ul>
+Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert:
+- Du kannst `/srv/jitsi/web/config.js`, because it will be regenerated on container start, but you can update the
+  attributes in the .env file
+- You can update the settings of your interface by modifying `/srv/jitsi/web/interface_config.js`
 
 
 ## Erweiterung der Jitsi Instanz

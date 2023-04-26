@@ -1,6 +1,6 @@
 # Bookstack
 
-Bookstack ist eine einfache Wiki- / KnowledgeBase Software.
+Bookstack ist ein einfaches Wiki / KnowledgeBase Software.
 
 ```yaml
 version: '3.9'
@@ -151,8 +151,8 @@ Einstellung bearbeiten:
 Go to `Client Scopes -> role_list -> Mappers -> role list` and set "Single Role Attribute" to ON. Save.
 Now we have finished the Keycloak Configuration.
 
-Änder die "Single Role Attribute" Einstellung in `Client Scopes -> role_list -> Mappers -> role list` to "ON". 
-Wenn wir das auch noch gespeichert hat, dann ist die Keycloak konfiguration vollendet.
+In den Einstellungen unter `Client Scopes -> role_list -> Mappers -> role list` muss die "Single Role Attribute" auf "ON"
+gesetzt werden. Wenn man dies jetzt gespeichert hat, ist die Konfiguration von Keycloak fertig
 
 <br />
 
@@ -208,4 +208,4 @@ und füge es in der Datei ein.
 
 Wenn man jetzt einen `docker compose restart` durchführt sollte es möglich sein sich über Keycloak anzumelden.
 
-Für weite Dokumentation empfehlen wir die [Offiziellen Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).
+Für weitere Dokumentation empfehlen wir die [Offiziellen Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).
