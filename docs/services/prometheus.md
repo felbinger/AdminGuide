@@ -16,8 +16,8 @@ services:
     image: prom/prometheus
     restart: always
     volumes:
-      - '/srv/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
-      - '/srv/prometheus/data:/prometheus'
+      - "/srv/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "/srv/prometheus/data:/prometheus"
 ```
 
 The `prometheus.yml` contain a list of metrics endpoints, that should be queried:
