@@ -1,5 +1,7 @@
 # ShareLaTeX
 
+Eine selbst gehostete Version von [Overleaf](https://overleaf.com) 
+
 ```yaml
 version: '3.9'
 
@@ -27,7 +29,7 @@ services:
       - "SHARELATEX_NAV_TITLE=ShareLaTeX"
       - "SHARELATEX_LEFT_FOOTER=[]"
       - "SHARELATEX_RIGHT_FOOTER=[]"
-      #- "SHARELATEX_HEADER_IMAGE_URL=http://somewhere.com/mylogo.png"
+      #- "SHARELATEX_HEADER_IMAGE_URL=https://somewhere.com/mylogo.png"
       #- "SHARELATEX_EMAIL_FROM_ADDRESS=team@sharelatex.com"
       #- "SHARELATEX_CUSTOM_EMAIL_FOOTER=This system is run by department x"
     ports:
@@ -46,7 +48,7 @@ services:
       timeout: 10s
       retries: 5
 
-  # version must be locked to 5, otherwise sharelatex wont work
+  # muss auf Version 5 sein, sonst wird sharelatex nicht funktionieren
   redis:
     image: redis:5
     restart: always
@@ -114,46 +116,49 @@ services:
           - "traefik.http.routers.r_sharelatex.entrypoints=websecure"
     ```
 
-### Installation of texlive-full
+### Installation von texlive-full
 !!! warning ""
-    If you start the container using docker-compose, the image will be committed with all environment variables and labels.
+    Wenn du den Container mit docker-compose startest, wird das Image mit allen environment Variablen und Labels gestartet.
 
 1. Install `texlive-full`
    
     !!! warning ""
-        Due to the fact, that this command will take a couple of house, I suggest you to execute it in a screen session.
+        Das ausführen des Commands wird einige Stunden dauern (variierend auf der Internetleitung des Server 2 - 4h),
+   empfehle ich es in einem screen auszuführen
 
     !!! warning ""
-        The Image will take about 8 gigabytes after installation all additional packages.
+        Das Image wird nach der Installation aller Packages um die 8 Gigabyte groß sein.
 
     ```sh
     screen -AmdS latex-installation "docker-compose exec sharelatex tlmgr update --self; tlmgr install scheme-full"
     ```
 
-2. Save the current container filesystem as docker image with tag: `with-texlive-full`
+2. Speicher das aktuelle Dateisystem des Containers in einem Image mit dem Tag: `with-texlive-full`
 
     ```shell
     docker commit -m "installing all latex packages" $(docker-compose ps -q sharelatex) sharelatex/sharelatex:with-texlive-full
     ```
 
-3. Replace the image tag in your `docker-compose.yml` from `latest` to `with-texlive-full`
+3. Ersetze den Image Tag in deiner `docker-compose.yml` von `latest` zu `with-texlive-full`
 
-### Creating a user
+### Einen Benutzer erstellen
 
-Now you have to create an admin user by simply running this command:
+Um einen Admin User zu erstellen, gibt es folgenden Befehl:
 
 ```shell
 docker-compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:create-admin --email=my@email.address"
 ```
 
-Replace `my@email.address` with your email. You will now be given a password reset link with which you can initially set the password for the admin user.
+Ersetze `my@email.address` mit deiner E-Mail-Adresse. Du wirst jetzt einen Passwort-Reset Link bekommen, mit welchem du
+das admin Passwort setzen kannst.
 
-### Deleting an user
+### Einen Benutzer löschen
 
-User can be deleted via the following command, projects will also be deleted so be careful with this.
+Benutzer können mit folgendem Befehl gelöscht werden, aber die Projekte des Benutzers werden auch gelöscht somit sei
+etwas vorsichtig mit dem Befehl.
 
 ```shell
 docker-compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:delete --email=my@email.address"
 ```
 
-Change here the email `my@email.address` with the email of the user you want to delete.
+Ersetze die `my@email.address` mit der E-Mail-Adresse von dem Benutzer, welcher gelöscht werden soll.

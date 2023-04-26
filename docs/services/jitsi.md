@@ -37,15 +37,10 @@ Als Nächstes konfigurieren wir die `.env` Datei und richten die Port-Weiterleit
 Siehe [github.com/MarcelCoding/jitsi-openid#docker-compose](https://github.com/MarcelCoding/jitsi-openid#docker-compose)
 
 ## Konfiguration
-Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert: 
-<ul>
-  <li>
-    Du kannst <code>/srv/jitsi/web/config.js</code>, because it will be regenerated on container start, but you can update the attributes in the .env file
-  </li>
-  <li>
-    You can update the settings of your interface by modifying <code>/srv/jitsi/web/interface_config.js</code>
-  </li>
-</ul>
+Alle Konfigurationen werden in dem `/srv/jitsi` Ordner gespeichert:
+- Du kannst `/srv/jitsi/web/config.js`, because it will be regenerated on container start, but you can update the
+  attributes in the .env file
+- You can update the settings of your interface by modifying `/srv/jitsi/web/interface_config.js`
 
 
 ## Erweiterungen der Jitsi Instanz
@@ -54,7 +49,7 @@ Etherpad ermöglicht es Dokumente gemeinsam in Echtzeit zu bearbeiten.
 
 Die [etherpad.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/etherpad.yml), wo der Service beschrieben ist,
 befindet sich in deren GitHub repo.
-Wir empfehlen den Etherpad-Service in die `docker-copmpose.yml` zu kopieren.
+Wir empfehlen den Etherpad-Service in die `docker-compose.yml` zu kopieren.
 Außerdem kannst du die Umgebungsvariablen für das Verbinden mit deiner eigenen Datenbank anlegen. Die `.env` Datei
 sollte ungefähr so aussehen:
 ```shell
@@ -67,7 +62,7 @@ DB_PASS=S3cR3T
 #DB_CHARSET= This is only for MySQL
 #DB_FILENAME= Just for SQLite or DirtyDB
 ```
-Beachte [verfügbare Datenbank typen](https://www.npmjs.com/package/ueberdb2).
+Beachte [verfügbare Datenbanktypen](https://www.npmjs.com/package/ueberdb2).
 Jetzt müssen die angelegten Umgebungsvariablen in die `docker-compose.yml` hinzugefügt werden. Ungefähr wie hier:
 ```yaml
     etherpad:
@@ -83,12 +78,12 @@ Jetzt müssen die angelegten Umgebungsvariablen in die `docker-compose.yml` hinz
 ```
 
 ### Jibri
-Die [Jitsi Broadcasting Infrastruktur](https://github.com/jitsi/jibri) ermöglicht das aufnehmen und streamen in einem
+Die [Jitsi Broadcasting Infrastruktur](https://github.com/jitsi/jibri) ermöglicht das Aufnehmen und Streamen in einem
 Jitsi Meeting.
 
 Die Konfigurationen befinden sich in der [jibri.yml](https://github.com/jitsi/docker-jitsi-meet/blob/master/jibri.yml),
 welche man in dem zugehörigem GitHub repo findet.
-Wir empfehlen den Dienst in die `docker-compose.yml` zu kopieren
+Wir empfehlen den Dienst in die `docker-compose.yml` zu kopieren.
 
 
 ### JVB Statictics (für monitoring)

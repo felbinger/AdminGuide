@@ -1,5 +1,7 @@
 # PostgreSQL
 
+Eine SQL basierte Datenbank.
+
 ```yaml
 version: '3.9'
 

@@ -1,5 +1,8 @@
 # Seafile
 
+Seafile ist eine sichere, Open-Source-Plattform für die Synchronisation, Freigabe und Zusammenarbeit von Dateien, die
+sowohl eine On-Premises- als auch eine Cloud-basierte Bereitstellungsoption bietet.
+
 ```yaml
 version: '3.9'
 

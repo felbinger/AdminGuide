@@ -1,5 +1,8 @@
 # paperless
 
+Paperless-NGX ist ein Open-Source-Dokumentenmanagementsystem, das darauf abzielt, die Verwaltung von Papierdokumenten
+durch die Digitalisierung und Automatisierung von Geschäftsprozessen zu verbessern.
+
 ```yaml
 version: '3.9'
 	
@@ -130,10 +133,12 @@ PAPERLESS_DBPASS=S3cr3t-P4ssw0rd
     ```
 
 
-## Create user
+## User erstellen
 ```shell
 docker compose run --rm webserver createsuperuser
 ```
 
 ## Open ID Connect
-Not until [github.com/paperless-ngx/paperless-ngx/pull/1746](https://github.com/paperless-ngx/paperless-ngx/pull/1746) has been merged.
+Nicht verfügbar
+bis [github.com/paperless-ngx/paperless-ngx/pull/1746](https://github.com/paperless-ngx/paperless-ngx/pull/1746)
+gemerged ist.
