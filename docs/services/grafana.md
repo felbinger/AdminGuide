@@ -1,5 +1,7 @@
 # Grafana
 
+Grafana ist ein Dienst, welcher zur Datenvisualisierung und Überwachung verwendet wird. 
+
 ```yaml
 version: '3.9'
 

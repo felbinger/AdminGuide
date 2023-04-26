@@ -1,5 +1,7 @@
 # pgAdmin 4
 
+Eine webbasierte Datenbank Visualisierungs- und Bearbeitungssoftware.
+
 ```yaml
 version: '3.9'
 	
@@ -76,5 +78,5 @@ PGADMIN_DEFAULT_PASSWORD=S3cr3T
     ```
 
 ### Automatic Login
-* You need to add the `.pgpass` file to `/srv/main/pgadmin/storage/admin_domain.tld/.pgpass`.  
-Don't forget to adjust the permissions: `chown -R 5050:5050 /srv/main/pgadmin/`
+*Du musst die `.pgpass` Datei in `/srv/main/pgadmin/storage/admin_domain.tld/.pgpass` hinzufügen.*
+Nicht vergessen die Berechtigungen zu ändern: `chown -R 5050:5050 /srv/main/pgadmin/`

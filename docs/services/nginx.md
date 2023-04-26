@@ -1,7 +1,6 @@
 # nginx
 
-Wird ein einfacher Webserver z. B. für eine statische 
-Homepage benötigt, kann ein nginx Container verwendet werden.
+Wird ein einfacher Webserver z. B. für eine statische Homepage benötigt, kann ein nginx Container verwendet werden.
 
 !!! info ""
     Sofern sie als Reverse Proxy nginx Verwenden, können Sie auch einfach einen 

@@ -71,13 +71,12 @@ The http server is then listening on port 8000.
 
 ### Services
 * Add reverse proxy setup instructions according to template.
+* Jitsi
 
 #### Rewrite required:
-* Sentry - or remove!
 * Prometheus
 * Netbox
 * Matrix (Keycloak SSO, if you want more information to bridges (setup instructions))
-* Jitsi
 * Guacamole OIDC Integration (doesn't work like this...)
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
 * Gitea (OIDC)
@@ -88,8 +87,6 @@ The http server is then listening on port 8000.
 * Typo 3 - remove if not
 * Seafile  - remove if not
 * Privatebin  - remove if not
-* OpenVPN - remove if not
 * OpenLDAP - remove if not
 * docky-onion - remove if not
 * Jupyter
-* Gitlab

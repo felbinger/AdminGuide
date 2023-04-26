@@ -1,6 +1,6 @@
 # Bookstack
 
-Bookstack ist eine einfache Wiki / KnowledgeBase Software.
+Bookstack ist ein einfaches Wiki / KnowledgeBase Software.
 
 ```yaml
 version: '3.9'
@@ -107,17 +107,17 @@ At first, we have to configure Keycloak properly.
 Create a new Client. Client ID is `https://bookstack.domain.de/saml2/metadata`, Client Protocol
 is `saml`. Now edit the settings of your newly created Client as follows:
 
-| Setting                   | Value                             |
-|---------------------------|-----------------------------------|
-| Client Signature Required | OFF                               |
+| Setting                   | Value                           |
+|---------------------------|---------------------------------|
+| Client Signature Required | OFF                             |
 | Root URL                  | `https://bookstack.domain.de/`  |
 | Valid Redirect URIs       | `https://bookstack.domain.de/*` |
 | Base URL                  | `https://bookstack.domain.de/`  |
 
 Fine Grain SAML Endpoint Configuration:
 
-| Setting                                     | Value                                     |
-|---------------------------------------------|-------------------------------------------|
+| Setting                                     | Value                                   |
+|---------------------------------------------|-----------------------------------------|
 | Assertion Consumer Service POST Binding URL | `https://bookstack.domain.de/saml2/acs` |
 | Logout Service Redirect Binding URL         | `https://bookstack.domain.de/saml2/sls` |
 
@@ -204,6 +204,6 @@ the shown public certificate.
 
 <br />
 
-Do a `docker-compose restart` on Bookstack. You should now be able to authenticate via your Keycloak Instance.
+Do a `docker compose restart` on Bookstack. You should now be able to authenticate via your Keycloak Instance.
 
 For further Documentation refer to the [Official Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).

@@ -1,5 +1,7 @@
 # TeamSpeak
 
+TeamSpeak ist eine Voice-over-IP-Software, die es Benutzern ermöglicht, über das Internet miteinander zu kommunizieren.
+
 ```yaml
 version: '3.9'
 
@@ -122,7 +124,8 @@ sudo docker compose run --rm teamspeak3 ts3server \
   inifile=/var/run/ts3server/ts3server.ini \
   serveradmin_password=NEW_PASSWORD
 ```
-Anschließend kann man sich innerhalb des ts3server Contains 
+
+Anschließend kann man sich innerhalb des ts3server Containers 
 mit dem Server Query Interface verbinden und dort einen neuen 
 Berechtigungstoken erstellen:
 ```sh

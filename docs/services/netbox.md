@@ -53,8 +53,7 @@ SUPERUSER_PASSWORD=AdminGuide!
 _EOF
 ```
 
-Afterwards you can login using the credentials `admin` / `AdminGuide!`.
-
+Nach diesem Schritt kannst du dich einloggen mit `admin` / `AdminGuide!`.
 
 ## E-Mail
 
@@ -75,18 +74,19 @@ EMAIL_USE_TLS=false
 
 ## OpenID Connect / Keycloak
 
-Set `User Info Signed Response Algorithm` and `Request Object Signature Algorithm` in the keycloak client (in the category: Fine Grain OpenID Connect Configuration ) to RS256.
+Ändere `User Info Signed Response Algorithm` und `Request Object Signature Algorithm` in dem Keycloak Client (in der
+Kategorie: Fine Grain OpenID Connect Configuration) to RS256.
 
-Create a mapper in the created keycloak client:
+Erstelle nun ein Mapper in dem erstelltem Keycloak client:
 
 ![Keycloak Clients -> Client ID -> Mappers -> aud](../img/services/netbox_keycloak_client_aud_mapper.png){: loading=lazy }
 
-Extend `/home/admin/netbox/env/netbox.env`:
+Erweitere `/home/admin/netbox/env/netbox.env`:
 ```env
 REMOTE_AUTH_BACKEND='social_core.backends.keycloak.KeycloakOAuth2'
 ```
 
-Also extend the `/home/admin/netbox/configuration/configuration.py`:
+Erweitere auch `/home/admin/netbox/configuration/configuration.py`:
 ```py
 ## OIDC Keycloak Configuration
 SOCIAL_AUTH_KEYCLOAK_ID_KEY = 'preferred_username'
@@ -100,8 +100,8 @@ SOCIAL_AUTH_KEYCLOAK_ACCESS_TOKEN_URL = \
   'https://id.domain.de/realms/main/protocol/openid-connect/token'
 ```
 
-The public key can be aquired in the keycloak realm settings:
+Der Public Key kann in den Keycloak Realm Einstellungen ausgelesen werden:
 ![Keycloak Realm Settings -> Keys -> Public Key of RS256 Key](../img/services/netbox_keycloak_realm_keys.png){: loading=lazy }
 
 ## Netbox Contextmenues
-I recommend you take a look at this [contextmenu addon](https://github.com/PieterL75/netbox_contextmenus/).
+Wir empfehlen dieses GitHub Repo: [contextmenu addon](https://github.com/PieterL75/netbox_contextmenus/).

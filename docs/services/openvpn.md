@@ -1,8 +1,10 @@
 # OpenVPN
 
 !!! info ""
-	Depending on what exactly you would like to do with openvpn, we suggest you don't host it inside a docker container.
-	Either host it on the host directly, or use other existing infrastructure (e.g. a router like pfSense or VyOS)
+	Auf Basis dessen, was man mit dem OpenVPN Server vorhat, empfehlen wir diesen nicht in einem Docker Container zu
+	betreiben.
+	Alternativen zu dem Docker Container wären es entweder direkt auf dem Host zu installieren oder eine vorhandene
+	Infrastruktur zu verwenden (z. B. einen Router wie pfSense oder VyOS)
 
 ```yaml
 version: '3.9'
@@ -19,35 +21,35 @@ services:
      - "/srv/openvpn:/etc/openvpn"
 ```
 
-First you need to initialize the configuration files and certificates:
+Zuerst muss man die Konfigurationsdateien und Zertifikate initialisieren:
 ```shell
-docker-compose run --rm openvpn ovpn_genconfig -u udp://vpn.domain.de
-docker-compose run --rm openvpn ovpn_initpki
+docker compose run --rm openvpn ovpn_genconfig -u udp://vpn.domain.de
+docker compose run --rm openvpn ovpn_initpki
 ```
 
-Afterwards you can start the server:
+Danach kann der Server gestartet werden
 ```shell
-docker-compose up -d openvpn
+docker compose up -d openvpn
 ```
 
-You can generate the certificates as follows:
+Die Zertifikate werden wie folgt generiert:
 ```shell
 export CLIENTNAME="your_client_name"
 # with a passphrase (recommended)
-docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
+docker compose run --rm openvpn easyrsa build-client-full $CLIENTNAME
 # without a passphrase (not recommended)
-docker-compose run --rm openvpn easyrsa build-client-full $CLIENTNAME nopass
+docker compose run --rm openvpn easyrsa build-client-full $CLIENTNAME nopass
 ```
 
-Retrieve the client configuration with embedded certificates:
+Die Konfigurationsdatei für den Client kann wie folgt gespeichert werden:
 ```shell
-docker-compose run --rm openvpn ovpn_getclient $CLIENTNAME > $CLIENTNAME.ovpn
+docker compose run --rm openvpn ovpn_getclient $CLIENTNAME > $CLIENTNAME.ovpn
 ```
 
-Revoke a client certificate:
+Um ein Client Zertifikat zu widerrufen:
 ```shell
 # Keep the corresponding crt, key and req files.
-docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME
+docker compose run --rm openvpn ovpn_revokeclient $CLIENTNAME
 # Remove the corresponding crt, key and req files.
-docker-compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
+docker compose run --rm openvpn ovpn_revokeclient $CLIENTNAME remove
 ```

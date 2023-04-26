@@ -1,6 +1,6 @@
 # Syncthing
 
-Software zum verwalten, synchronisieren und versionieren von Dateien.
+Software zum Synchronisieren und Versionieren von Dateien.
 
 ```yaml
 version: '3.9'

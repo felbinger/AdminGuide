@@ -26,4 +26,3 @@ services:
       - "SPAWN_PROTECTION=0"
       - "SEED=2303273916051849791"
 ```
-

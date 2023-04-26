@@ -1,7 +1,11 @@
 # Prometheus
 
+Prometheus ist ein Open-Source-System für das Monitoring und die Alarmierung von IT-Systemen und -Diensten, das eine
+flexible Abfragesprache und eine Vielzahl von Tools für die Visualisierung und Analyse von Daten bietet.
+
 A lot of applications ([checkout the list of applications](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)) 
-have an endpoint which can be used to query metrics.  
+have an endpoint which can be used to query metrics.
+
 
 If they aren't specific made for prometheus you can [write an exporter](https://prometheus.io/docs/instrumenting/writing_exporters/)
 to make them prometheus compatible (e.g. for [nextcloud](https://github.com/xperimental/nextcloud-exporter),
