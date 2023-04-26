@@ -1,5 +1,8 @@
 # Vaultwarden
 
+Vaultwarden ist eine Open-Source-Serveranwendung für das sichere Speichern und Verwalten von Passwörtern und anderen
+vertraulichen Informationen in einem persönlichen Tresor.
+
 ```yaml
 version: '3.9'
 

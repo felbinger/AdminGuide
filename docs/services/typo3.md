@@ -1,8 +1,13 @@
 # TYPO3
 
+TYPO3 ist ein Open-Source-Content-Management-System, das es Benutzern ermöglicht, leistungsstarke, skalierbare und
+mehrsprachige Websites und Anwendungen zu erstellen und diese zu verwalten.
+
 ### Dockerfile
-The current [dockerhub](https://hub.docker.com/r/martinhelmich/typo3/) repo contains various versions, all manually setup.  
-For development purposes, a 10.4 [Dockerfile](https://github.com/Ziehnert/Typo3-docker) exists, containing an automatic setup using sqlite.
+Das aktuelle [dockerhub](https://hub.docker.com/r/martinhelmich/typo3/) repo hat mehrere Versionen für den manuellen
+Setup.
+Für Development Gründen existiert eine 10.4 [Dockerfile](https://github.com/Ziehnert/Typo3-docker) mit einem
+automatischen Setup, welches SQLite verwendet.
 
 ```yaml
   typo3:
@@ -70,6 +75,7 @@ For development purposes, a 10.4 [Dockerfile](https://github.com/Ziehnert/Typo3-
 
 Nachdem Sie den Container gestartet haben, müssen Sie die Datei `/srv/typo3/conf/AdditionalConfiguration.php`
 anpassen, um das Typo3 Backend hinter dem Reverse Proxy erreichen zu können.
+
 ```php
 # /srv/typo3/conf/AdditionalConfiguration.php
 <?php

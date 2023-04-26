@@ -1,6 +1,6 @@
 # Bookstack
 
-Bookstack ist eine einfache Wiki / KnowledgeBase Software.
+Bookstack ist ein einfaches Wiki / KnowledgeBase Software.
 
 ```yaml
 version: '3.9'
@@ -204,6 +204,6 @@ the shown public certificate.
 
 <br />
 
-Do a `docker-compose restart` on Bookstack. You should now be able to authenticate via your Keycloak Instance.
+Do a `docker compose restart` on Bookstack. You should now be able to authenticate via your Keycloak Instance.
 
 For further Documentation refer to the [Official Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).
