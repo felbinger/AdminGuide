@@ -58,10 +58,10 @@ POSTGRES_PASSWORD=S3cr3T
 ```
 
 === "nginx"
-```yaml
-ports:
-- "[::1]:8000:8080"
-```
+    ```yaml
+    ports:
+    - "[::1]:8000:8080"
+    ```
 
     ```nginx
     # /etc/nginx/sites-available/synapse.domain.de.conf
@@ -158,13 +158,13 @@ ports:
     ```
 
 === "Traefik"
-```yaml
-labels:
-- "traefik.enable=true"
-- "traefik.http.services.srv_synapse.loadbalancer.server.port=8008"
-- "traefik.http.routers.r_synapse.rule=Host(`synapse.domain.de`)"
-- "traefik.http.routers.r_synapse.entrypoints=websecure"
-```
+    ```yaml
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.services.srv_synapse.loadbalancer.server.port=8008"
+    - "traefik.http.routers.r_synapse.rule=Host(`synapse.domain.de`)"
+    - "traefik.http.routers.r_synapse.entrypoints=websecure"
+    ```
 
     TODO `.well-known/matrix/{server,client}` auf `domain.de`
 
