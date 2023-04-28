@@ -148,11 +148,8 @@ Und noch einen für die Mail:
 Wenn man beide gespeichert hat, sind wir mit der Keycloak Konfiguration fast fertig. Wir müssen nur noch eine folgende
 Einstellung bearbeiten:
 
-Go to `Client Scopes -> role_list -> Mappers -> role list` and set "Single Role Attribute" to ON. Save.
-Now we have finished the Keycloak Configuration.
-
-In den Einstellungen unter `Client Scopes -> role_list -> Mappers -> role list` muss die "Single Role Attribute" auf "ON"
-gesetzt werden. Wenn man dies jetzt gespeichert hat, ist die Konfiguration von Keycloak fertig
+Änder die "Single Role Attribute" Einstellung in `Client Scopes -> role_list -> Mappers -> role list` to "ON". 
+Wenn wir das auch noch gespeichert hat, dann ist die Keycloak konfiguration vollendet.
 
 <br />
 
