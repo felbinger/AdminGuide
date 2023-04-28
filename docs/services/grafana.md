@@ -103,7 +103,7 @@ Dashboards (z. B. [Node Exporter Full](https://grafana.com/grafana/dashboards/18
 Plugins angegeben werden, welche für die Grafana Instanz aktiviert werden.
 
 ### LDAP Auth
-You can configure ldap auth in `/srv/main/grafana/etc/grafana.ini` and `/srv/main/grafana/etc/ldap.toml`:
+Du kannst den ldap auth in `/srv/main/grafana/etc/grafana.ini` und `/srv/main/grafana/etc/ldap.toml` konfigurieren:
 ```ini
 #################################### Auth LDAP ##########################
 [auth.ldap]
@@ -149,7 +149,7 @@ group_dn = "*"
 org_role = "Viewer"
 ```
 
-All members of `cn=grafana,ou=groups,dc=domain,dc=de` get the Viewer role, members that are also in `cn=editor,cn=grafana,ou=groups,dc=domain,dc=de` get the Editor role...
+Alle Mitglieder von `cn=grafana,ou=groups,dc=domain,dc=de` bekommen die Leser Rolle, Mitglieder welche auch in der `cn=editor,cn=grafana,ou=groups,dc=domain,dc=de` bekommen die Bearbeitungs Rolle...
 
 ## OpenID / KeyCloak
-Checkout [janikvonrotz.ch/2020/08/27/grafana-oauth-with-keycloak-and-how-to-validate-a-jwt-token](https://janikvonrotz.ch/2020/08/27/grafana-oauth-with-keycloak-and-how-to-validate-a-jwt-token/)
+Siehe: [janikvonrotz.ch/2020/08/27/grafana-oauth-with-keycloak-and-how-to-validate-a-jwt-token](https://janikvonrotz.ch/2020/08/27/grafana-oauth-with-keycloak-and-how-to-validate-a-jwt-token/)

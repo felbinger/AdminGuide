@@ -1,17 +1,11 @@
 # OpenLDAP
 
-I tested a lot of prebuild docker images, and I came to the conclusion that the one from `osixia/openldap:1.4.0` works
-best.
-Unfortunately neither the [bcrypt hashing algorithm](https://en.wikipedia.org/wiki/Bcrypt) nor
-the [PBKDF2 hashing algorithm](https://en.wikipedia.org/wiki/PBKDF2) is being support.
-So, we are going to use osixia's image as base, and add the bcrypt hashing algorithm (
-checkout [howardlau1999/openldap-bcrypt-docker](https://github.com/howardlau1999/openldap-bcrypt-docker)).
-
 Ich habe viele vorgefertigte Docker Images getestet, und kam zu dem Entschluss, dass das Image
 von `osixia/openldap:1.4.0` am besten funktioniert.
 Leider wird aber weder der [bcrypt hashing Algorithmus](https://en.wikipedia.org/wiki/Bcrypt) noch
 der [PBKDF2 hashing Algorithmus](https://en.wikipedia.org/wiki/PBKDF2) unterstützt.
-Somit verwenden wir das Image von osixia als Basis und fügen den bcrypt hashing Algorithmus hinzu (Siehe [howardlau1999/openldap-bcrypt-docker](https://github.com/howardlau1999/openldap-bcrypt-docker)).
+Somit verwenden wir das Image von osixia als Basis und fügen den bcrypt hashing Algorithmus hinzu (
+Siehe [howardlau1999/openldap-bcrypt-docker](https://github.com/howardlau1999/openldap-bcrypt-docker)).
 
 Ein Freund von mir, welcher mich auch bei dem AdminGuide unterstützt, hat ein eigenes phpldapadmin image, welche nur
 sichere hashing Algorithmen unterstützt und auf einem kleinen alpine image basiert.

@@ -1,5 +1,7 @@
 # Matrix
 
+Ein Server für einen dezentralen Messenger Dienst.
+
 ```yaml
 version: '3.9'
 

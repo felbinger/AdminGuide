@@ -123,8 +123,8 @@ services:
 1. Install `texlive-full`
    
     !!! warning ""
-        Das ausführen des Commands wird einige Stunden dauern (variierend auf der Internetleitung des Server 2 - 4h),
-   empfehle ich es in einem screen auszuführen
+        Das Ausführen des Commands wird einige Stunden dauern (variierend auf der Internetleitung des Server 2 - 4h),
+        empfehle ich es in einem screen auszuführen
 
     !!! warning ""
         Das Image wird nach der Installation aller Packages um die 8 Gigabyte groß sein.
