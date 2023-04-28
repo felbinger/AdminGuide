@@ -1,5 +1,7 @@
 # Matrix
 
+Ein Server für einen dezentralen Messenger Dienst.
+
 ```yaml
 version: '3.9'
 
@@ -275,9 +277,9 @@ gesetzt werden.
 !!! info
     REWRITE REQUIRED
 
-If you have an Instance of *Keycloak* running, you can use it as an external Authentication Provider.
-At first, we have to create the Client in Keycloak. Create a new Client. Use `synapse.domain.de` as Client ID
-and `openid` as Protocol. Edit your newly created Client as follows:
+Wenn man eine *Keycloak* Instanz besitzt, kann man diesen als externen Authentisierungsanbieter verwenden.
+Dafür muss man zuerst den Client in Keycloak anlegen. Verwende `synapse.domain.de` als Client ID und `openid` als
+Protokoll. Bearbeite den neuen Client wie folgt:
 
 | Setting                      | Value                                                  |
 |------------------------------|--------------------------------------------------------|
@@ -288,12 +290,11 @@ and `openid` as Protocol. Edit your newly created Client as follows:
 | Base URL                     | `https://synapse.domain.de`                            |
 | Web Origins                  | +                                                      |
 
-Now go to the "Credentials" Tab and save the Client Secret; we will need it later.
+Zunächst muss man den Client Secret aus dem "Credentials" Tab speichern. Diesen brauchen wir später.
 
-
-Now we have to edit the `homeserver.yaml` file. I suggest you search for the Values because the file is very long.
-Uncomment / add and edit the following lines:
-
+Als Nächstes muss noch die `homeserver.yaml` Datei bearbeitet werden. Wir empfehlen dann den einzelnen Values zu suchen,
+da die Datei sehr lang ist.
+Bearbeite die Zeilen wie folgt:
 ```
 server_name: "matrix.domain.de"
 
@@ -310,10 +311,11 @@ oidc_providers:
     scopes: ["profile"]
 ```
 
-**It is very important to remove the `openid` Scope which is preset. Things will not work if the
-`openid` Scope is set.**
+**Es ist sehr wichtig den `openid` Scope zu entfernen. Wenn man dies nicht tut, werden einige Funktionen nicht nutzbar
+sein**
 
-Now restart your Matrix Server. You should now be able to log in with your Keycloak as an SSO Provider.
+Jetzt kann man den Matrix Server neu starten. Die Funktion mit Keycloak als SSO Provider sich anmelden zu können, sollte
+nun verfügbar sein.
 
 ### Bridge Setup
 

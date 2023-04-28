@@ -1,7 +1,7 @@
 # Arma 3 Server
 
 Ein Arma 3 Gameserver ermöglicht es Arma 3 Spielern eine 
-gemeinsamme Mission zu spielen. Das hier beschrieben Vorgehen 
+gemeinsame Mission zu spielen. Das hier beschriebene Vorgehen 
 erweitert die Grundfunktionalität von LGSM (Linux Game Server 
 Manager) um die benötigten Paketen für extdb3.
 

@@ -3,15 +3,17 @@
 Prometheus ist ein Open-Source-System für das Monitoring und die Alarmierung von IT-Systemen und -Diensten, das eine
 flexible Abfragesprache und eine Vielzahl von Tools für die Visualisierung und Analyse von Daten bietet.
 
-A lot of applications ([checkout the list of applications](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)) 
-have an endpoint which can be used to query metrics.
 
+Es gibt viele Dienste ([Siehe die Liste der Dienste](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics)),
+wo man die Daten von einem Server auslesen kann.
 
-If they aren't specific made for prometheus you can [write an exporter](https://prometheus.io/docs/instrumenting/writing_exporters/)
-to make them prometheus compatible (e.g. for [nextcloud](https://github.com/xperimental/nextcloud-exporter),
+Wenn der Dienst es nicht explizit für Prometheus bereitstellt, kann man einen [eigenen Exporter schreiben](https://prometheus.io/docs/instrumenting/writing_exporters/),
+um dies Prometheus Kompatibel zu machen (z. B. for [nextcloud](https://github.com/xperimental/nextcloud-exporter),
 [jitsi](https://github.com/an2ic3/jitsi2prometheus)).
 
-Simply add the prometheus service definition to the `docker-compose.yml`, in which the monitoring services are defined.
+
+Man kann einfach den prometheus service in die `docker-compose.yml` hinzufügen, in welche man den monitoring service definiert. 
+
 ```yaml
 version: '3.9'
 
@@ -24,7 +26,7 @@ services:
       - "/srv/prometheus/data:/prometheus"
 ```
 
-The `prometheus.yml` contain a list of metrics endpoints, that should be queried:
+Die `prometheus.yml` enthält eine Liste von Datenendpunkten, welche aufgezeichnet werden sollen
 ```yaml
 global:
   scrape_interval:     15s
@@ -46,4 +48,5 @@ scrape_configs:
       - targets: ['traefik:8080']
 ```
 
-In some services (e.g. jitsi and traefik) you may find these "Enable Exports" tutorials, but I didn't add them for every service!
+In manchen Service-Setup Erklärungen findet man den "Metrics exportieren" abschnitt, aber dies gibt es nicht bei jedem
+Service!
