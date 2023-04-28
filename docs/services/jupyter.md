@@ -21,7 +21,7 @@ services:
 === "nginx"
     ```yaml
         ports:
-          - "[::1]:8000:8888"
+        - "[::1]:8000:8888"
     ```
 === "Traefik"
     ```yaml
