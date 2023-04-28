@@ -16,8 +16,8 @@ services:
       - "[::1]:8000:3000"
 ```
 
-Da der Container die, in den Volumes liegenden Daten, 
-nicht kopiert müssen wir das zuvor manuell erledigen:
+Da der Container die, in den Volumes liegenden Daten, nicht kopiert müssen wir das zuvor manuell erledigen:
+
 ```shell
 sudo mkdir -p /srv/grafana
 
@@ -31,8 +31,8 @@ sudo docker cp grafana-grafana-1:/etc/grafana \
 
 sudo chown -R 472:472 /srv/grafana/
 ```
-Entfernen Sie anschließend die Kommantare vor den 
-Volumes in der Containerdefinition (`docker-compose.yml`).
+
+Entfernen Sie anschließend die Kommentarzeichen vor den Volumes in der Containerdefinition (`docker-compose.yml`).
 
 === "nginx"
     ```yaml

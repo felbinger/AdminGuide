@@ -1,6 +1,6 @@
 # Bookstack
 
-Bookstack ist ein einfaches Wiki / KnowledgeBase Software.
+Bookstack ist eine einfache Wiki- / KnowledgeBase Software.
 
 ```yaml
 version: '3.9'
@@ -100,12 +100,12 @@ Anschließend können Sie sich unter der angegebenen Domain mit den Zugangsdaten
 
 ## Setting up SAML2 Authentication
 
-Now here's how to set up SAML2 Authentication with a *Keycloak* Server.
+Hier ist eine Anleitung wie man SAML2 Authentifizierung mit einem *Keycloak* Server einrichtet.
 
-At first, we have to configure Keycloak properly.
+Zuerst müssen wir Keycloak konfigurieren.
 
-Create a new Client. Client ID is `https://bookstack.domain.de/saml2/metadata`, Client Protocol
-is `saml`. Now edit the settings of your newly created Client as follows:
+Erstellt man einen neuen Client mit `https://bookstack.domain.de/saml2/metadata` als Client ID und `saml` als Client
+Protokoll, so kann man die Einstellungen des neuen Clients wie folgt bearbeiten.
 
 | Setting                   | Value                           |
 |---------------------------|---------------------------------|
@@ -114,7 +114,7 @@ is `saml`. Now edit the settings of your newly created Client as follows:
 | Valid Redirect URIs       | `https://bookstack.domain.de/*` |
 | Base URL                  | `https://bookstack.domain.de/`  |
 
-Fine Grain SAML Endpoint Configuration:
+Fine Grain SAML Endpoint Konfiguration:
 
 | Setting                                     | Value                                   |
 |---------------------------------------------|-----------------------------------------|
@@ -122,7 +122,7 @@ Fine Grain SAML Endpoint Configuration:
 | Logout Service Redirect Binding URL         | `https://bookstack.domain.de/saml2/sls` |
 
 
-Save this. Now go to the "Mappers"-Tab. Create a new Mapper:
+Wenn man das gespeichert hat, so können wir u den "Mappers"-Tab gehen und einen neuen Mapper wie folgt erstellen:
 
 | Setting                   | Value         |
 |---------------------------|---------------|
@@ -134,7 +134,7 @@ Save this. Now go to the "Mappers"-Tab. Create a new Mapper:
 | SAML Attribute NameFormat | basic         |
 
 
-Save this. Create another Mapper:
+Und noch einen für die Mail:
 
 | Setting                   | Value         |
 |---------------------------|---------------|
@@ -145,16 +145,18 @@ Save this. Create another Mapper:
 | SAML Attribute Name       | user.email    |
 | SAML Attribute NameFormat | basic         |
 
-Also hit save on this one. Now we are almost done with the Keycloak Config. There is just one
-more Setting we need to change, and that is the following:
+Wenn man beide gespeichert hat, sind wir mit der Keycloak Konfiguration fast fertig. Wir müssen nur noch eine folgende
+Einstellung bearbeiten:
 
 Go to `Client Scopes -> role_list -> Mappers -> role list` and set "Single Role Attribute" to ON. Save.
 Now we have finished the Keycloak Configuration.
 
+Änder die "Single Role Attribute" Einstellung in `Client Scopes -> role_list -> Mappers -> role list` to "ON". 
+Wenn wir das auch noch gespeichert hat, dann ist die Keycloak konfiguration vollendet.
+
 <br />
 
-Now we need to do the Configuration of Bookstack. Edit the following File: `YOURCONFIGPATH/www/.env`.
-Add the following Lines:
+Jetzt müssen wir Bookstack konfigurieren. Änder folgende Zeilen in der Datei `YOURCONFIGPATH/www/.env`:
 
 ```
 # Set authentication method to be saml2
@@ -198,12 +200,12 @@ SAML2_IDP_SLO=https://keycloak.domain.de/auth/realms/YOURREALM/protocol/saml
 SAML2_IDP_x509=YOURCERT
 ```
 
-To get the x509 public certificate you have to open the Keycloak Admin once again.
-In the `Realm Settings`, click on `SAML 2.0 Identity Provider Metadata`. Now copy and paste
-the shown public certificate.
+Um das x509 public Zertifikat zu bekommen, müssen wir erneut in den Keycloak Admin.
+In den `Ream Settings` kann man unter `SAML 2.0 Identity Provider Metadata` das public Zertifikat einsehen. Kopiere es
+und füge es in der Datei ein.
 
 <br />
 
-Do a `docker compose restart` on Bookstack. You should now be able to authenticate via your Keycloak Instance.
+Wenn man jetzt einen `docker compose restart` durchführt sollte es möglich sein sich über Keycloak anzumelden.
 
-For further Documentation refer to the [Official Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).
+Für weite Dokumentation empfehlen wir die [Offiziellen Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).
