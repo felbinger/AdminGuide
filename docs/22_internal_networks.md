@@ -1,13 +1,11 @@
 # Internal Networks
 
-Die im AdminGuide aufgeführten Services erhalten grundsätzlich
-alle ihre eigene Datenbank. Dies erfordert zum einen mehr Ressourcen,
-als eine zentrale Datenbank, zum anderen erfordert es beim Exportieren
-der Datenbanken für ein Backup die Behandlung mehrerer Datenbankserver.
+Die im AdminGuide aufgeführten Services erhalten grundsätzlich alle ihre eigene Datenbank. Dies erfordert zum einen mehr
+Ressourcen, als eine zentrale Datenbank, zum anderen erfordert es beim Exportieren der Datenbanken für ein Backup die
+Behandlung mehrerer Datenbankserver.
 
-Möchte man einen Datenbank für alle Dienste nutzen so sollte dieser als 
-eigener Service definiert werden und über ein docker-internes Netzwerk
-mit den anderen Diensten kommunizieren.
+Wenn man eine Datenbank für alle Dienste nutzen möchte so sollte dieser als eigener Service definiert werden und über ein
+docker-internes Netzwerk mit den anderen Diensten kommunizieren.
 
 ![Schematic with internal networks](img/internal_networks.png){: loading=lazy }
 
@@ -18,7 +16,7 @@ sudo docker network create --subnet 172.20.255.0/24 database
 
 ## Beispielkonfiguration
 In diesem Beispiel wird eine zentrale MariaDB Datenbank verwendet.
-Die beiden Dienste (Nextcloud, HedgeDoc) nutzen ein docker-internes 
+Die beiden Diensten (Nextcloud, HedgeDoc) nutzen ein docker-internes 
 Netzwerk zur Kommunikation mit der Datenbank. 
 
 ### MariaDB
@@ -66,7 +64,7 @@ networks:
 ### Nextcloud
 Im Falle von Nextcloud wird der `nextcloud` Container neben dem 
 `database` Netzwerk auch noch in das `default` Netzwerk aufgenommen.
-Dieser Netzwerk ermöglicht die Kommunikation mit der in der gleichen
+Dieses Netzwerk ermöglicht die Kommunikation mit der in der gleichen
 Containerdefinition existierenden Redis Instanz. Wird in einem Service
 kein Netzwerk angegeben (wie dies beim `redis` Service der Fall ist)
 wird dieser in das `default` Netzwerk aufgenommen.

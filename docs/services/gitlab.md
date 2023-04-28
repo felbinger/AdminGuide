@@ -77,12 +77,14 @@ services:
     ```
 
 !!! info ""
-	The `external_url` has to be `http://...` when using a reverse proxy which handles tls, otherwise gitlab tries
-    to redirect the incoming http connection to https which ends in a never ending redirect cycle.
+    Die `external_url` muss `http://...` sein wenn man einen reverse proxy verwendet, welcher TLS verarbeitet. Andererseits
+    würde GitLab versuchen die anfragen von einem Benutzer auf https weiterzuleiten und diesen würde in einem unendlichen
+    Weiterleitungskreis enden.
 
 ## Mailserver
-The setup of a mailserver is quite simple, simply add the following configuration options 
-to the GITLAB_OMNIBUS_CONFIG environment variable:  
+Um einen Mailserver einzurichten, muss man nur diese wenigen einfachen Konfigurationsoptionen zu der
+GITLAB_OMNIBUS_CONFIG Environment variable hinzufügen
+
 ```shell
         gitlab_rails['gitlab_email_enabled'] = true
         gitlab_rails['gitlab_email_from'] = 'gitlab@domain.de'
@@ -100,8 +102,10 @@ to the GITLAB_OMNIBUS_CONFIG environment variable:
 ```
 
 ## OpenID / Keycloak
-The setup of OIDC with keycloak is also quite simple, simply add the following configuration options 
-to the GITLAB_OMNIBUS_CONFIG environment variable:  
+
+Die Einrichtung von OIDC mit Keycloak ist genauso einfach. Auch hier einfach folgende Attribute zu der
+GITLAB_OMNIBUS_CONFIG environment Variable hinzufügen.
+
 ```shell
         gitlab_rails['omniauth_enabled'] = true
         gitlab_rails['omniauth_block_auto_created_users'] = false

@@ -1,12 +1,10 @@
 # Backup
 
-Während meiner Zeit als Administrator für Linux Systeme 
-habe ich einige Skripte und Programme entwickelt 
-([PyBackup](https://github.com/felbinger/PyBackup), 
-[GBM](https://github.com/felbinger/GBM), 
-[DBM](https://github.com/felbinger/dbm)). Mitlerweile 
-verwende ich für dateibasierte Sicherungen hauptsächlich 
-[borg backup](https://borgbackup.readthedocs.io/en/stable/).
+Während meiner Zeit als Administrator für Linux Systeme habe ich einige Skripte und Programme entwickelt
+([PyBackup](https://github.com/felbinger/PyBackup),
+[GBM](https://github.com/felbinger/GBM),
+[DBM](https://github.com/felbinger/dbm)). Mittlerweile verwende ich für dateibasierte Sicherungen
+hauptsächlich [borg backup](https://borgbackup.readthedocs.io/en/stable/).
 
 Im Backup des Servers sollten zumindest die Containerdefinitionen `/home/admin` 
 sowie Daten der Container (`/srv`) enthalten sein. Sofern nginx als Reverse
