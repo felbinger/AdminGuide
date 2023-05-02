@@ -16,6 +16,9 @@ Zum Erfassen der Sensordaten verwenden wir neben
 Exporter (nginx, mysql, postgresql, ssh, gitlab, grafana, ...). Viele von diesen sind in 
 [dieser Liste](https://prometheus.io/docs/instrumenting/exporters/#third-party-exporters) zu finden.
 
+Möchte man bereitgestellte Sensordaten einer Anwendung (die sich nicht im Prometheus-Format befinden)
+verarbeiten, so kann man auch einen [eigenen Exporter schreiben](https://prometheus.io/docs/instrumenting/writing_exporters/).
+
 ```yaml
 version: '3.9'
 

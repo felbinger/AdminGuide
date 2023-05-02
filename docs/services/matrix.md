@@ -196,7 +196,6 @@ database:
 
 Nun kann der Matrix Homeserver bereits mit dem Befehl `docker compose up -d` gestartet werden.
 
-
 ### Lokalen Nutzer anlegen
 Ein neuer Nutzer lässt sich mit diesem Befehl erzeugen:
 ```shell
@@ -272,50 +271,22 @@ allem für Seiten wie die [`.well-known/security.txt`](https://securitytxt.org) 
 `robots.txt` Interessant, doch auch die `.well-known` Einträge für Matrix können so
 gesetzt werden.
 
-### SSO with Keycloak
+### Single Sign-On
 
-!!! info
-    REWRITE REQUIRED
+Prinzipiell bietet Synapse auch Unterstütztung für SSO (z. B. Open ID Connect). Sofern Matrix Bridges
+eingesetzt werden - wovon ich hier mal ausgehe, da sonst auch einfach ein offizieller Matrix Homeserver 
+([`matrix.org`](https://app.element.io) / [`mozilla.org`](https://chat.mozilla.org)) verwendet werden
+kann - würde ich jedoch zumindest von mehreren Nutzern auf dem gleichen Homeserver abraten.
 
-Wenn man eine *Keycloak* Instanz besitzt, kann man diesen als externen Authentisierungsanbieter verwenden.
-Dafür muss man zuerst den Client in Keycloak anlegen. Verwende `synapse.domain.de` als Client ID und `openid` als
-Protokoll. Bearbeite den neuen Client wie folgt:
+Synapse kann ohne Probleme mit mehreren Benutzern genutzt werden, bei der WhatsApp Bridge konnte ich auf
+einem Homeserver mit zwei Nutzern einige "Unschönheiten" feststellen.
 
-| Setting                      | Value                                                  |
-|------------------------------|--------------------------------------------------------|
-| Access Type                  | confidential                                           |
-| Direct Access Grants Enabled | OFF                                                    |
-| Root URL                     | `https://synapse.domain.de`                            |
-| Valid Redirect URIs          | `https://synapse.domain.de` `http://synapse.domain.de` |
-| Base URL                     | `https://synapse.domain.de`                            |
-| Web Origins                  | +                                                      |
-
-Zunächst muss man den Client Secret aus dem "Credentials" Tab speichern. Diesen brauchen wir später.
-
-Als Nächstes muss noch die `homeserver.yaml` Datei bearbeitet werden. Wir empfehlen dann den einzelnen Values zu suchen,
-da die Datei sehr lang ist.
-Bearbeite die Zeilen wie folgt:
-```
-server_name: "matrix.domain.de"
-
-enable_registration: false
-password_config.enabled: false
-
-oidc_providers:
-# Keycloak
-  - idp_id: keycloak
-    idp_name: YOURNAME
-    issuer: "https://id.domain.de/realms/main"
-    client_id: "synapse.domain.de"
-    client_secret: "YOURSECRET"
-    scopes: ["profile"]
-```
-
-**Es ist sehr wichtig den `openid` Scope zu entfernen. Wenn man dies nicht tut, werden einige Funktionen nicht nutzbar
-sein**
-
-Jetzt kann man den Matrix Server neu starten. Die Funktion mit Keycloak als SSO Provider sich anmelden zu können, sollte
-nun verfügbar sein.
+!!! info "Beispiel: WhatsApp Status Broadcasts"
+    Nutzer A hat die Nummer von Nutzer B in seinen Kontakten eingespeichert.  
+    Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.  
+    Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
+    Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A 
+    Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht. 
 
 ### Bridge Setup
 
@@ -325,4 +296,4 @@ ist eine Liste mit allen unterstützten Anwendungen.
 
 Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für
 die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen
-[hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html](https://docs.mau.fi/bridges/general/docker-setup.html) zu finden
+[hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html) zu finden.

@@ -70,18 +70,15 @@ The http server is then listening on port 8000.
 * Think about splitting the three [traefik container definition](./docs/Installation/) into seperate files (to avoid duplicate configuration fragments).
 
 ### Services
-* Add reverse proxy setup instructions according to template.
-* Jitsi
 
 #### Rewrite required:
-* Prometheus
 * Netbox
-* Matrix (Keycloak SSO, if you want more information to bridges (setup instructions))
-* Guacamole OIDC Integration (doesn't work like this...)
+* Matrix Bridges (WhatsApp, Telegram, Signal)
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
-* Gitea (OIDC)
-* Bookstack (SAML)
-* Keycloak (Admin Webinterface Protection for Traefik as Reverse Proxy)
+* Guacamole: OIDC Integration (doesn't work like this...)
+* Gitea: OIDC
+* Bookstack: SAML
+* Keycloak: Admin Webinterface Protection for Traefik as Reverse Proxy
 
 #### Test if still working
 * Typo 3 - remove if not
@@ -89,4 +86,3 @@ The http server is then listening on port 8000.
 * Privatebin  - remove if not
 * OpenLDAP - remove if not
 * docky-onion - remove if not
-* Jupyter
