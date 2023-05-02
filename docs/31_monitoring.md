@@ -12,10 +12,9 @@ Als Monitoring verwenden wir den Prometheus Stack (
 Zum Erfassen der Sensordaten verwenden wir neben 
 [node_exporter](https://github.com/prometheus/node_exporter) (generelle Hoststatistiken), 
 [blackbox_exporter](https://github.com/prometheus/blackbox_exporter) (ICMP & HTTP Tests) und
-[cAdvisor](https://github.com/google/cadvisor) (für Docker) 
-auch Anwendungsspezifische Prometheus Exporter (nginx, mysql, postgresql, ssh, gitlab, grafnana, ...).
-Viele von diesen sind in 
-[dieser Liste](https://prometheus.io/docs/instrumenting/exporters/#software-exposing-prometheus-metrics) zu finden
+[cAdvisor](https://github.com/google/cadvisor) (für Docker) auch Anwendungsspezifische Prometheus 
+Exporter (nginx, mysql, postgresql, ssh, gitlab, grafana, ...). Viele von diesen sind in 
+[dieser Liste](https://prometheus.io/docs/instrumenting/exporters/#third-party-exporters) zu finden.
 
 ```yaml
 version: '3.9'
