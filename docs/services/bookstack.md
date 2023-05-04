@@ -1,6 +1,6 @@
 # Bookstack
 
-Bookstack verwendet die Idee von Büchern, um Seiten zu organisieren und Informationen zu speichern.
+Bookstack ist eine einfache Wiki- / KnowledgeBase Software.
 
 ```yaml
 version: '3.9'
@@ -32,20 +32,6 @@ services:
       - "[::1]:8000:80"
 ```
 
-=== "nginx"
-    ```yaml
-        ports:
-          - "[::1]:8000:80"
-    ```
-=== "Traefik"
-    ```yaml
-        labels:
-          - "traefik.enable=true"
-          - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
-          - "traefik.http.routers.r_bookstack.entrypoints=websecure"
-    ```
-
 ```shell
 # .mariadb.env
 MYSQL_PASSWORD=S3cr3T
@@ -56,33 +42,87 @@ MYSQL_PASSWORD=S3cr3T
 DB_PASS=S3cr3T
 ```
 
-You should now be able to log in under the given domain. The default credentials are `admin@admin.com`:`password`.
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+
+    ```nginx
+    # /etc/nginx/sites-available/bookstack.domain.de
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+    server {
+        server_name bookstack.domain.de;
+        listen 0.0.0.0:443 ssl http2;
+        listen [::]:443 ssl http2;
+
+        ssl_certificate /root/.acme.sh/bookstack.domain.de_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/bookstack.domain.de_ecc/bookstack.domain.de.key;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+        ssl_session_tickets off;
+
+        # modern configuration
+        ssl_protocols TLSv1.3;
+        ssl_prefer_server_ciphers off;
+
+        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+        add_header Strict-Transport-Security "max-age=63072000" always;
+
+        # OCSP stapling
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        location / {
+            proxy_pass http://[::1]:8000/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    }
+    ```
+
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
+          - "traefik.http.routers.r_bookstack.entrypoints=websecure"
+    ```
+
+Anschließend können Sie sich unter der angegebenen Domain mit den Zugangsdaten `admin@admin.com`:`password` einloggen.
 
 ## Setting up SAML2 Authentication
 
-Now here's how to set up SAML2 Authentication with a *Keycloak* Server.
+Hier ist eine Anleitung wie man SAML2 Authentifizierung mit einem *Keycloak* Server einrichtet.
 
-At first, we have to configure Keycloak properly.
+Zuerst müssen wir Keycloak konfigurieren.
 
-Create a new Client. Client ID is `https://bookstack.domain.de/saml2/metadata`, Client Protocol
-is `saml`. Now edit the settings of your newly created Client as follows:
+Erstellt man einen neuen Client mit `https://bookstack.domain.de/saml2/metadata` als Client ID und `saml` als Client
+Protokoll, so kann man die Einstellungen des neuen Clients wie folgt bearbeiten.
 
-| Setting                   | Value                             |
-|---------------------------|-----------------------------------|
-| Client Signature Required | OFF                               |
+| Setting                   | Value                           |
+|---------------------------|---------------------------------|
+| Client Signature Required | OFF                             |
 | Root URL                  | `https://bookstack.domain.de/`  |
 | Valid Redirect URIs       | `https://bookstack.domain.de/*` |
 | Base URL                  | `https://bookstack.domain.de/`  |
 
-Fine Grain SAML Endpoint Configuration:
+Fine Grain SAML Endpoint Konfiguration:
 
-| Setting                                     | Value                                     |
-|---------------------------------------------|-------------------------------------------|
+| Setting                                     | Value                                   |
+|---------------------------------------------|-----------------------------------------|
 | Assertion Consumer Service POST Binding URL | `https://bookstack.domain.de/saml2/acs` |
 | Logout Service Redirect Binding URL         | `https://bookstack.domain.de/saml2/sls` |
 
 
-Save this. Now go to the "Mappers"-Tab. Create a new Mapper:
+Wenn man das gespeichert hat, so können wir u den "Mappers"-Tab gehen und einen neuen Mapper wie folgt erstellen:
 
 | Setting                   | Value         |
 |---------------------------|---------------|
@@ -94,7 +134,7 @@ Save this. Now go to the "Mappers"-Tab. Create a new Mapper:
 | SAML Attribute NameFormat | basic         |
 
 
-Save this. Create another Mapper:
+Und noch einen für die Mail:
 
 | Setting                   | Value         |
 |---------------------------|---------------|
@@ -105,16 +145,18 @@ Save this. Create another Mapper:
 | SAML Attribute Name       | user.email    |
 | SAML Attribute NameFormat | basic         |
 
-Also hit save on this one. Now we are almost done with the Keycloak Config. There is just one
-more Setting we need to change, and that is the following:
+Wenn man beide gespeichert hat, sind wir mit der Keycloak Konfiguration fast fertig. Wir müssen nur noch eine folgende
+Einstellung bearbeiten:
 
 Go to `Client Scopes -> role_list -> Mappers -> role list` and set "Single Role Attribute" to ON. Save.
 Now we have finished the Keycloak Configuration.
 
+Änder die "Single Role Attribute" Einstellung in `Client Scopes -> role_list -> Mappers -> role list` to "ON". 
+Wenn wir das auch noch gespeichert hat, dann ist die Keycloak konfiguration vollendet.
+
 <br />
 
-Now we need to do the Configuration of Bookstack. Edit the following File: `YOURCONFIGPATH/www/.env`.
-Add the following Lines:
+Jetzt müssen wir Bookstack konfigurieren. Änder folgende Zeilen in der Datei `YOURCONFIGPATH/www/.env`:
 
 ```
 # Set authentication method to be saml2
@@ -158,12 +200,12 @@ SAML2_IDP_SLO=https://keycloak.domain.de/auth/realms/YOURREALM/protocol/saml
 SAML2_IDP_x509=YOURCERT
 ```
 
-To get the x509 public certificate you have to open the Keycloak Admin once again.
-In the `Realm Settings`, click on `SAML 2.0 Identity Provider Metadata`. Now copy and paste
-the shown public certificate.
+Um das x509 public Zertifikat zu bekommen, müssen wir erneut in den Keycloak Admin.
+In den `Ream Settings` kann man unter `SAML 2.0 Identity Provider Metadata` das public Zertifikat einsehen. Kopiere es
+und füge es in der Datei ein.
 
 <br />
 
-Do a `docker-compose restart` on Bookstack. You should now be able to authenticate via your Keycloak Instance.
+Wenn man jetzt einen `docker compose restart` durchführt sollte es möglich sein sich über Keycloak anzumelden.
 
-For further Documentation refer to the [Official Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).
+Für weite Dokumentation empfehlen wir die [Offiziellen Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).

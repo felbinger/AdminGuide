@@ -27,6 +27,46 @@ services:
         ports:
           - "[::1]:8000:80"
     ```
+
+    ```nginx
+    # /etc/nginx/sites-available/gitlab.domain.de
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+    server {
+        server_name gitlab.domain.de;
+        listen 0.0.0.0:443 ssl http2;
+        listen [::]:443 ssl http2;
+
+        ssl_certificate /root/.acme.sh/gitlab.domain.de_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/gitlab.domain.de_ecc/gitlab.domain.de.key;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+        ssl_session_tickets off;
+
+        # modern configuration
+        ssl_protocols TLSv1.3;
+        ssl_prefer_server_ciphers off;
+
+        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+        add_header Strict-Transport-Security "max-age=63072000" always;
+
+        # OCSP stapling
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        location / {
+            proxy_pass http://[::1]:8000/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    }
+    ```
+
 === "Traefik"
     ```yaml
         labels:
@@ -37,12 +77,14 @@ services:
     ```
 
 !!! info ""
-	The `external_url` has to be `http://...` when using a reverse proxy which handles tls, otherwise gitlab tries
-    to redirect the incoming http connection to https which ends in a never ending redirect cycle.
+    Die `external_url` muss `http://...` sein wenn man einen reverse proxy verwendet, welcher TLS verarbeitet. Andererseits
+    würde GitLab versuchen die anfragen von einem Benutzer auf https weiterzuleiten und diesen würde in einem unendlichen
+    Weiterleitungskreis enden.
 
 ## Mailserver
-The setup of a mailserver is quite simple, simply add the following configuration options 
-to the GITLAB_OMNIBUS_CONFIG environment variable:  
+Um einen Mailserver einzurichten, muss man nur diese wenigen einfachen Konfigurationsoptionen zu der
+GITLAB_OMNIBUS_CONFIG Environment variable hinzufügen
+
 ```shell
         gitlab_rails['gitlab_email_enabled'] = true
         gitlab_rails['gitlab_email_from'] = 'gitlab@domain.de'
@@ -59,9 +101,11 @@ to the GITLAB_OMNIBUS_CONFIG environment variable:
 		gitlab_rails['gitlab_root_email'] = 'admin@domain.de'
 ```
 
-# OpenID / Keycloak
-The setup of OIDC with keycloak is also quite simple, simply add the following configuration options 
-to the GITLAB_OMNIBUS_CONFIG environment variable:  
+## OpenID / Keycloak
+
+Die Einrichtung von OIDC mit Keycloak ist genauso einfach. Auch hier einfach folgende Attribute zu der
+GITLAB_OMNIBUS_CONFIG environment Variable hinzufügen.
+
 ```shell
         gitlab_rails['omniauth_enabled'] = true
         gitlab_rails['omniauth_block_auto_created_users'] = false

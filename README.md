@@ -46,32 +46,69 @@ The http server is then listening on port 8000.
   ```
 
 ## TODO
-* Can traefik assign each http router a seperate ipv6 address?
-* How to configure authenticated origin pulls with traefik and cloudflare?
-* Describe how we can give traefik a origin server wildcard tls certificate, instead of using ACME with LEGO.
-* Test the trafik setup - I wrote it from what I remembered last time doing it...
+### Traefik
+* Can traefik assign each http router a separate ipv6 address?
+* How to configure authenticated origin pulls with cloudflare?
+* Describe for traefik with cloudflare how to use origin server wildcard certificates (instead of using ACME with LEGO):  
+  should work like this:
+  ```shell
+  commands:
+    # ...
+    - "--tls.certificatesresolvers.myresolver1.acme=false"
+    - "--tls.certificatesresolvers.myresolver1.certFile=/certs/domain1.crt"
+    - "--tls.certificatesresolvers.myresolver1.keyFile=/certs/domain1.key"
+    - "--tls.certificatesresolvers.myresolver1.domains[0]=domain1.com"
+    - "--tls.certificatesresolvers.myresolver2.acme=false"
+    - "--tls.certificatesresolvers.myresolver2.certFile=/certs/domain2.crt"
+    - "--tls.certificatesresolvers.myresolver2.keyFile=/certs/domain2.key"
+    - "--tls.certificatesresolvers.myresolver2.domains[0]=domain2.com"
+  # ...
+  volumes:
+    # ...
+    - "/srv/traefik/certs:/certs"
+  ```
+* Test traefik setup - I wrote it from what I remembered last time doing it...
 * Think about splitting the three [traefik container definition](./docs/Installation/) into seperate files (to avoid duplicate configuration fragments).
+* Keycloak: Admin Webinterface Protection for Traefik as Reverse Proxy:  
+  I found this on an old server - please test this before putting it into admin guide...
+  ```yaml
+    labels:
+      # ...
+      - "traefik.http.routers.r_keycloak.rule=Host(`id.domain.de`)" # <- edit (user interface)
+      - "traefik.http.routers.r_keycloak.tls=true"
+      - "traefik.http.routers.r_keycloak.entrypoints=websecure"
+      - "traefik.http.middlewares.mw_keycloak-host-rewrite.headers.customrequestheaders.Host=id.domain.de" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-host-rewrite2.headers.customrequestheaders.X-Forwarded-Host=id.domain.de" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-redirect.replacepathregex.regex=^\/auth\/$$"
+      - "traefik.http.middlewares.mw_keycloak-redirect.replacepathregex.replacement=/auth/realms/main/account/" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-block-admin.replacepathregex.regex=^\/auth\/admin\/$$"
+      - "traefik.http.middlewares.mw_keycloak-block-admin.replacepathregex.replacement=/auth/realms/master/account/" # <- edit
+      - "traefik.http.routers.r_keycloak.middlewares=mw_keycloak-redirect@docker,mw_keycloak-block-admin@docker,mw_keycloak-host-rewrite@docker,mw_keycloak-host-rewrite2@docker"
+
+      - "traefik.http.routers.r_keycloak-admin.rule=Host(`keycloak.domain.de`)" # <- edit (admin interface)
+      - "traefik.http.routers.r_keycloak-admin.tls=true"
+      - "traefik.http.routers.r_keycloak-admin.entrypoints=websecure"
+      - "traefik.http.middlewares.mw_keycloak-admin-redirect.redirectregex.regex=^https:\/\/keycloak.domain.de\/?$$" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-admin-redirect.redirectregex.replacement=https://keycloak.domain.de/auth/admin/" # <- edit
+      - "traefik.http.routers.r_keycloak-admin.middlewares=mw_keycloak-admin-redirect@docker"
+
+  ```
 
 ### Services
-* Add reverse proxy setup instructions according to template.
+#### More
+* Monitoring
+* Matrix Bridges (WhatsApp, Telegram, Signal)
 
 #### Rewrite required:
-* Sentry - or remove!
-* Prometheus
-* Netbox
-* Matrix (Federations, Bridges, ...)
-* Jitsi
-* Guacamole OIDC Integration (doesn't work like this...)
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
-* Gitea (OIDC)
-* Bookstack (SAML)
+* Netbox
+* Guacamole: OIDC Integration (doesn't work like this...)
+* Gitea: OIDC
+* Bookstack: SAML
 
-#### Test if still working
-* Typo 3 - remove if not
+#### Test if still working (remove if not)
+* Typo 3
 * Seafile
 * Privatebin
-* OpenVPN - remove if not
-* OpenLDAP - remove if not
-* Jupyter
-* Gitlab
-* docky-onion - remove if not
+* OpenLDAP
+* docky-onion

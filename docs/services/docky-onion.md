@@ -28,9 +28,9 @@ services:
 Nach dem Starten des Containers mit dem Befehl `docker compose up -d` wird docky-onion den nginx proxy im Tor-Netzwerk
 erreichbar machen.
 Jetzt können wir die `.onion`-Adresse mithilfe von `docker compose exec docky-onion lookup` nachschauen.
-Die Ausgabe sollte wie folgt (oder ähnlich) aussehen:
+Die Ausgabe sollte ähnlich wie folgt aussehen:
 ```
 WEB => j3c7wmyv6b3q3uvowetwwygb7h57k2bjhtnwp2zfamda2ij2vanyhmid.onion
 ```
 
-MERKE: Man bekommt mehrere `.onion`-Adressen für jeden Dienst, welcher im Tor-Netzwerk erreichbar ist.
+BEACHTE: Man bekommt mehrere `.onion`-Adressen für jeden Dienst, welcher im Tor-Netzwerk erreichbar ist.

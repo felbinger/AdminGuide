@@ -1,11 +1,16 @@
 # OpenLDAP
 
-I tested a lot of prebuild docker images, and I came to the conclusion that the one from `osixia/openldap:1.4.0` works best.
-Unfortunately neither the [bcrypt hashing algorithm](https://en.wikipedia.org/wiki/Bcrypt) nor the [PBKDF2 hashing algorithm](https://en.wikipedia.org/wiki/PBKDF2) is being support.
-So, we are going to use osixia's image as base, and add the bcrypt hashing algorithm (checkout [howardlau1999/openldap-bcrypt-docker](https://github.com/howardlau1999/openldap-bcrypt-docker)).
+Ich habe viele vorgefertigte Docker Images getestet, und kam zu dem Entschluss, dass das Image
+von `osixia/openldap:1.4.0` am besten funktioniert.
+Leider wird aber weder der [bcrypt hashing Algorithmus](https://en.wikipedia.org/wiki/Bcrypt) noch
+der [PBKDF2 hashing Algorithmus](https://en.wikipedia.org/wiki/PBKDF2) unterstützt.
+Somit verwenden wir das Image von osixia als Basis und fügen den bcrypt hashing Algorithmus hinzu (
+Siehe [howardlau1999/openldap-bcrypt-docker](https://github.com/howardlau1999/openldap-bcrypt-docker)).
 
-A friend of mine, who's also supporting me with the admin guide, has build a custom phpldapadmin image, which only supports secure hashing algorithms and is based on a small alpine image. 
-[Checkout his git repository](https://github.com/MarcelCoding/phpLDAPadmin) or simply use his docker image: [`marcelcoding/phpldapadmin`](https://hub.docker.com/r/marcelcoding/phpldapadmin)
+Ein Freund von mir, welcher mich auch bei dem AdminGuide unterstützt, hat ein eigenes phpldapadmin image, welche nur
+sichere hashing Algorithmen unterstützt und auf einem kleinen alpine image basiert.
+[Siehe sein git repository](https://github.com/MarcelCoding/phpLDAPadmin) oder verwende einfach sein Docker Image
+[`marcelcoding/phpldapadmin`](https://hub.docker.com/r/marcelcoding/phpldapadmin)
 
 ```yaml
 version: '3.9'
@@ -40,9 +45,9 @@ services:
 LDAP_ADMIN_PASSWORD=S3cr3T
 ```
 
-## Custom Schemas
+## Eigene Schemas
 ### SSH Public Key Schema
-Create the `openssh-lpk.ldif` file (I tried to refactor this multiple times, just leave it as it is...)
+Erstelle die `openssh-lpk.ldif` Datei (Ich hab es mehrmals versucht zu refactoren, aber ich lasse es einfach wie es ist)
 ```ldif
 # AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
 # CRC32 f6bf57a2
@@ -56,7 +61,7 @@ olcObjectClasses: {0}( 1.3.6.1.4.1.24552.500.1.1.2.0 NAME 'ldapPublicKey' DESC
 'MANDATORY: OpenSSH LPK objectclass' SUP top AUXILIARY MAY ( sshPublicKey $
 uid ) )
 ```
-Add the schema to your ldap server:
+Füge jetzt noch das Schema zu deinem LDAP Server hinzu.
 ```
 $ ldapadd -Y EXTERNAL -H ldapi:/// -f openssh-lpk.ldif
 SASL/EXTERNAL authentication started
@@ -65,7 +70,7 @@ SASL SSF: 0
 ```
 
 ## LDAP Command Line Basics
-Checkout the official [OpenLDAP Admin Guide](https://www.openldap.org/doc/admin24/)  
+Siehe den offiziellen [OpenLDAP Admin Guide](https://www.openldap.org/doc/admin24/)  
 ```sh
 # query your ldap
 ldapsearch -x -D 'cn=admin,dc=domain,dc=de' -w'admin' -b 'dc=domain,dc=de'
