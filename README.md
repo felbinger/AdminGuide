@@ -46,9 +46,10 @@ The http server is then listening on port 8000.
   ```
 
 ## TODO
-* Can traefik assign each http router a seperate ipv6 address?
-* How to configure authenticated origin pulls with traefik and cloudflare?
-* Describe how we can give traefik a origin server wildcard tls certificate, instead of using ACME with LEGO.  
+### Traefik
+* Can traefik assign each http router a separate ipv6 address?
+* How to configure authenticated origin pulls with cloudflare?
+* Describe for traefik with cloudflare how to use origin server wildcard certificates (instead of using ACME with LEGO):  
   should work like this:
   ```shell
   commands:
@@ -66,27 +67,48 @@ The http server is then listening on port 8000.
     # ...
     - "/srv/traefik/certs:/certs"
   ```
-* Test the traefik setup - I wrote it from what I remembered last time doing it...
+* Test traefik setup - I wrote it from what I remembered last time doing it...
 * Think about splitting the three [traefik container definition](./docs/Installation/) into seperate files (to avoid duplicate configuration fragments).
+* Keycloak: Admin Webinterface Protection for Traefik as Reverse Proxy:  
+  I found this on an old server - please test this before putting it into admin guide...
+  ```yaml
+    labels:
+      # ...
+      - "traefik.http.routers.r_keycloak.rule=Host(`id.domain.de`)" # <- edit (user interface)
+      - "traefik.http.routers.r_keycloak.tls=true"
+      - "traefik.http.routers.r_keycloak.entrypoints=websecure"
+      - "traefik.http.middlewares.mw_keycloak-host-rewrite.headers.customrequestheaders.Host=id.domain.de" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-host-rewrite2.headers.customrequestheaders.X-Forwarded-Host=id.domain.de" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-redirect.replacepathregex.regex=^\/auth\/$$"
+      - "traefik.http.middlewares.mw_keycloak-redirect.replacepathregex.replacement=/auth/realms/main/account/" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-block-admin.replacepathregex.regex=^\/auth\/admin\/$$"
+      - "traefik.http.middlewares.mw_keycloak-block-admin.replacepathregex.replacement=/auth/realms/master/account/" # <- edit
+      - "traefik.http.routers.r_keycloak.middlewares=mw_keycloak-redirect@docker,mw_keycloak-block-admin@docker,mw_keycloak-host-rewrite@docker,mw_keycloak-host-rewrite2@docker"
+
+      - "traefik.http.routers.r_keycloak-admin.rule=Host(`keycloak.domain.de`)" # <- edit (admin interface)
+      - "traefik.http.routers.r_keycloak-admin.tls=true"
+      - "traefik.http.routers.r_keycloak-admin.entrypoints=websecure"
+      - "traefik.http.middlewares.mw_keycloak-admin-redirect.redirectregex.regex=^https:\/\/keycloak.domain.de\/?$$" # <- edit
+      - "traefik.http.middlewares.mw_keycloak-admin-redirect.redirectregex.replacement=https://keycloak.domain.de/auth/admin/" # <- edit
+      - "traefik.http.routers.r_keycloak-admin.middlewares=mw_keycloak-admin-redirect@docker"
+
+  ```
 
 ### Services
-* Add reverse proxy setup instructions according to template.
-* Jitsi
+#### More
+* Monitoring
+* Matrix Bridges (WhatsApp, Telegram, Signal)
 
 #### Rewrite required:
-* Prometheus
-* Netbox
-* Matrix (Keycloak SSO, if you want more information to bridges (setup instructions))
-* Guacamole OIDC Integration (doesn't work like this...)
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
-* Gitea (OIDC)
-* Bookstack (SAML)
-* Keycloak (Admin Webinterface Protection for Traefik as Reverse Proxy)
+* Netbox
+* Guacamole: OIDC Integration (doesn't work like this...)
+* Gitea: OIDC
+* Bookstack: SAML
 
-#### Test if still working
-* Typo 3 - remove if not
-* Seafile  - remove if not
-* Privatebin  - remove if not
-* OpenLDAP - remove if not
-* docky-onion - remove if not
-* Jupyter
+#### Test if still working (remove if not)
+* Typo 3
+* Seafile
+* Privatebin
+* OpenLDAP
+* docky-onion

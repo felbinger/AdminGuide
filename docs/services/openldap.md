@@ -45,7 +45,7 @@ services:
 LDAP_ADMIN_PASSWORD=S3cr3T
 ```
 
-## Eigene Schemas
+## Eigene Schemata
 ### SSH Public Key Schema
 Erstelle die `openssh-lpk.ldif` Datei (Ich hab es mehrmals versucht zu refactoren, aber ich lasse es einfach wie es ist)
 ```ldif

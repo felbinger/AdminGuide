@@ -205,9 +205,9 @@ sudo docker compose exec synapse register_new_matrix_user \
   -a -c /data/homeserver.yaml http://localhost:8008
 ```
 
-### Passwort zurücksetzen 
-Zurücksetzen lassen sich die Passwörter lediglich über den Datenbank. 
-Zunächst wird ein neuer hash generiert, anschließend wird dieser 
+### Passwort zurücksetzen
+Zurücksetzen lassen sich die Passwörter lediglich über den Datenbank.
+Zunächst wird ein neuer hash generiert, anschließend wird dieser
 in der Datenbank für den jeweiligen Nutzer als Password ersetzt.
 
 ```shell
@@ -216,32 +216,32 @@ sudo docker compose exec postgres psql -U postgres -d synapse -c \
   "UPDATE users SET password_hash='${new}' WHERE name='@test:domain.de';"
 ```
 
-### Federation 
-Federation ermöglicht die Kommunikation zwischen Nutzern verschiedener Homeserver.
+### Federation
+Eine Federation ermöglicht die Kommunikation zwischen Nutzern verschiedener Homeserver.
 
-Wenn der Synapse Homeserver direkt auf der Domain aufgesetzt 
+Wenn der Synapse Homeserver direkt auf der Domain aufgesetzt
 ist die im Homeserver eingerichtet ist, funktioniert dies out-of-the-box.
 
-Wird der Synapse Server (hier: `synapse.domain.de`) nicht auf 
-der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht, 
+Wird der Synapse Server (hier: `synapse.domain.de`) nicht auf
+der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht,
 gibt es zwei Möglichkeiten die Ferderation einzurichten.
 
-Der `_matrix` SRV DNS Record kann hierfür genutzt werden. 
-Dies hat jedoch den Nachteil, das zwangsläufig die IP 
-Adresse des Matrix Servers geleakt wird, selbst wenn 
-Cloudflare Proxy verwendet wird, da synapse.domain.de 
+Der `_matrix` SRV DNS Record kann hierfür genutzt werden.
+Dies hat jedoch den Nachteil, das zwangsläufig die IP
+Adresse des Matrix Servers geleakt wird, selbst wenn
+Cloudflare Proxy verwendet wird, da synapse.domain.de
 dann nicht geproxied werden kann.
 ```
 _matrix._tcp.domain.de. 1 IN SRV 10 5 443 synapse.domain.de.
 ```
 
-Die aus meiner Sicht bessere Alternative ist die Erstellung 
+Die aus meiner Sicht bessere Alternative ist die Erstellung
 von zwei Dateien im Verzeichnis `.well-known/matrix` des Webservers
-der Homeserver Domain. Selbst wenn andere Dienste auf dieser Domain 
-(z.B. eine Website, Nextcloud, ...) betrieben werden kommen sich 
+der Homeserver Domain. Selbst wenn andere Dienste auf dieser Domain
+(z.B. eine Website, Nextcloud, ...) betrieben werden kommen sich
 diese Dateien damit nicht in die Quere.
 
-Wird nginx als Reverse Proxy betrieben so müssen lediglich diese 
+Wird nginx als Reverse Proxy betrieben so müssen lediglich diese
 beiden locations in den V-Host für `domain.de` eingefügt werden.
 ```nginx
 location /.well-known/matrix/server {
@@ -260,62 +260,34 @@ location /.well-known/matrix/client {
     return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
 }
 ```
-Die Dateien können auch Manuell angelegt werden, falls die 
+Die Dateien können auch Manuell angelegt werden, falls die
 Homeserver-Domain z. B. auf einen Webspace zeigt.
 
-Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch 
+Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch
 [dieses](https://github.com/marcelcoding/.well-known) Projekt interessant.
 
 Es ermöglicht die zentrale Konfiguration von HTTP Seiten, die auf allen Domains,
-die durch Cloudflare Proxy gerouted werden aufgerufen werden können. Dies ist vor 
+die durch Cloudflare Proxy gerouted werden aufgerufen werden können. Dies ist vor
 allem für Seiten wie die [`.well-known/security.txt`](https://securitytxt.org) oder
-`robots.txt` Interessant, doch auch die `.well-known` Einträge für Matrix können so 
+`robots.txt` Interessant, doch auch die `.well-known` Einträge für Matrix können so
 gesetzt werden.
 
-### SSO with Keycloak
+### Single Sign-On
 
-!!! info
-    REWRITE REQUIRED
+Prinzipiell bietet Synapse auch Unterstütztung für SSO (z. B. Open ID Connect). Sofern Matrix Bridges
+eingesetzt werden - wovon ich hier mal ausgehe, da sonst auch einfach ein offizieller Matrix Homeserver 
+([`matrix.org`](https://app.element.io) / [`mozilla.org`](https://chat.mozilla.org)) verwendet werden
+kann - würde ich jedoch zumindest von mehreren Nutzern auf dem gleichen Homeserver abraten.
 
-Wenn man eine *Keycloak* Instanz besitzt, kann man diesen als externen Authentisierungsanbieter verwenden.
-Dafür muss man zuerst den Client in Keycloak anlegen. Verwende `synapse.domain.de` als Client ID und `openid` als
-Protokoll. Bearbeite den neuen Client wie folgt:
+Synapse kann ohne Probleme mit mehreren Benutzern genutzt werden, bei der WhatsApp Bridge konnte ich auf
+einem Homeserver mit zwei Nutzern einige "Unschönheiten" feststellen.
 
-| Setting                      | Value                                                  |
-|------------------------------|--------------------------------------------------------|
-| Access Type                  | confidential                                           |
-| Direct Access Grants Enabled | OFF                                                    |
-| Root URL                     | `https://synapse.domain.de`                            |
-| Valid Redirect URIs          | `https://synapse.domain.de` `http://synapse.domain.de` |
-| Base URL                     | `https://synapse.domain.de`                            |
-| Web Origins                  | +                                                      |
-
-Zunächst muss man den Client Secret aus dem "Credentials" Tab speichern. Diesen brauchen wir später.
-
-Als Nächstes muss noch die `homeserver.yaml` Datei bearbeitet werden. Wir empfehlen dann den einzelnen Values zu suchen,
-da die Datei sehr lang ist.
-Bearbeite die Zeilen wie folgt:
-```
-server_name: "matrix.domain.de"
-
-enable_registration: false
-password_config.enabled: false
-
-oidc_providers:
-# Keycloak
-  - idp_id: keycloak
-    idp_name: YOURNAME
-    issuer: "https://id.domain.de/realms/main"
-    client_id: "synapse.domain.de"
-    client_secret: "YOURSECRET"
-    scopes: ["profile"]
-```
-
-**Es ist sehr wichtig den `openid` Scope zu entfernen. Wenn man dies nicht tut, werden einige Funktionen nicht nutzbar
-sein**
-
-Jetzt kann man den Matrix Server neu starten. Die Funktion mit Keycloak als SSO Provider sich anmelden zu können, sollte
-nun verfügbar sein.
+!!! info "Beispiel: WhatsApp Status Broadcasts"
+    Nutzer A hat die Nummer von Nutzer B in seinen Kontakten eingespeichert.  
+    Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.  
+    Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
+    Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A 
+    Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht. 
 
 ### Bridge Setup
 
@@ -325,4 +297,4 @@ ist eine Liste mit allen unterstützten Anwendungen.
 
 Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für
 die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen
-[hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html](https://docs.mau.fi/bridges/general/docker-setup.html) zu finden
+[hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html) zu finden.

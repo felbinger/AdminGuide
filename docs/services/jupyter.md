@@ -32,9 +32,9 @@ services:
           - "traefik.http.routers.r_jupyter.entrypoints=websecure"
     ```
 
-Nach dem Initialen Start von Jupyter Notebook befindet sich 
-ein Link mit einem Access Token in den Containerlogs 
-(`docker compose logs jupyter`), kopieren Sie diesen 
+Nach dem Initialen-Start von Jupyter Notebook befindet sich
+ein Link mit einem Access Token in den Containerlogs
+(`docker compose logs jupyter`), kopieren Sie diesen
 Token (`?token=******`) um ein Passwort auf der Website festzulegen.
 
 Das Passwort kann auch mit folgendem Befehl zurückgesetzt werden:
