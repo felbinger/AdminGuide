@@ -287,7 +287,11 @@ einem Homeserver mit zwei Nutzern einige "Unschönheiten" feststellen.
     Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.  
     Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
     Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A 
-    Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht. 
+    Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht.
+    Der Nutzer sieht diese Status Nachrichten aber nicht nur, in der Übersicht in dem WhatsApp Client wird der Person
+    auch angezeigt, dass eine (meistens fremde Nummer) diesen Status gesehen hat. Somit bekommen die WhatsApp Kontakte
+    auch davon mit.
+
 
 ### Bridge Setup
 
@@ -298,3 +302,56 @@ ist eine Liste mit allen unterstützten Anwendungen.
 Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für
 die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen
 [hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html) zu finden.
+
+## Mautrix-WhatsApp (WhatsApp Bridge)
+Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch 
+einige Konfigurationen, welche man vornehmen muss, damit die Bridge funktioniert.
+
+Bevor wir mit der Konfiguration beginnen können, müssen wir (am besten in dem Docker Container) dem Service eine eigene
+Datenbank anlegen.
+
+[//]: # (TODO: Datenbank anlegen erklären)
+
+In dem Ordner `/srv/matrix/mautrix-whatsapp/` befindet sich jetzt eine sogenannte `config.yaml`. Wenn man sich diese 
+anschaut bemerkt man, dass dort ziemlich viel drin steht. An sich kann alles auch bearbeitet und geändert werden, aber
+ein paar Einstellungen welche vorgenommen werden müssen sind hier jetzt aufgeführt.
+(In dem unten aufgeführten Codeblock sind nur die Einstellungen welche geändert werden müssen und somit stehen auch nicht
+die Kommentare in dem Codeblock, welche in der Datei auf dem Server stehen).
+
+```yaml
+homeserver:
+    address: https://matrix.example.com      <--- Hier deine Matrix Sub-Domain angeben
+    domain: example.com                      <--- Hier deine Matrix Homeserver Domain (welche hinter dem Namen steht)
+
+appservice:
+    address: http://localhost:29318          <--- Dies zu dem ändern wo deine mautrix-bridge erreichbar ist (default: mautrix-whatsapp)
+
+    database:
+      uri: postgres://user:password@host/database?sslmode=disable  <--- Zu deiner Datenbankverbindung ändern
+```
+
+Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche die Bridge an sich betreffen. Diese müssen 
+nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die WhatsApp Bridge nicht jedem Nutzer auf
+dem Homeserver zur Verfügung zu stellen, deswegen empfehlen wir folgende Einstellung vorzunehmen.
+
+```yaml
+bridge:
+    permissions:
+        "*": relay  
+        "example.com": user                  <--- Diese Zeile entfernen
+        "@admin:example.com": admin          <--- Das in Anführungszeichen zu deinem Matrix Namen ändern.
+```
+Wenn man die Konfigurationsdatei abgespeichert und den Container neu gestartet hat, befindet sich neben der `config.yaml`
+jetzt auch eine `registration.yaml`. Wir empfehlen diese Datei in `/srv/matrix/synapse/` zu verschieben und wenn man vorhat
+mehrere Bridges zu verwenden diese auch umzubenennen in `whatsapp-registration.yaml` o. Ä.
+Wenn die Datei verschoben und ggf. umbenannt wurde muss man diese in die `homeserver.yaml` Datei hinzufügen, indem man
+am Ende der Datei folgende zwei Zeilen hinzufügt:
+
+```yaml
+app_service_config_files:
+  - /data/whatsapp-registration.yaml
+```
+
+Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@whatsappbot:domain.de`
+(sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine 
+Hilfenachricht erhalten.
