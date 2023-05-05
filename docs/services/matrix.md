@@ -307,10 +307,13 @@ die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsa
 Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch
 einige Konfigurationen, welche man vornehmen muss, damit die Bridge funktioniert.
 
-Bevor wir mit der Konfiguration beginnen können, müssen wir (am besten in dem Docker Container) dem Service eine eigene
+Bevor wir mit der Konfiguration beginnen können, müssen wir dem Service eine eigene
 Datenbank anlegen.
+Die Datenbank erstellt man wie folgt:
 
-[//]: # (TODO: Datenbank anlegen erklären)
+```shell
+sudo docker compose exec postgres psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
+```
 
 In dem Ordner `/srv/matrix/mautrix-whatsapp/` befindet sich jetzt eine sogenannte `config.yaml`. Wenn man sich diese
 anschaut bemerkt man, dass dort ziemlich viel drin steht. An sich kann alles auch bearbeitet und geändert werden, aber
@@ -320,30 +323,31 @@ die Kommentare in dem Codeblock, welche in der Datei auf dem Server stehen).
 
 ```yaml
 homeserver:
-  address: https://matrix.example.com      <--- Hier deine Matrix Sub-Domain angeben
-  domain: example.com                      <--- Hier deine Matrix Homeserver Domain (welche hinter dem Namen steht)
+  address: https://matrix.example.com      <--- Hier die Matrix Sub-Domain angeben
+  domain: example.com                      <--- Hier die Matrix Homeserver Domain (welche hinter dem Namen steht)
 
 appservice:
-  address: http://localhost:29318          <--- Dies zu dem ändern wo deine mautrix-bridge erreichbar ist (default: mautrix-whatsapp)
+  address: http://mautrix-whatsapp:29318   <--- Dies so kopieren
 
   database:
-    uri: postgres://user:password@host/database?sslmode=disable  <--- Zu deiner Datenbankverbindung ändern
+    uri: postgres://postgres@postgres/mautrix-whatsapp?sslmode=disable  <--- Dies auch kopieren
 ```
 
 Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche die Bridge an sich betreffen. Diese müssen
-nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die WhatsApp Bridge nicht jedem Nutzer auf
-dem Homeserver zur Verfügung zu stellen, deswegen empfehlen wir folgende Einstellung vorzunehmen.
+nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die WhatsApp Bridge 
+nicht jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen empfehlen wir folgende Einstellung vorzunehmen.
 
 ```yaml
 bridge:
   permissions:
     "*": relay
     "example.com": user                  <--- Diese Zeile entfernen
-    "@admin:example.com": admin          <--- Das in Anführungszeichen zu deinem Matrix Namen ändern.
+    "@admin:example.com": admin          <--- Das in Anführungszeichen zu dem Matrix Namen des Admins ändern.
 ```
+
 Wenn man die Konfigurationsdatei abgespeichert und den Container neu gestartet hat, befindet sich neben der `config.yaml`
-jetzt auch eine `registration.yaml`. Wir empfehlen diese Datei in `/srv/matrix/synapse/` zu verschieben und wenn man vorhat
-mehrere Bridges zu verwenden diese auch umzubenennen in `whatsapp-registration.yaml` o. Ä.
+jetzt auch eine `registration.yaml`. Diese Datei muss in `/srv/matrix/synapse/` verschoben werden und wenn man vorhat
+mehrere Bridges zu verwenden empfehlen wir diese auch in `whatsapp-registration.yaml` o. Ä.  umzubenennen.
 Wenn die Datei verschoben und ggf. umbenannt wurde muss man diese in die `homeserver.yaml` Datei hinzufügen, indem man
 am Ende der Datei folgende zwei Zeilen hinzufügt:
 
