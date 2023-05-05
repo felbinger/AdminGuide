@@ -206,12 +206,13 @@ sudo docker compose exec synapse register_new_matrix_user \
 ```
 
 ### Passwort zurücksetzen
-Zurücksetzen lassen sich die Passwörter lediglich über den Datenbank.
+
+Zurücksetzen lassen sich die Passwörter lediglich über die Datenbank. 
 Zunächst wird ein neuer hash generiert, anschließend wird dieser
-in der Datenbank für den jeweiligen Nutzer als Password ersetzt.
+in der Datenbank für den jeweiligen Nutzer als Passwort ersetzt.
 
 ```shell
-new=$(sudo docker compose exec -u www-data synapse hash_password -c /data/homeserver.yaml -p PASSWORD)
+new=$(sudo docker compose exec -u www-data synapse hash_password -c /data/homeserver.yaml -p PASSWORT)
 sudo docker compose exec postgres psql -U postgres -d synapse -c \
   "UPDATE users SET password_hash='${new}' WHERE name='@test:domain.de';"
 ```
@@ -227,8 +228,7 @@ der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht,
 gibt es zwei Möglichkeiten die Ferderation einzurichten.
 
 Der `_matrix` SRV DNS Record kann hierfür genutzt werden.
-Dies hat jedoch den Nachteil, das zwangsläufig die IP
-Adresse des Matrix Servers geleakt wird, selbst wenn
+Dies hat jedoch den Nachteil, das zwangsläufig die IP-Adresse des Matrixservers geleakt wird, selbst wenn
 Cloudflare Proxy verwendet wird, da synapse.domain.de
 dann nicht geproxied werden kann.
 ```
@@ -260,7 +260,7 @@ location /.well-known/matrix/client {
     return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
 }
 ```
-Die Dateien können auch Manuell angelegt werden, falls die
+Die Dateien können auch manuell angelegt werden, falls die
 Homeserver-Domain z. B. auf einen Webspace zeigt.
 
 Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch
@@ -274,7 +274,7 @@ gesetzt werden.
 
 ### Single Sign-On
 
-Prinzipiell bietet Synapse auch Unterstütztung für SSO (z. B. Open ID Connect). Sofern Matrix Bridges
+Prinzipiell bietet Synapse auch Unterstützung für SSO (z. B. Open ID Connect). Sofern Matrix Bridges
 eingesetzt werden - wovon ich hier mal ausgehe, da sonst auch einfach ein offizieller Matrix Homeserver
 ([`matrix.org`](https://app.element.io) / [`mozilla.org`](https://chat.mozilla.org)) verwendet werden
 kann - würde ich jedoch zumindest von mehreren Nutzern auf dem gleichen Homeserver abraten.
@@ -283,14 +283,14 @@ Synapse kann ohne Probleme mit mehreren Benutzern genutzt werden, bei der WhatsA
 einem Homeserver mit zwei Nutzern einige "Unschönheiten" feststellen.
 
 !!! info "Beispiel: WhatsApp Status Broadcasts"
-Nutzer A hat die Nummer von Nutzer B in seinen Kontakten eingespeichert.  
-Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.  
-Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
-Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A
-Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht.
-Der Nutzer sieht diese Status Nachrichten aber nicht nur, in der Übersicht in dem WhatsApp Client wird der Person
-auch angezeigt, dass eine (meistens fremde Nummer) diesen Status gesehen hat. Somit bekommen die WhatsApp Kontakte
-auch davon mit.
+    Nutzer A hat die Nummer von Nutzer B in seinen Kontakten eingespeichert.  
+    Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.  
+    Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
+    Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A
+    Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht.
+    Der Nutzer sieht diese Status Nachrichten aber nicht nur, in der Übersicht in dem WhatsApp Client wird der Person
+    auch angezeigt, dass eine (meistens fremde Nummer) diesen Status gesehen hat. Somit bekommen die WhatsApp Kontakte
+    auch davon mit.
 
 
 ### Bridge Setup
@@ -307,24 +307,21 @@ die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsa
 Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch
 einige Konfigurationen, welche man vornehmen muss, damit die Bridge funktioniert.
 
-Bevor wir mit der Konfiguration beginnen können, müssen wir dem Service eine eigene
-Datenbank anlegen.
+Bevor wir mit der Konfiguration beginnen können, müssen wir der Bridge eine eigene Datenbank anlegen.
 Die Datenbank erstellt man wie folgt:
 
 ```shell
 sudo docker compose exec postgres psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
 ```
 
-In dem Ordner `/srv/matrix/mautrix-whatsapp/` befindet sich jetzt eine sogenannte `config.yaml`. Wenn man sich diese
-anschaut bemerkt man, dass dort ziemlich viel drin steht. An sich kann alles auch bearbeitet und geändert werden, aber
-ein paar Einstellungen welche vorgenommen werden müssen sind hier jetzt aufgeführt.
-(In dem unten aufgeführten Codeblock sind nur die Einstellungen welche geändert werden müssen und somit stehen auch nicht
-die Kommentare in dem Codeblock, welche in der Datei auf dem Server stehen).
+Jetzt befindet sich in dem Ordner `/srv/matrix/mautrix-whatsapp/` eine `config.yaml`. Diese Konfigurationsdatei ist 
+ausschließlich für die Konfiguration für die WhatsApp Bridge mit dem dazugehörigen Bot und **MUSS** angepasst werden.
+Einige Konfigurationen, welche in jedem Fall vorgenommen werden müssen, sind folgende:
 
 ```yaml
 homeserver:
   address: https://matrix.example.com      <--- Hier die Matrix Sub-Domain angeben
-  domain: example.com                      <--- Hier die Matrix Homeserver Domain (welche hinter dem Namen steht)
+  domain: example.com                      <--- Hier die Matrix Homeserver Domain angeben
 
 appservice:
   address: http://mautrix-whatsapp:29318   <--- Dies so kopieren
@@ -333,22 +330,22 @@ appservice:
     uri: postgres://postgres@postgres/mautrix-whatsapp?sslmode=disable  <--- Dies auch kopieren
 ```
 
-Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche die Bridge an sich betreffen. Diese müssen
+Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
 nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die WhatsApp Bridge 
-nicht jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen empfehlen wir folgende Einstellung vorzunehmen.
+nicht jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen sollte man folgende Einstellung vornehmen.
 
 ```yaml
 bridge:
   permissions:
     "*": relay
     "example.com": user                  <--- Diese Zeile entfernen
-    "@admin:example.com": admin          <--- Das in Anführungszeichen zu dem Matrix Namen des Admins ändern.
+    "@admin:example.com": admin          <--- Das zu Ihrer Matrix Username Adresse ändern.
 ```
 
 Wenn man die Konfigurationsdatei abgespeichert und den Container neu gestartet hat, befindet sich neben der `config.yaml`
 jetzt auch eine `registration.yaml`. Diese Datei muss in `/srv/matrix/synapse/` verschoben werden und wenn man vorhat
-mehrere Bridges zu verwenden empfehlen wir diese auch in `whatsapp-registration.yaml` o. Ä.  umzubenennen.
-Wenn die Datei verschoben und ggf. umbenannt wurde muss man diese in die `homeserver.yaml` Datei hinzufügen, indem man
+mehrere Bridges zu verwenden empfehlen wir diese auch in `whatsapp-registration.yaml` o. Ä. umzubenennen.
+Wenn die Datei verschoben und ggf. umbenannt wurde muss man sie in die `homeserver.yaml` Datei hinzufügen, indem man
 am Ende der Datei folgende zwei Zeilen hinzufügt:
 
 ```yaml
@@ -358,4 +355,4 @@ app_service_config_files:
 
 Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@whatsappbot:domain.de`
 (sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
-Hilfenachricht erhalten.
+Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.
