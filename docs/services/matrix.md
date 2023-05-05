@@ -228,7 +228,7 @@ der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht,
 gibt es zwei Möglichkeiten die Ferderation einzurichten.
 
 Der `_matrix` SRV DNS Record kann hierfür genutzt werden.
-Dies hat jedoch den Nachteil, das zwangsläufig die IP-Adresse des Matrixservers geleakt wird, selbst wenn
+Dies hat jedoch den Nachteil, das zwangsläufig die IP-Adresse des Matrixservers geleakt wird, selbst wenn ein
 Cloudflare Proxy verwendet wird, da synapse.domain.de
 dann nicht geproxied werden kann.
 ```
