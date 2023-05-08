@@ -1,6 +1,6 @@
 # Bookstack
 
-Bookstack ist eine einfache Wiki / KnowledgeBase Software.
+Bookstack ist eine einfache Wiki- / KnowledgeBase Software.
 
 ```yaml
 version: '3.9'
@@ -16,7 +16,7 @@ services:
       - "MYSQL_USER=bookstack"
     volumes:
       - "/srv/bookstack/mariadb:/var/lib/mysql"
-	
+
   bookstack:
     image: linuxserver/bookstack
     restart: always
@@ -43,10 +43,10 @@ DB_PASS=S3cr3T
 ```
 
 === "nginx"
-    ```yaml
-        ports:
-          - "[::1]:8000:80"
-    ```
+```yaml
+ports:
+- "[::1]:8000:80"
+```
 
     ```nginx
     # /etc/nginx/sites-available/bookstack.domain.de
@@ -88,13 +88,13 @@ DB_PASS=S3cr3T
     ```
 
 === "Traefik"
-    ```yaml
-        labels:
-          - "traefik.enable=true"
-          - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
-          - "traefik.http.routers.r_bookstack.entrypoints=websecure"
-    ```
+```yaml
+labels:
+- "traefik.enable=true"
+- "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
+- "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
+- "traefik.http.routers.r_bookstack.entrypoints=websecure"
+```
 
 Anschließend können Sie sich unter der angegebenen Domain mit den Zugangsdaten `admin@admin.com`:`password` einloggen.
 
@@ -121,7 +121,6 @@ Fine Grain SAML Endpoint Konfiguration:
 | Assertion Consumer Service POST Binding URL | `https://bookstack.domain.de/saml2/acs` |
 | Logout Service Redirect Binding URL         | `https://bookstack.domain.de/saml2/sls` |
 
-
 Wenn man das gespeichert hat, so können wir u den "Mappers"-Tab gehen und einen neuen Mapper wie folgt erstellen:
 
 | Setting                   | Value         |
@@ -132,7 +131,6 @@ Wenn man das gespeichert hat, so können wir u den "Mappers"-Tab gehen und einen
 | Friendly Name             | Username      |
 | SAML Attribute Name       | user.username |
 | SAML Attribute NameFormat | basic         |
-
 
 Und noch einen für die Mail:
 
@@ -148,7 +146,7 @@ Und noch einen für die Mail:
 Wenn man beide gespeichert hat, sind wir mit der Keycloak Konfiguration fast fertig. Wir müssen nur noch eine folgende
 Einstellung bearbeiten:
 
-In `Client Scopes -> role_list -> Mappers -> role list` muss noch die "Single Role Attribute" Einstellung zu "ON" 
+In `Client Scopes -> role_list -> Mappers -> role list` muss noch die "Single Role Attribute" Einstellung zu "ON"
 geändert werden.
 Wenn dies gespeichert wurde, ist die Keycloak Konfiguration vollendet.
 
