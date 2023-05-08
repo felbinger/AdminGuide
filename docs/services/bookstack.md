@@ -43,10 +43,10 @@ DB_PASS=S3cr3T
 ```
 
 === "nginx"
-```yaml
-ports:
-- "[::1]:8000:80"
-```
+    ```yaml
+    ports:
+    - "[::1]:8000:80"
+    ```
 
     ```nginx
     # /etc/nginx/sites-available/bookstack.domain.de
@@ -88,13 +88,13 @@ ports:
     ```
 
 === "Traefik"
-```yaml
-labels:
-- "traefik.enable=true"
-- "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
-- "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
-- "traefik.http.routers.r_bookstack.entrypoints=websecure"
-```
+    ```yaml
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
+    - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
+    - "traefik.http.routers.r_bookstack.entrypoints=websecure"
+    ```
 
 Anschließend können Sie sich unter der angegebenen Domain mit den Zugangsdaten `admin@admin.com`:`password` einloggen.
 
