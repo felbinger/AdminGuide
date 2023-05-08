@@ -68,7 +68,7 @@ The http server is then listening on port 8000.
     - "/srv/traefik/certs:/certs"
   ```
 * Test traefik setup - I wrote it from what I remembered last time doing it...
-* Think about splitting the three [traefik container definition](./docs/Installation/) into seperate files (to avoid duplicate configuration fragments).
+* Think about splitting the three [traefik container definition](./docs/installation/) into separate files (to avoid duplicate configuration fragments).
 * Keycloak: Admin Webinterface Protection for Traefik as Reverse Proxy:  
   I found this on an old server - please test this before putting it into admin guide...
   ```yaml
@@ -97,7 +97,7 @@ The http server is then listening on port 8000.
 ### Services
 #### More
 * Monitoring
-* Matrix Bridges (WhatsApp, Telegram, Signal)
+* Matrix Bridges (Telegram, Signal)
 
 #### Rewrite required:
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
