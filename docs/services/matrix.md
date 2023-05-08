@@ -303,7 +303,7 @@ Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für
 die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen
 [hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html) zu finden.
 
-## `mautrix-whatsapp` (WhatsApp Bridge)
+#### `mautrix-whatsapp` (WhatsApp Bridge)
 Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch
 einige Konfigurationen, welche man vornehmen muss, damit die Bridge funktioniert.
 
