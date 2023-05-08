@@ -89,11 +89,11 @@ DB_PASS=S3cr3T
 
 === "Traefik"
     ```yaml
-    labels:
-    - "traefik.enable=true"
-    - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
-    - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
-    - "traefik.http.routers.r_bookstack.entrypoints=websecure"
+        labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.srv_bookstack.loadbalancer.server.port=80"
+        - "traefik.http.routers.r_bookstack.rule=Host(`bookstack.domain.de`)"
+        - "traefik.http.routers.r_bookstack.entrypoints=websecure"
     ```
 
 Anschließend können Sie sich unter der angegebenen Domain mit den Zugangsdaten `admin@admin.com`:`password` einloggen.
