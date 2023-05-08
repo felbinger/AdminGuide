@@ -326,7 +326,7 @@ appservice:
   address: http://mautrix-whatsapp:29318   <--- Dies so kopieren
 
   database:
-    uri: postgres://postgres@postgres/mautrix-whatsapp?sslmode=disable  <--- Dies auch kopieren
+    uri: postgres://synapse:passwort@postgres/mautrix-whatsapp?sslmode=disable  <--- Dies anpassen
 ```
 
 Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
