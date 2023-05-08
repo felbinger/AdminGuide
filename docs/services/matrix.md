@@ -288,9 +288,9 @@ einem Homeserver mit zwei Nutzern einige "Unschönheiten" feststellen.
     Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
     Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A
     Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht.
-    Der Nutzer sieht diese Status Nachrichten aber nicht nur, in der Übersicht in dem WhatsApp Client wird der Person
-    auch angezeigt, dass eine (meistens fremde Nummer) diesen Status gesehen hat. Somit bekommen die WhatsApp Kontakte
-    auch davon mit.
+    Der Nutzer A sieht diese Status Nachrichten aber nicht nur. In der Übersicht in dem WhatsApp Client wird den
+    Kontakten von Nutzer B auch angezeigt, dass eine (meist fremde Nummer) diesen Status gesehen hat. Somit bekommen die
+    WhatsApp Kontakte auch davon mit.
 
 
 ### Bridge Setup
@@ -314,7 +314,7 @@ Die Datenbank erstellt man wie folgt:
 sudo docker compose exec postgres psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
 ```
 
-Die Konfigurationsdatei der Whatsapp-bridge ist `/srv/matrix/mautrix-whatsapp/config.yaml`. 
+Die Konfigurationsdatei der Whatsapp-Bridge ist `/srv/matrix/mautrix-whatsapp/config.yaml`. 
 Folgende Konfigurationen müssen mindestens angepasst werden.
 
 ```yaml
@@ -341,16 +341,14 @@ bridge:
     "@admin:example.com": admin          <--- Das zu Ihrer Matrix Username Adresse ändern.
 ```
 
-Wenn man die Konfigurationsdatei abgespeichert und den Container neu gestartet hat, befindet sich neben der `config.yaml`
-jetzt auch eine `registration.yaml`. Diese Datei muss in `/srv/matrix/synapse/` verschoben werden und wenn man vorhat
-mehrere Bridges zu verwenden empfehlen wir diese auch in `whatsapp-registration.yaml` o. Ä. umzubenennen. Das Umbenennen
-der Datei darf erst in dem Ordner `/srv/matrix/synapse/` erstellt werden und der Name muss in dem Verzeichnis 
-`/srv/matrix/mautrix-whatsapp` bei `registration.yaml` bleiben, sonst wird bei dem nächsten Neustart eine neue registration
-angelegt und dann funktioniert die Bridge nicht!
-Wenn die Datei verschoben und ggf. umbenannt wurde muss man sie in die `homeserver.yaml` Datei hinzufügen, indem man
-am Ende der Datei folgende zwei Zeilen hinzufügt:
+Die Registrierung auf dem Homeserver erfolgt durch das Hinzufügen der `registration.yaml` in der `homeserver.yaml`.
+
+```shell
+cp /srv/matrix/mautrix-whatsapp/registration.yaml /srv/matrix/synapse/whatsapp-registration.yaml
+```
 
 ```yaml
+# homeserver.yaml
 app_service_config_files:
   - /data/whatsapp-registration.yaml
 ```
