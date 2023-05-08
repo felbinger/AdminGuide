@@ -44,8 +44,8 @@ DB_PASS=S3cr3T
 
 === "nginx"
     ```yaml
-    ports:
-    - "[::1]:8000:80"
+        ports:
+          - "[::1]:8000:80"
     ```
 
     ```nginx
