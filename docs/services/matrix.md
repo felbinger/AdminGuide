@@ -181,9 +181,9 @@ docker run -it --rm -v "/srv/matrix/synapse:/data" \
 Anschließend wird die Datenbankkonfiguration in der `/srv/matrix/synapse/homeserver.yaml` angepasst:
 ```yaml
 database:
-# name: sqlite3
-# args:
-# database: /data/homeserver.db
+  # name: sqlite3
+  # args:
+  # database: /data/homeserver.db
   name: psycopg2
   args:
     user: synapse
@@ -196,6 +196,7 @@ database:
 
 Nun kann der Matrix Homeserver bereits mit dem Befehl `docker compose up -d` gestartet werden.
 
+
 ### Lokalen Nutzer anlegen
 Ein neuer Nutzer lässt sich mit diesem Befehl erzeugen:
 ```shell
@@ -205,18 +206,19 @@ sudo docker compose exec synapse register_new_matrix_user \
 ```
 
 ### Passwort zurücksetzen
-Zurücksetzen lassen sich die Passwörter lediglich über den Datenbank.
+
+Zurücksetzen lassen sich die Passwörter lediglich über die Datenbank. 
 Zunächst wird ein neuer hash generiert, anschließend wird dieser
-in der Datenbank für den jeweiligen Nutzer als Password ersetzt.
+in der Datenbank für den jeweiligen Nutzer als Passwort ersetzt.
 
 ```shell
-new=$(sudo docker compose exec -u www-data synapse hash_password -c /data/homeserver.yaml -p PASSWORD)
+new=$(sudo docker compose exec -u www-data synapse hash_password -c /data/homeserver.yaml -p PASSWORT)
 sudo docker compose exec postgres psql -U postgres -d synapse -c \
   "UPDATE users SET password_hash='${new}' WHERE name='@test:domain.de';"
 ```
 
 ### Federation
-Federation ermöglicht die Kommunikation zwischen Nutzern verschiedener Homeserver.
+Eine Federation ermöglicht die Kommunikation zwischen Nutzern verschiedener Homeserver.
 
 Wenn der Synapse Homeserver direkt auf der Domain aufgesetzt
 ist die im Homeserver eingerichtet ist, funktioniert dies out-of-the-box.
@@ -226,8 +228,7 @@ der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht,
 gibt es zwei Möglichkeiten die Ferderation einzurichten.
 
 Der `_matrix` SRV DNS Record kann hierfür genutzt werden.
-Dies hat jedoch den Nachteil, das zwangsläufig die IP
-Adresse des Matrix Servers geleakt wird, selbst wenn
+Dies hat jedoch den Nachteil, das zwangsläufig die IP-Adresse des Matrixservers geleakt wird, selbst wenn ein
 Cloudflare Proxy verwendet wird, da synapse.domain.de
 dann nicht geproxied werden kann.
 ```
@@ -259,7 +260,7 @@ location /.well-known/matrix/client {
     return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
 }
 ```
-Die Dateien können auch Manuell angelegt werden, falls die
+Die Dateien können auch manuell angelegt werden, falls die
 Homeserver-Domain z. B. auf einen Webspace zeigt.
 
 Falls Cloudflare Proxy genutzt wird, ist gegebenenfalls noch
@@ -273,8 +274,8 @@ gesetzt werden.
 
 ### Single Sign-On
 
-Prinzipiell bietet Synapse auch Unterstütztung für SSO (z. B. Open ID Connect). Sofern Matrix Bridges
-eingesetzt werden - wovon ich hier mal ausgehe, da sonst auch einfach ein offizieller Matrix Homeserver 
+Prinzipiell bietet Synapse auch Unterstützung für SSO (z. B. Open ID Connect). Sofern Matrix Bridges
+eingesetzt werden - wovon ich hier mal ausgehe, da sonst auch einfach ein offizieller Matrix Homeserver
 ([`matrix.org`](https://app.element.io) / [`mozilla.org`](https://chat.mozilla.org)) verwendet werden
 kann - würde ich jedoch zumindest von mehreren Nutzern auf dem gleichen Homeserver abraten.
 
@@ -285,8 +286,12 @@ einem Homeserver mit zwei Nutzern einige "Unschönheiten" feststellen.
     Nutzer A hat die Nummer von Nutzer B in seinen Kontakten eingespeichert.  
     Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.  
     Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
-    Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A 
-    Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht. 
+    Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A
+    Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht.
+    Der Nutzer A sieht diese Status Nachrichten aber nicht nur. In der Übersicht in dem WhatsApp Client wird den
+    Kontakten von Nutzer B auch angezeigt, dass eine (meist fremde Nummer) diesen Status gesehen hat. Somit bekommen die
+    WhatsApp Kontakte auch davon mit.
+
 
 ### Bridge Setup
 
@@ -297,3 +302,57 @@ ist eine Liste mit allen unterstützten Anwendungen.
 Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für
 die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen
 [hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html) zu finden.
+
+## `mautrix-whatsapp` (WhatsApp Bridge)
+Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch
+einige Konfigurationen, welche man vornehmen muss, damit die Bridge funktioniert.
+
+Bevor wir mit der Konfiguration beginnen können, müssen wir der Bridge eine eigene Datenbank anlegen.
+Die Datenbank erstellt man wie folgt:
+
+```shell
+sudo docker compose exec postgres psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
+```
+
+Die Konfigurationsdatei der Whatsapp-Bridge ist `/srv/matrix/mautrix-whatsapp/config.yaml`. 
+Folgende Konfigurationen müssen mindestens angepasst werden.
+
+```yaml
+homeserver:
+  address: https://matrix.example.com      <--- Hier die Matrix Sub-Domain angeben
+  domain: example.com                      <--- Hier die Matrix Homeserver Domain angeben
+
+appservice:
+  address: http://mautrix-whatsapp:29318   <--- Dies so kopieren
+
+  database:
+    uri: postgres://postgres@postgres/mautrix-whatsapp?sslmode=disable  <--- Dies auch kopieren
+```
+
+Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
+nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die WhatsApp Bridge 
+nicht jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen sollte man folgende Einstellung vornehmen.
+
+```yaml
+bridge:
+  permissions:
+    "*": relay
+    "example.com": user                  <--- Diese Zeile entfernen
+    "@admin:example.com": admin          <--- Das zu Ihrer Matrix Username Adresse ändern.
+```
+
+Die Registrierung auf dem Homeserver erfolgt durch das Hinzufügen der `registration.yaml` in der `homeserver.yaml`.
+
+```shell
+cp /srv/matrix/mautrix-whatsapp/registration.yaml /srv/matrix/synapse/whatsapp-registration.yaml
+```
+
+```yaml
+# homeserver.yaml
+app_service_config_files:
+  - /data/whatsapp-registration.yaml
+```
+
+Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@whatsappbot:domain.de`
+(sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
+Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.

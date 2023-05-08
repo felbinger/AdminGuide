@@ -16,7 +16,7 @@ services:
       - "MYSQL_USER=bookstack"
     volumes:
       - "/srv/bookstack/mariadb:/var/lib/mysql"
-	
+
   bookstack:
     image: linuxserver/bookstack
     restart: always
@@ -121,7 +121,6 @@ Fine Grain SAML Endpoint Konfiguration:
 | Assertion Consumer Service POST Binding URL | `https://bookstack.domain.de/saml2/acs` |
 | Logout Service Redirect Binding URL         | `https://bookstack.domain.de/saml2/sls` |
 
-
 Wenn man das gespeichert hat, so können wir u den "Mappers"-Tab gehen und einen neuen Mapper wie folgt erstellen:
 
 | Setting                   | Value         |
@@ -132,7 +131,6 @@ Wenn man das gespeichert hat, so können wir u den "Mappers"-Tab gehen und einen
 | Friendly Name             | Username      |
 | SAML Attribute Name       | user.username |
 | SAML Attribute NameFormat | basic         |
-
 
 Und noch einen für die Mail:
 
@@ -148,11 +146,9 @@ Und noch einen für die Mail:
 Wenn man beide gespeichert hat, sind wir mit der Keycloak Konfiguration fast fertig. Wir müssen nur noch eine folgende
 Einstellung bearbeiten:
 
-Go to `Client Scopes -> role_list -> Mappers -> role list` and set "Single Role Attribute" to ON. Save.
-Now we have finished the Keycloak Configuration.
-
-Änder die "Single Role Attribute" Einstellung in `Client Scopes -> role_list -> Mappers -> role list` to "ON". 
-Wenn wir das auch noch gespeichert hat, dann ist die Keycloak konfiguration vollendet.
+In `Client Scopes -> role_list -> Mappers -> role list` muss noch die "Single Role Attribute" Einstellung zu "ON"
+geändert werden.
+Wenn dies gespeichert wurde, ist die Keycloak Konfiguration vollendet.
 
 <br />
 
@@ -208,4 +204,4 @@ und füge es in der Datei ein.
 
 Wenn man jetzt einen `docker compose restart` durchführt sollte es möglich sein sich über Keycloak anzumelden.
 
-Für weite Dokumentation empfehlen wir die [Offiziellen Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).
+Für weitere Dokumentation empfehlen wir die [Offiziellen Docs](https://www.bookstackapp.com/docs/admin/saml2-auth/).

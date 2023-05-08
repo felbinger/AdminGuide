@@ -45,7 +45,7 @@ services:
 LDAP_ADMIN_PASSWORD=S3cr3T
 ```
 
-## Eigene Schemas
+## Eigene Schemata
 ### SSH Public Key Schema
 Erstelle die `openssh-lpk.ldif` Datei (Ich hab es mehrmals versucht zu refactoren, aber ich lasse es einfach wie es ist)
 ```ldif
@@ -70,7 +70,7 @@ SASL SSF: 0
 ```
 
 ## LDAP Command Line Basics
-Siehe den offiziellen [OpenLDAP Admin Guide](https://www.openldap.org/doc/admin24/)  
+Für weitere Dokumentation kann man den offiziellen [OpenLDAP Admin Guide](https://www.openldap.org/doc/admin24/) lesen. 
 ```sh
 # query your ldap
 ldapsearch -x -D 'cn=admin,dc=domain,dc=de' -w'admin' -b 'dc=domain,dc=de'
