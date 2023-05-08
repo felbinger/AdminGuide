@@ -1,6 +1,6 @@
 # Bookstack
 
-Bookstack ist ein einfaches Wiki / KnowledgeBase Software.
+Bookstack ist eine einfache Wiki / KnowledgeBase Software.
 
 ```yaml
 version: '3.9'
@@ -148,9 +148,9 @@ Und noch einen für die Mail:
 Wenn man beide gespeichert hat, sind wir mit der Keycloak Konfiguration fast fertig. Wir müssen nur noch eine folgende
 Einstellung bearbeiten:
 
-In `Client Scopes -> role_list -> Mappers -> role list` muss man noch die "Single Role Attribute" Einstellung zu "ON" 
-ändern.
-Wenn dies noch gespeichert wurde, ist die Keycloak Konfiguration vollendet.
+In `Client Scopes -> role_list -> Mappers -> role list` muss noch die "Single Role Attribute" Einstellung zu "ON" 
+geändert werden.
+Wenn dies gespeichert wurde, ist die Keycloak Konfiguration vollendet.
 
 <br />
 

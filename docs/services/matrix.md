@@ -61,8 +61,8 @@ POSTGRES_PASSWORD=S3cr3T
 
 === "nginx"
     ```yaml
-    ports:
-    - "[::1]:8000:8080"
+        ports:
+        - "[::1]:8000:8080"
     ```
 
     ```nginx
@@ -303,7 +303,7 @@ Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für
 die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen
 [hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html) zu finden.
 
-## Mautrix-WhatsApp (WhatsApp Bridge)
+## `mautrix-whatsapp` (WhatsApp Bridge)
 Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch
 einige Konfigurationen, welche man vornehmen muss, damit die Bridge funktioniert.
 
@@ -344,7 +344,10 @@ bridge:
 
 Wenn man die Konfigurationsdatei abgespeichert und den Container neu gestartet hat, befindet sich neben der `config.yaml`
 jetzt auch eine `registration.yaml`. Diese Datei muss in `/srv/matrix/synapse/` verschoben werden und wenn man vorhat
-mehrere Bridges zu verwenden empfehlen wir diese auch in `whatsapp-registration.yaml` o. Ä. umzubenennen.
+mehrere Bridges zu verwenden empfehlen wir diese auch in `whatsapp-registration.yaml` o. Ä. umzubenennen. Das Umbenennen
+der Datei darf erst in dem Ordner `/srv/matrix/synapse/` erstellt werden und der Name muss in dem Verzeichnis 
+`/srv/matrix/mautrix-whatsapp` bei `registration.yaml` bleiben, sonst wird bei dem nächsten Neustart eine neue registration
+angelegt und dann funktioniert die Bridge nicht!
 Wenn die Datei verschoben und ggf. umbenannt wurde muss man sie in die `homeserver.yaml` Datei hinzufügen, indem man
 am Ende der Datei folgende zwei Zeilen hinzufügt:
 
