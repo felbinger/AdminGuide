@@ -61,8 +61,8 @@ POSTGRES_PASSWORD=S3cr3T
 
 === "nginx"
     ```yaml
-        ports:
-            - "[::1]:8000:8080"
+    ports:
+      - "[::1]:8000:8080"
     ```
 
     ```nginx
