@@ -61,8 +61,9 @@ Maschine notwendig.
 
 Zu einem späteren Zeitpunkt erhielten weitere Administratoren für eigene virtuelle Maschinen Zugriff auf diesen
 dedizierten Server. Da ich diesen den Zugriff auf den Reverse Proxy, welcher das Routing zu den virtuellen Maschinen
-verwehren wollte, verwendete ich zunächst Cloudflare Proxy, um die IPv4 Erreichbarkeit zu sichern und
-zusätzlich weitere Schutzmaßnahmen (z. B. Denial of Service Schutz) für diesen dedizierten Server in Anspruch zu nehmen.
+verwehren wollte, verwendete ich zunächst nur auf IPv6 exposierte Web-Server in Verbindung mit Cloudflare Proxy, um 
+die IPv4 Erreichbarkeit zu sichern und zusätzlich weitere Schutzmaßnahmen (z. B. Denial of Service Schutz) für diesen 
+dedizierten Server in Anspruch zu nehmen.
 
 Spätestens seit Zensus
 2022, [bei dem das Statistische Bundesamt durch die Verwendung des Cloudflare Proxies in Verruf geriet](https://www.kuketz-blog.de/zensus-2022-statistisches-bundesamt-hostet-bei-cloudflare/),
@@ -77,7 +78,7 @@ Alternative zu Cloudflare in der Hinterhand haben zu können.
 Die Idee hinter diesem Proxy ist extrem einfach: Im DNS stehen für IPv6 (DNS AAAA-Record) die Adressen des eigentlichen
 Webservers, sodass die Nutzer sich direkt mit diesem Verbinden können. Falls die Nutzer über keine IPv6 Konfiguration
 verfügen, nutzen Sie den im IPv4 (DNS A-Record) hinterlegten IPv4-to-IPv6 Proxy, der die Anfragen dann über IPv6
-weiterleitet, OHNE die TLS Verbindung zu terminieren. Dies hat den Vorteil das keine Zertifikate benötigt werden.
+weiterleitet, OHNE die TLS Verbindung zu terminieren. Dies hat den Vorteil das keine TLS Zertifikate benötigt werden.
 
 ### IPv4-to-IPv6 Proxy
 
@@ -140,15 +141,12 @@ stream {
 
 ![Schaubild](../img/schaubild_cloudflare-vs-transparent-proxy.png){: loading=lazy }
 
-Aus meiner Sicht ergibt die Verwendung eines eigenen
-vorgeschaltenen Proxies nur Sinn, wenn mehr als ein Server
-administriert wird und über eine IPv6 Adresse webbasierte
-Dienste bereitstellt.
+Aus meiner Sicht ergibt die Verwendung eines eigenen vorgeschaltenen Proxies nur Sinn, wenn mehr als ein 
+Server administriert wird und die Web-Server über IPv6 Adressen exposiert bereitstellt werden.
 
-Wird lediglich ein System betreut (wie z.B. der oben erwähnte
-Cloudserver), kann die zugewiesene IPv4 Adresse natürlich auf
-den Ports 80 und 443 verwendet werden und dann auf den Reverse
-Proxy zeigen. Dadurch entfällt die Abhängigkeit zu anderen Systemen.
+Wird lediglich ein System betreut (wie z.B. der oben erwähnte Cloudserver), kann die zugewiesene IPv4 
+Adresse natürlich ebenfalls auf den Ports 80 und 443 verwendet werden und dann auf den Reverse Proxy 
+zeigen. Dadurch entfällt die Abhängigkeit zu anderen Systemen.
 
 Sofern der Cloudserver über keine eigene IPv4 Adresse oder keine
 eigenen IPv6 Adressen verfügt, sollte ein Proxy vorgeschaltet werden,
