@@ -319,14 +319,14 @@ Folgende Konfigurationen müssen mindestens angepasst werden.
 
 ```yaml
 homeserver:
-  address: https://matrix.example.com      <--- Hier die Matrix Sub-Domain angeben
-  domain: example.com                      <--- Hier die Matrix Homeserver Domain angeben
+  address: https://matrix.example.com      #<--- Hier die Matrix Sub-Domain angeben
+  domain: example.com                      #<--- Hier die Matrix Homeserver Domain angeben
 
 appservice:
-  address: http://mautrix-whatsapp:29318   <--- Dies so kopieren
+  address: http://mautrix-whatsapp:29318   #<--- Dies so kopieren
 
   database:
-    uri: postgres://synapse:passwort@postgres/mautrix-whatsapp?sslmode=disable  <--- Dies anpassen
+    uri: postgres://synapse:passwort@postgres/mautrix-whatsapp?sslmode=disable  #<--- Dies anpassen
 ```
 
 Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
