@@ -304,7 +304,7 @@ die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsa
 [hier](https://docs.mau.fi/bridges/general/docker-setup.html) zu finden.
 
 #### `mautrix-whatsapp` (WhatsApp Bridge)
-Nachdem die Kommentarzeichen des `mautrix-whatsapp` Containers in der `docker-compose.yml` entfernt wurde und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge angepasst werden.
+Nachdem die Kommentarzeichen des `mautrix-whatsapp` Containers in der `docker-compose.yml` entfernt wurden und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge angepasst werden.
 
 ```shell
 sudo docker compose exec postgres \
@@ -355,7 +355,7 @@ Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Brid
 
 
 #### `mautrix-telegram` (Telegram Bridge)
-Nachdem die Kommentarzeichen des `mautrix-telegram` Containers in der `docker-compose.yml` entfernt wurde und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge angepasst werden.
+Nachdem die Kommentarzeichen des `mautrix-telegram` Containers in der `docker-compose.yml` entfernt wurden und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge angepasst werden.
 
 ```shell
 sudo docker compose exec postgres \
@@ -368,8 +368,8 @@ Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix
 homeserver:
   # Hier muss angegeben werden, wie der mautrix-telegram
   # Container den synapse homeserver innerhalb des matrix 
-  # docker netzwerks erreichen kann. Dies geschied über 
-  # den Hostname des Container und dem entsprechenden Port
+  # docker netzwerks erreichen kann. Dies geschieht über 
+  # den Hostname des Containers und dem entsprechenden Port
   address: http://synapse:8008
   # Hier muss die domain des Homeservers angegeben werden
   domain: example.com  # hier steht bei euch etwas anderes
@@ -377,8 +377,8 @@ homeserver:
 appservice:
   # Hier muss angegeben werden, wie der synapse
   # container den mautrix-telegram bridge bot
-  # innerhalb des matrix docker networks erreichen
-  # kann. Dies geschied über den Hostname des Container
+  # innerhalb des matrix docker Netzwerks erreichen
+  # kann. Dies geschieht über den Hostname des Container
   # und dem entsprechenden Port
   address: http://mautrix-telegram:29317
 
