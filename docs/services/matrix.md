@@ -301,7 +301,7 @@ ist eine Liste mit allen unterstützten Anwendungen.
 
 Die Einrichtung unterscheidet sich sehr stark je nach verwendeter Bridge, für
 die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsanweisungen
-[hier](https://docs.mau.fi/bridges/python/signal/setup-docker.html) zu finden.
+[hier](https://docs.mau.fi/bridges/general/docker-setup.html) zu finden.
 
 #### `mautrix-whatsapp` (WhatsApp Bridge)
 Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch
