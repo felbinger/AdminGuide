@@ -304,18 +304,14 @@ die oben (`docker-compose.yml`) auskommentierten Bridges sind die Installationsa
 [hier](https://docs.mau.fi/bridges/general/docker-setup.html) zu finden.
 
 #### `mautrix-whatsapp` (WhatsApp Bridge)
-Nachdem die `docker-compose.yml` entsprechend bearbeitet wurde und der Container neu gestartet wurde, gibt es noch
-einige Konfigurationen, welche man vornehmen muss, damit die Bridge funktioniert.
-
-Bevor wir mit der Konfiguration beginnen können, müssen wir der Bridge eine eigene Datenbank anlegen.
-Die Datenbank erstellt man wie folgt:
+Nachdem die Kommentarzeichen des `mautrix-whatsapp` Containers in der `docker-compose.yml` entfernt wurden und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge angepasst werden.
 
 ```shell
-sudo docker compose exec postgres psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
+sudo docker compose exec postgres \
+  psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
 ```
 
-Die Konfigurationsdatei der Whatsapp-Bridge ist `/srv/matrix/mautrix-whatsapp/config.yaml`. 
-Folgende Konfigurationen müssen mindestens angepasst werden.
+Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix-whatsapp/config.yaml` angepasst werden:
 
 ```yaml
 homeserver:
@@ -330,8 +326,8 @@ appservice:
 ```
 
 Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
-nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die WhatsApp Bridge 
-nicht jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen sollte man folgende Einstellung vornehmen.
+nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die Bridges nicht
+jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen sollte man folgende Einstellung vornehmen.
 
 ```yaml
 bridge:
@@ -356,3 +352,76 @@ app_service_config_files:
 Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@whatsappbot:domain.de`
 (sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
 Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.
+
+
+#### `mautrix-telegram` (Telegram Bridge)
+Nachdem die Kommentarzeichen des `mautrix-telegram` Containers in der `docker-compose.yml` entfernt wurden und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge angepasst werden.
+
+```shell
+sudo docker compose exec postgres \
+  psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-telegram";'
+```
+
+Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix-telegram/config.yaml` angepasst werden:
+
+```yaml
+homeserver:
+  # Hier muss angegeben werden, wie der mautrix-telegram
+  # Container den synapse homeserver innerhalb des matrix 
+  # docker netzwerks erreichen kann. Dies geschieht über 
+  # den Hostname des Containers und dem entsprechenden Port
+  address: http://synapse:8008
+  # Hier muss die domain des Homeservers angegeben werden
+  domain: example.com  # hier steht bei euch etwas anderes
+
+appservice:
+  # Hier muss angegeben werden, wie der synapse
+  # container den mautrix-telegram bridge bot
+  # innerhalb des matrix docker Netzwerks erreichen
+  # kann. Dies geschieht über den Hostname des Container
+  # und dem entsprechenden Port
+  address: http://mautrix-telegram:29317
+
+  database:
+    # Hier muss die Datenbank URI angegeben werden
+    uri: postgres://synapse:passwort@postgres/mautrix-telegram
+```
+
+Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
+nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die Bridges nicht 
+jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen sollte man folgende Einstellung vornehmen.
+
+```yaml
+bridge:
+  permissions:
+    "*": "relaybot"
+    "public.example.com": "user"  # entfernen
+    "example.com": "full"  # entfernen
+    "@admin:example.com": "admin"  # vorne eigenen matrix user eintragen
+```
+
+Zuletzt muss noch ein API Zugang [bei Telegram ausgestellt](https://my.telegram.org/apps) werden und in der Konfiguration eingetragen werden:
+```yaml
+# Telegram config
+telegram:
+    # Get your own API keys at https://my.telegram.org/apps
+    api_id: 12345
+    api_hash: tjyd5yge35lbodk1xwzw2jstp90k55qz
+```
+
+Die Registrierung auf dem Homeserver erfolgt durch das Hinzufügen der `registration.yaml` in der `homeserver.yaml`.
+
+```shell
+cp /srv/matrix/mautrix-telegram/registration.yaml /srv/matrix/synapse/telegram-registration.yaml
+```
+
+```yaml
+# homeserver.yaml
+app_service_config_files:
+  - /data/telegram-registration.yaml
+```
+
+Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@telegrambot:domain.de`
+(sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
+Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.
+
