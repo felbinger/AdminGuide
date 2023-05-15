@@ -79,7 +79,7 @@ POSTGRES_PASSWORD=S3cr3T
         ssl_stapling_verify on;
 
         location / {
-            proxy_pass http://[::1]:8000/;
+            proxy_pass http://[::1]:8000/guacamole/;
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection 'upgrade';
@@ -99,6 +99,9 @@ POSTGRES_PASSWORD=S3cr3T
           - "traefik.http.services.srv_guacamole.loadbalancer.server.port=8080"
           - "traefik.http.routers.r_guacamole.rule=Host(`guacamole.domain.de`)"
           - "traefik.http.routers.r_guacamole.entrypoints=websecure"
+
+          - "traefik.http.middlewares.guacprefix.addprefix.prefix=/guacamole"
+          - "traefik.http.routers.r_guacamole.middlewares=guacprefix"
     ```
 
 ## OpenID Connect / Keycloak
