@@ -103,7 +103,7 @@ NEXTCLOUD_ADMIN_PASSWORD=p4ssw0rd
     ```
 
 ## Cronjobs
-Die Cron Jobs in Nextcloud laufen nicht sonderlich gut und deshalb empfehlen wir die für uns beste Methode:
+Um Cronjobs unter Nextcloud einzurichten, empfehlen wir Folgendes:
 
 1. Stelle in dem Nextcloud Webinterface unter `Administration-Settings -> Basic settings` die Background jobs auf `Webcron` 
 
