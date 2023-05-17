@@ -107,9 +107,9 @@ Um Cronjobs unter Nextcloud einzurichten, empfehlen wir Folgendes:
 
 1. Stelle in dem Nextcloud Webinterface unter `Administration-Settings -> Basic settings` die Background jobs auf `Webcron` 
 
-2. Öffne den crontab auf deinem Server mit folgendem Befehl: `crontab -e`
+2. Öffne den crontab auf dem Server mit folgendem Befehl: `crontab -e`
 
-3. Füge unten folgende Zeile ein: ` */5  *  *  *  *  curl https://domain.de/cron.php` (ggf. die Domain so anpassen, sodass man auf die Homepage von der Cloud kommt)
+3. Füge unten folgende Zeile ein: ` */5  *  *  *  *  curl https://nextcloud.domain.de/cron.php`
 
 ## Open ID Connect
 [janikvonrotz.ch/2020/10/20/openid-connect-with-nextcloud-and-keycloak/](https://janikvonrotz.ch/2020/10/20/openid-connect-with-nextcloud-and-keycloak/)
