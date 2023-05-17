@@ -107,8 +107,4 @@ The http server is then listening on port 8000.
 * Bookstack: SAML
 
 #### Test if still working (remove if not)
-* Typo 3
 * Seafile
-* Privatebin
-* OpenLDAP
-* docky-onion
