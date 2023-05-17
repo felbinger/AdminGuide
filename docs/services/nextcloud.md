@@ -102,5 +102,14 @@ NEXTCLOUD_ADMIN_PASSWORD=p4ssw0rd
           - "traefik.http.routers.r_nextcloud.entrypoints=websecure"
     ```
 
+## Cronjobs
+Die Cron Jobs in Nextcloud laufen nicht sonderlich gut und deshalb empfehlen wir die für uns beste Methode:
+
+1. Stelle in dem Nextcloud Webinterface unter `Administration-Settings -> Basic settings` die Background jobs auf `Webcron` 
+
+2. Öffne den crontab auf deinem Server mit folgendem Befehl: `crontab -e`
+
+3. Füge unten folgende Zeile ein: ` */5  *  *  *  *  curl https://domain.de/cron.php` (ggf. die Domain so anpassen, sodass man auf die Homepage von der Cloud kommt)
+
 ## Open ID Connect
 [janikvonrotz.ch/2020/10/20/openid-connect-with-nextcloud-and-keycloak/](https://janikvonrotz.ch/2020/10/20/openid-connect-with-nextcloud-and-keycloak/)
