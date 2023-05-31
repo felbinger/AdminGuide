@@ -18,8 +18,8 @@ diese in nginx verwendet werden kann.
     ```
 
 === "Ubuntu"
-    Unter Ubuntu ist es etwas anders. Von Ubuntu aus hat man in `/etc/netplan` eine `50-cloud-init.yaml`, wenn diese nicht
-    existiert, dann muss man schauen, welche Datei die Konfigurationsdatei für das Netzwerk ist. 
+    Da Ubuntu `netplan` zum Konfigurieren der Netzwerkeschnittstellen verwendet, muss die entsprechende Konfiguration im 
+    Verzeichnis `/etc/netplan` angepasst werden.
     Die Konfigurationsdatei sollte ungefähr wie folgt aussehen:
     ```yaml
     network:
@@ -39,8 +39,8 @@ diese in nginx verwendet werden kann.
                 nameservers:
                     addresses: [10.10.10.1, 1.1.1.1, 2001:470:20::2]
     ```
-    Wenn die Konfigurationsdatei gefunden wurde, muss man in dem `addresses` Abschnitt die neue IPv6 Adresse wie folgt
-    hinzufügen:
+    Wenn die Konfigurationsdatei gefunden wurde, fügt man in dem `addresses` Abschnitt die neue IPv6 Adresse wie 
+    folgt hinzu:
     ```yaml
     addresses:
         ...
