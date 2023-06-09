@@ -308,7 +308,7 @@ Nachdem die Kommentarzeichen des `mautrix-whatsapp` Containers in der `docker-co
 
 ```shell
 sudo docker compose exec postgres \
-  psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
+  psql -U synapse -d synapse -c 'CREATE DATABASE "mautrix-whatsapp";'
 ```
 
 Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix-whatsapp/config.yaml` angepasst werden:
@@ -359,7 +359,7 @@ Nachdem die Kommentarzeichen des `mautrix-telegram` Containers in der `docker-co
 
 ```shell
 sudo docker compose exec postgres \
-  psql -U postgres -d synapse -c 'CREATE DATABASE "mautrix-telegram";'
+  psql -U synapse -d synapse -c 'CREATE DATABASE "mautrix-telegram";'
 ```
 
 Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix-telegram/config.yaml` angepasst werden:
