@@ -32,13 +32,13 @@ services:
 #      - "signald"
 #    volumes:
 #      - "/srv/matrix/mautrix-signal:/data"
-#      - "/srv/signald:/signald"
+#      - "/srv/matrix/signald:/signald"
 #
 #  signald:
 #    image: docker.io/signald/signald
 #    restart: always
 #    volumes: 
-#      - "/srv/signald:/signald"
+#      - "/srv/matrix/signald:/signald"
 
 #  mautrix-telegram:
 #    image: dock.mau.dev/mautrix/telegram
