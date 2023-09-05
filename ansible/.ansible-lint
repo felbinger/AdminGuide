@@ -1,7 +1,0 @@
-skip_list:
-  - command-instead-of-shell
-  - no-changed-when
-
-exclude_paths:
-  - roles/ansible-role-docker
-  - roles/ansible-role-mailcow
