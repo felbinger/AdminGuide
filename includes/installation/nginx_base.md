@@ -15,7 +15,8 @@ acme.sh --install-cronjob
 acme.sh --server "https://acme-v02.api.letsencrypt.org/directory" --set-default-ca
 ```
 
-{% include-markdown "nginx-multiple-ipv6.md" %}
+{% include-markdown "../../includes/installation/nginx-multiple-ipv6.md" %}
+
 
 ## Konfiguration für neue Dienste
 
@@ -30,8 +31,7 @@ Folgende Schritte sind notwendig, um ein neues HTTP Routing zu konfigurieren:
 ### Dienst aufsetzen
 ...
 
-
-{% include-markdown "local-port-binding.md" %}
+{% include-markdown "../../includes/installation/local-port-binding.md" %}
 
 ### TLS Zertifkat über acme.sh anfordern
 
@@ -48,4 +48,4 @@ export CF_Token=
 acme.sh --issue --keylength ec-384 --dns dns_cf -d service.domain.de
 ```
 
-{% include-markdown "additional_ipv6.md" %}
+{% include-markdown "../../includes/installation/additional_ipv6.md" %}
