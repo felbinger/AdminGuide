@@ -19,7 +19,6 @@ services:
   passbolt:
     image: passbolt/passbolt:latest
     restart: always
-    tty: true
     ports:
       - "[::1]:8000:80"
     env_file: .passbolt.env
