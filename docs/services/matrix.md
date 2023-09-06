@@ -372,7 +372,7 @@ homeserver:
   # den Hostname des Containers und dem entsprechenden Port
   address: http://synapse:8008
   # Hier muss die domain des Homeservers angegeben werden
-  domain: example.com  # hier steht bei euch etwas anderes
+  domain: domain.de  # hier steht bei euch etwas anderes
 
 appservice:
   # Hier muss angegeben werden, wie der synapse
@@ -425,3 +425,66 @@ Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Ins
 (sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
 Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.
 
+
+#### `mautrix-signal` (Signal Bridge)
+Nachdem die Kommentarzeichen des `mautrix-signal` und des `signald` Containers in der `docker-compose.yml` entfernt 
+wurden und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge
+angepasst werden.
+
+```shell
+sudo docker compose exec postgres \
+  psql -U synapse -d synapse -c 'CREATE DATABASE "mautrix-signal";'
+```
+
+Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix-signal/config.yaml` angepasst werden:
+
+```yaml
+homeserver:
+  # Hier muss angegeben werden, wie der mautrix-signal
+  # Container den synapse homeserver innerhalb des matrix 
+  # docker netzwerks erreichen kann. Dies geschieht über 
+  # den Hostname des Containers und dem entsprechenden Port
+  address: http://synapse:8008
+  # Hier muss die domain des Homeservers angegeben werden
+  domain: domain.de  # hier steht bei euch etwas anderes
+
+appservice:
+  # Hier muss angegeben werden, wie der synapse
+  # container den mautrix-singal bridge bot
+  # innerhalb des matrix docker Netzwerks erreichen
+  # kann. Dies geschieht über den Hostname des Container
+  # und dem entsprechenden Port
+  address: http://mautrix-signal:29317
+
+  database:
+    # Hier muss die Datenbank URI angegeben werden
+    uri: postgres://synapse:passwort@postgres/mautrix-signal
+```
+
+Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
+nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die Bridges nicht
+jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen sollte man folgende Einstellung vornehmen.
+
+```yaml
+bridge:
+  permissions:
+    "*": "relaybot"
+    "example.com": "full"  # entfernen
+    "@admin:example.com": "admin"  # vorne eigenen matrix user eintragen
+```
+
+Die Registrierung auf dem Homeserver erfolgt durch das Hinzufügen der `registration.yaml` in der `homeserver.yaml`.
+
+```shell
+cp /srv/matrix/mautrix-signal/registration.yaml /srv/matrix/synapse/signal-registration.yaml
+```
+
+```yaml
+# homeserver.yaml
+app_service_config_files:
+  - /data/signal-registration.yaml
+```
+
+Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@signalbot:domain.de`
+(sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
+Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.

@@ -97,7 +97,6 @@ The http server is then listening on port 8000.
 ### Services
 #### More
 * Monitoring
-* Matrix Bridges (Telegram, Signal)
 
 #### Rewrite required:
 * Grafana (configure ldap and oidc using environment files, not via config; external database)
@@ -105,6 +104,3 @@ The http server is then listening on port 8000.
 * Guacamole: OIDC Integration (doesn't work like this...)
 * Gitea: OIDC
 * Bookstack: SAML
-
-#### Test if still working (remove if not)
-* Seafile
