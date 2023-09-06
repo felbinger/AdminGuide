@@ -20,26 +20,21 @@ services:
     image: passbolt/passbolt:latest
     restart: always
     tty: true
-    depends_on:
-      - postgres
+    ports:
+      - "[::1]:8000:80"
     env_file: .passbolt.env
     environment:
-      APP_FULL_BASE_URL: https://passbolt.domain.de
-      DATASOURCES_DEFAULT_DRIVER: Cake\Database\Driver\Postgres
-      DATASOURCES_DEFAULT_ENCODING: "utf8"
-      EMAIL_DEFAULT_FROM: "passbolt@domain.de"
-      EMAIL_TRANSPORT_DEFAULT_HOST: "your.mail.host"
-      EMAIL_TRANSPORT_DEFAULT_PORT: 587
+      - "APP_FULL_BASE_URL=https://passbolt.domain.de"
+      - "DATASOURCES_DEFAULT_DRIVER=Cake\\Database\\Driver\\Postgres"
+      - "DATASOURCES_DEFAULT_ENCODING=utf8"
+      - "EMAIL_DEFAULT_FROM=passbolt@domain.de"
+      - "EMAIL_TRANSPORT_DEFAULT_HOST=mail.domain.de"
+      - "EMAIL_TRANSPORT_DEFAULT_PORT=587"
     volumes:
-      - gpg_volume:/srv/passbolt/gpg:/passbolt/gpg
-      - jwt_volume:/srv/passbolt/jwt:/passbolt/jwt
+      - "/srv/passbolt/gpg:/passbolt/gpg"
+      - "/srv/passbolt/jwt:/passbolt/jwt"
     command: >
       bash -c "/usr/bin/wait-for.sh -t 0 postgres:5432 -- /docker-entrypoint.sh"
-
-volumes:
-  database_volume:
-  gpg_volume:
-  jwt_volume:
 ```
 
 ```shell
@@ -59,7 +54,7 @@ EMAIL_TRANSPORT_DEFAULT_TLS=STARTTLS
 === "nginx"
     ```yaml
     ports:
-    - "[::1]:8000:80"
+      - "[::1]:8000:80"
     ```
 
     ```nginx
@@ -104,10 +99,10 @@ EMAIL_TRANSPORT_DEFAULT_TLS=STARTTLS
 === "Traefik"
     ```yaml
     labels:
-    - "traefik.enable=true"
-    - "traefik.http.services.srv_paperless.loadbalancer.server.port=8000"
-    - "traefik.http.routers.r_paperless.rule=Host(`paperless.domain.de`)"
-    - "traefik.http.routers.r_paperless.entrypoints=websecure"
+      - "traefik.enable=true"
+      - "traefik.http.services.srv_paperless.loadbalancer.server.port=80"
+      - "traefik.http.routers.r_paperless.rule=Host(`passbolt.domain.de`)"
+      - "traefik.http.routers.r_paperless.entrypoints=websecure"
     ```
 
 ## User erstellen
