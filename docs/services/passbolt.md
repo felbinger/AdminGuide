@@ -17,7 +17,7 @@ services:
       - "/srv/passbolt/postgres:/var/lib/postgresql/data"
 
   passbolt:
-    image: passbolt/passbolt:latest
+    image: passbolt/passbolt
     restart: always
     ports:
       - "[::1]:8000:80"
