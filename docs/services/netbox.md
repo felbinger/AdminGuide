@@ -1,5 +1,9 @@
 # NetBox
 
+NetBox ist eine Open-Source-Software zur Verwaltung von Netzwerkinfrastrukturen. Es bietet eine
+zentrale Plattform zur Dokumentation, Verfolgung und Planung von Hardware, IP-Adressen, Kabelverbindungen und anderen
+Ressourcen in komplexen IT-Umgebungen.
+
 ```shell
 apt install -y git
 
