@@ -426,13 +426,6 @@ Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Ins
 Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.
 
 
-
-
-
-
-
-
-
 #### `mautrix-signal` (Signal Bridge)
 Nachdem die Kommentarzeichen des `mautrix-signal` und des `signald` Containers in der `docker-compose.yml` entfernt 
 wurden und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge
@@ -447,7 +440,7 @@ Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix
 
 ```yaml
 homeserver:
-  # Hier muss angegeben werden, wie der mautrix-telegram
+  # Hier muss angegeben werden, wie der mautrix-signal
   # Container den synapse homeserver innerhalb des matrix 
   # docker netzwerks erreichen kann. Dies geschieht über 
   # den Hostname des Containers und dem entsprechenden Port
@@ -457,7 +450,7 @@ homeserver:
 
 appservice:
   # Hier muss angegeben werden, wie der synapse
-  # container den mautrix-telegram bridge bot
+  # container den mautrix-singal bridge bot
   # innerhalb des matrix docker Netzwerks erreichen
   # kann. Dies geschieht über den Hostname des Container
   # und dem entsprechenden Port
