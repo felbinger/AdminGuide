@@ -99,9 +99,9 @@ EMAIL_TRANSPORT_DEFAULT_TLS=STARTTLS
     ```yaml
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.srv_paperless.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_paperless.rule=Host(`passbolt.domain.de`)"
-      - "traefik.http.routers.r_paperless.entrypoints=websecure"
+      - "traefik.http.services.srv_passbolt.loadbalancer.server.port=80"
+      - "traefik.http.routers.r_passbolt.rule=Host(`passbolt.domain.de`)"
+      - "traefik.http.routers.r_passbolt.entrypoints=websecure"
     ```
 
 ## User erstellen
