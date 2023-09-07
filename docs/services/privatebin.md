@@ -1,6 +1,6 @@
 # Privatebin
 
-PrivateBin ist eine Open-Source-Webanwendung, die die sichere gemeinsame Nutzung von Text- und Dateiinhalten ermöglicht,
+PrivateBin ist eine Open-Source-Webanwendung, welche die sichere gemeinsame Nutzung von Text- und Dateiinhalten ermöglicht,
 indem sie diese verschlüsselt und nur für autorisierte Benutzer zugänglich macht.
 
 ```yaml
