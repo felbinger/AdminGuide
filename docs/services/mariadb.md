@@ -1,5 +1,7 @@
 # MariaDB
 
+Einfache SQL basierte Datenbank. Nachfolger von MySQL.
+
 ```yaml
 version: '3.9'
 

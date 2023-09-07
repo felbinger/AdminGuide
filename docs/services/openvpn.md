@@ -1,5 +1,7 @@
 # OpenVPN
 
+Einfacher und selbst gehosteter OpenSource VPN Dienst.
+
 !!! info ""
 	Auf Basis dessen, was man mit dem OpenVPN Server vorhat, empfehlen wir diesen nicht in einem Docker Container zu
 	betreiben.
