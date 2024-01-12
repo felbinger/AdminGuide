@@ -29,9 +29,9 @@ services:
     env_file: .guacamole.env
     environment:
       - "GUACD_HOSTNAME=guacd"
-      - "POSTGRES_HOSTNAME=postgres"
-      - "POSTGRES_USER=guacamole"
-      - "POSTGRES_DATABASE=guacamole"
+      - "POSTGRESQL_HOSTNAME=postgres"
+      - "POSTGRESQL_USER=guacamole"
+      - "POSTGRESQL_DATABASE=guacamole"
       #- "TOTP_ENABLED=true"
     ports:
       - "[::1]:8000:8080"
@@ -44,7 +44,7 @@ POSTGRES_PASSWORD=S3cr3T
 
 ```shell
 # .guacamole.env
-POSTGRES_PASSWORD=S3cr3T
+POSTGRESQL_PASSWORD=S3cr3T
 ```
 
 === "nginx"
