@@ -135,7 +135,7 @@ PAPERLESS_DBPASS=S3cr3t-P4ssw0rd
 
 ## User erstellen
 ```shell
-docker compose run --rm webserver createsuperuser
+docker compose run --rm webserver ./manage.py createsuperuser
 ```
 
 ## Open ID Connect
