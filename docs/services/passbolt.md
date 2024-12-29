@@ -20,7 +20,7 @@ services:
     image: passbolt/passbolt
     restart: always
     ports:
-      - "[::1]:8000:80"
+      - "::1:8000:80"
     env_file: .passbolt.env
     environment:
       - "APP_FULL_BASE_URL=https://passbolt.domain.de"
