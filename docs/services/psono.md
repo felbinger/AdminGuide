@@ -550,7 +550,7 @@ TEMPLATES: [
 Einzelne Attribute können gemäß persönlichen Präferenzen angepasst werden. Ansonsten kann die config nach Änderung der 
 Domains so ohne Probleme verwendet werden und jederzeit auch noch später angepasst werden.
 
-## Cronjob erstellen
+### Cronjob erstellen
 1. Öffne den root Crontab mit `sudo crontab -e`
 2. Füge am Ende der Datei folgende Zeile ein `30 2 * * * docker exec psono-psono-combo-1 python3 ./psono/manage.py cleartoken`
 
