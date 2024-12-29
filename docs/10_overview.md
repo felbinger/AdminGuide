@@ -42,7 +42,7 @@
 - [Passbolt](./services/passbolt.md)
 - [Vaultwarden](./services/vaultwarden.md)
 - [Keycloak](./services/keycloak.md)
-
+- [Psono](./services/psono.md)
 
 ### Serververwaltung und Netzwerk
 - [Docky-Onion](./services/docky-onion.md)
