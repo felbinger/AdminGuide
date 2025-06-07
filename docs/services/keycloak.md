@@ -42,8 +42,8 @@ POSTGRES_PASSWORD=S3cr3T
 ```shell
 # .keycloak.env
 KC_DB_PASSWORD=S3cr3T
-KEYCLOAK_ADMIN=kcadmin
-KEYCLOAK_ADMIN_PASSWORD=S3cr3T
+KC_ADMIN=kcadmin
+KC_ADMIN_PASSWORD=S3cr3T
 ```
 
 === "nginx"
