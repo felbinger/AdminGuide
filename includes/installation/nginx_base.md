@@ -21,6 +21,7 @@ acme.sh --server "https://acme-v02.api.letsencrypt.org/directory" --set-default-
 ## Konfiguration für neue Dienste
 
 Folgende Schritte sind notwendig, um ein neues HTTP Routing zu konfigurieren:
+
 1. Dienst aufsetzen.
 2. Port-Binding von Dienst auf IPv6 Localhost (`::1`) des Hosts.
 3. TLS Zertifkat über acme.sh anfordern.
@@ -42,8 +43,6 @@ sein. Für die DNS API's der Anbieter empfielt sich ein Blick in
 
 ```shell
 # Beispielkonfiguration für Cloudflare DNS API
-export CF_Account_ID=
-export CF_Zone_ID=
 export CF_Token=
 acme.sh --issue --keylength ec-384 --dns dns_cf -d service.domain.de
 ```
