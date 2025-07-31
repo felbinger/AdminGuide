@@ -11,7 +11,7 @@ Administrator bin, weshalb auf allen Systemen eine Admin-Gruppe existiert,
 die Rechte auf das Verzeichnis `/home/admin` hat.
 
 ```shell
-groupadd -g 997 admin
+groupadd -g 1100 admin
 mkdir -m 775 /home/admin
 chown root:admin /home/admin
 ```
