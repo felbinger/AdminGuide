@@ -16,7 +16,7 @@ sudo docker network create --subnet 172.20.255.0/24 database
 
 ## Beispielkonfiguration
 In diesem Beispiel wird eine zentrale MariaDB Datenbank verwendet.
-Die beiden Diensten (Nextcloud, HedgeDoc) nutzen ein docker-internes
+Die beiden Dienste (Nextcloud, HedgeDoc) nutzen ein docker-internes
 Netzwerk zur Kommunikation mit der Datenbank.
 
 ### MariaDB
