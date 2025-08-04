@@ -1,0 +1,8 @@
+# This configures commits to ignore when running blame.
+#
+# Configure this locally with
+# git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+
+# remove version from docker-compose, fix whitespaces
+3dcc6a9383cd155de6b0de7aefcf31cbdbcd68fb
