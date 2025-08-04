@@ -2,8 +2,6 @@
 
 Zunächst wird die Containerdefinition im Verzeichnis `/home/admin/traefik/docker-compose.yml` angelegt:
 ```yaml
-version: "3.9"
-
 service:
   traefik:
     image: traefik:v2.9
