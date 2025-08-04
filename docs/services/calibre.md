@@ -3,8 +3,6 @@
 Calibre ist ein Programm zur Verarbeitung, Konvertierung und Verwaltung von E-Books.
 
 ```yaml
-version: '3.9'
-
 services:
   calibre:
     image: linuxserver/calibre-web

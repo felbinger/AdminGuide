@@ -9,8 +9,6 @@ Einfacher und selbst gehosteter OpenSource VPN Dienst.
 	Infrastruktur zu verwenden (z. B. einen Router wie pfSense oder VyOS)
 
 ```yaml
-version: '3.9'
-
 services:
   openvpn:
     image: kylemanna/openvpn
@@ -18,7 +16,7 @@ services:
     ports:
      - "1194:1194/udp"
     cap_add:
-     - "NET_ADMIN"   
+     - "NET_ADMIN"
     volumes:
      - "/srv/openvpn:/etc/openvpn"
 ```

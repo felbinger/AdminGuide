@@ -3,7 +3,7 @@
 Wird ein einfacher Webserver z. B. für eine statische Homepage benötigt, kann ein nginx Container verwendet werden.
 
 !!! info ""
-    Sofern sie als Reverse Proxy nginx Verwenden, können Sie auch einfach einen 
+    Sofern sie als Reverse Proxy nginx Verwenden, können Sie auch einfach einen
     neuen Virtual Host auf diesem für ihre Homepage erstellen.
 
     ```nginx
@@ -39,8 +39,6 @@ Wird ein einfacher Webserver z. B. für eine statische Homepage benötigt, kann 
     ```
 
 ```yaml
-version: '3.9'
-
 services:
   homepage:
     image: nginx:alpine

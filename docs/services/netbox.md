@@ -12,8 +12,6 @@ git clone -b release https://github.com/netbox-community/netbox-docker.git /home
 # hostname of netbox is shown on the website, so it should be overwritten
 # also the default configuration is using docker volumes, which I don't like, so let's overwrite them
 cat <<_EOF > /home/admin/netbox/docker-compose.override.yml
-version: '3.4'
-
 services:
   netbox:
     hostname: netbox.domain.de

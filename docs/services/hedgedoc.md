@@ -4,8 +4,6 @@ HedgeDoc ist eine Open-Source-Plattform für die kollaborative Bearbeitung von D
 Docs oder Microsoft Office Online.
 
 ```yaml
-version: '3.9'
-
 services:
   postgres:
     image: postgres

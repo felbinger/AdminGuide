@@ -1,11 +1,9 @@
 # passbolt
 
-Passbolt ist ein self-hosted open source Passwortmanager, welcher sehr gut für Teams geeignet ist, durch die Funktion, 
+Passbolt ist ein self-hosted open source Passwortmanager, welcher sehr gut für Teams geeignet ist, durch die Funktion,
 dass man intern Passwörter teilen kann und Teams erstellen kann.
 
 ```yaml
-version: '3.9'
-
 services:
   postgres:
     image: postgres

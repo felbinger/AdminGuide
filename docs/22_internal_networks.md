@@ -16,21 +16,19 @@ sudo docker network create --subnet 172.20.255.0/24 database
 
 ## Beispielkonfiguration
 In diesem Beispiel wird eine zentrale MariaDB Datenbank verwendet.
-Die beiden Diensten (Nextcloud, HedgeDoc) nutzen ein docker-internes 
-Netzwerk zur Kommunikation mit der Datenbank. 
+Die beiden Diensten (Nextcloud, HedgeDoc) nutzen ein docker-internes
+Netzwerk zur Kommunikation mit der Datenbank.
 
 ### MariaDB
 ```yaml
 # /home/admin/mariadb/docker-compose.yml
-version: '3.9'
-
 services:
   mariadb:
-    image: mariadb   
+    image: mariadb
     restart: always
     env_file: .mariadb.env
     volumes:
-      - "/srv/mariadb:/var/lib/mysql"    
+      - "/srv/mariadb:/var/lib/mysql"
     networks:
       - "database"
 
@@ -42,8 +40,6 @@ networks:
 ### HedgeDoc
 ```yaml
 # /home/admin/hedgedoc/docker-compose.yml
-version: '3.9'
-
 services:
   hedgedoc:
     image: quay.io/hedgedoc/hedgedoc
@@ -62,7 +58,7 @@ networks:
 ```
 
 ### Nextcloud
-Im Falle von Nextcloud wird der `nextcloud` Container neben dem 
+Im Falle von Nextcloud wird der `nextcloud` Container neben dem
 `database` Netzwerk auch noch in das `default` Netzwerk aufgenommen.
 Dieses Netzwerk ermöglicht die Kommunikation mit der in der gleichen
 Containerdefinition existierenden Redis Instanz. Wird in einem Service
@@ -71,12 +67,10 @@ wird dieser in das `default` Netzwerk aufgenommen.
 
 ```yaml
 # /home/admin/nextcloud/docker-compose.yml
-version: '3.9'
-
 services:
   redis:
     image: redis
-    restart: always 
+    restart: always
 
   nextcloud:
     image: nextcloud

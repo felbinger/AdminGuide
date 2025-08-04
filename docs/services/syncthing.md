@@ -3,8 +3,6 @@
 Software zum Synchronisieren und Versionieren von Dateien.
 
 ```yaml
-version: '3.9'
-
 services:
   syncthing:
     image: syncthing/syncthing

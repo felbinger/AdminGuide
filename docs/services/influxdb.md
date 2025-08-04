@@ -4,8 +4,6 @@ InfluxDB ist eine Open-Source-Zeitreihendatenbank, die speziell für die Speiche
 Zeitreihendaten optimiert ist.
 
 ```yaml
-version: '3.9'
-
 services:
   # shell: docker-compose exec influxdb influx -precision rfc3339
   influxdb:

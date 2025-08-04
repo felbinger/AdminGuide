@@ -1,10 +1,8 @@
 # Grafana
 
-Grafana ist ein Dienst, welcher zur Datenvisualisierung und Überwachung verwendet wird. 
+Grafana ist ein Dienst, welcher zur Datenvisualisierung und Überwachung verwendet wird.
 
 ```yaml
-version: '3.9'
-
 services:
   grafana:
     image: grafana/grafana
@@ -89,17 +87,17 @@ Entfernen Sie anschließend die Kommentarzeichen vor den Volumes in der Containe
     ```
 
 
-Anschließend können wir den Container starten und uns unter der 
+Anschließend können wir den Container starten und uns unter der
 angegebene Domain mit den Zugangsdaten `admin`:`admin` anmelden.
 
-Die nächsten Schritte sind die Einrichtung von Data Sources (z. B. 
-[InfluxDB](https://adminguide.pages.dev/services/influxdb/), 
-[Prometheus](https://adminguide.pages.dev/services/prometheus/), 
-[Loki](https://grafana.com/oss/loki/)) und das Hinzufügen/Erstellen von 
+Die nächsten Schritte sind die Einrichtung von Data Sources (z. B.
+[InfluxDB](https://adminguide.pages.dev/services/influxdb/),
+[Prometheus](https://adminguide.pages.dev/services/prometheus/),
+[Loki](https://grafana.com/oss/loki/)) und das Hinzufügen/Erstellen von
 Dashboards (z. B. [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/))
 ([siehe: officially supported datasources](https://grafana.com/docs/grafana/latest/datasources/#supported-data-sources)).
 
-Über die Umgebungsvariable `GF_INSTALL_PLUGINS` kann eine Liste von 
+Über die Umgebungsvariable `GF_INSTALL_PLUGINS` kann eine Liste von
 Plugins angegeben werden, welche für die Grafana Instanz aktiviert werden.
 
 ### LDAP Auth

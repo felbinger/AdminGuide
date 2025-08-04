@@ -4,8 +4,6 @@ GitLab ist eine Software für Code-Management und Versionierung. Außerdem biete
 Zusammenarbeit in Teams wie Issue-Tracking, CI/CD-Pipelines und Wikis.
 
 ```yaml
-version: '3.9'
-
 services:
   gitlab:
     image: 'gitlab/gitlab-ce'

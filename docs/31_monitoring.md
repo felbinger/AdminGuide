@@ -5,23 +5,21 @@
 
 Als Monitoring verwenden wir den Prometheus Stack (
   [Prometheus](https://github.com/prometheus/prometheus)
-  + [Alertmanager](https://github.com/prometheus/alertmanager) 
-  + [Pushgateway](https://github.com/prometheus/pushgateway)) mit 
+  + [Alertmanager](https://github.com/prometheus/alertmanager)
+  + [Pushgateway](https://github.com/prometheus/pushgateway)) mit
   [Grafana](https://grafana.com/) zur Visualisierung.
 
-Zum Erfassen der Sensordaten verwenden wir neben 
-[node_exporter](https://github.com/prometheus/node_exporter) (generelle Hoststatistiken), 
+Zum Erfassen der Sensordaten verwenden wir neben
+[node_exporter](https://github.com/prometheus/node_exporter) (generelle Hoststatistiken),
 [blackbox_exporter](https://github.com/prometheus/blackbox_exporter) (ICMP & HTTP Tests) und
-[cAdvisor](https://github.com/google/cadvisor) (für Docker) auch Anwendungsspezifische Prometheus 
-Exporter (nginx, mysql, postgresql, ssh, gitlab, grafana, ...). Viele von diesen sind in 
+[cAdvisor](https://github.com/google/cadvisor) (für Docker) auch Anwendungsspezifische Prometheus
+Exporter (nginx, mysql, postgresql, ssh, gitlab, grafana, ...). Viele von diesen sind in
 [dieser Liste](https://prometheus.io/docs/instrumenting/exporters/#third-party-exporters) zu finden.
 
 Möchte man bereitgestellte Sensordaten einer Anwendung (die sich nicht im Prometheus-Format befinden)
 verarbeiten, so kann man auch einen [eigenen Exporter schreiben](https://prometheus.io/docs/instrumenting/writing_exporters/).
 
 ```yaml
-version: '3.9'
-
 services:
   grafana:
     image: grafana/grafana
@@ -98,7 +96,7 @@ alerting:
   alertmanagers:
   - scheme: http
     static_configs:
-    - targets: 
+    - targets:
       - 'alertmanager:9093'
 
 scrape_configs:
@@ -108,7 +106,7 @@ scrape_configs:
 
   - job_name: 'blackbox_exporter_http'
     metrics_path: '/probe'
-    params: 
+    params:
       module: [http_2xx]
     static_configs:
       - targets:
@@ -123,7 +121,7 @@ scrape_configs:
 
   - job_name: 'blackbox_exporter_icmp'
     metrics_path: '/probe'
-    params: 
+    params:
       module: [icmp]
     static_configs:
       - targets:

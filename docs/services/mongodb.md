@@ -4,8 +4,6 @@ MongoDB ist eine dokumentenorientierte NoSQL-Datenbank, die eine flexible und sk
 strukturierte und unstrukturierte Daten bietet.
 
 ```yaml
-version: '3.9'
-
 services:
   mongodb:
     image: mongo

@@ -3,8 +3,6 @@
 Nextcloud ist eine vielseitige Cloud, welche mit zahlreichen Add-ons um Funktionen erweitert werden kann.
 
 ```yaml
-version: '3.9'
-
 services:
   postgres:
     image: postgres
@@ -105,7 +103,7 @@ NEXTCLOUD_ADMIN_PASSWORD=p4ssw0rd
 ## Cronjobs
 Um Cronjobs unter Nextcloud einzurichten, empfehlen wir Folgendes:
 
-1. Stelle in dem Nextcloud Webinterface unter `Administration-Settings -> Basic settings` die Background jobs auf `cron` 
+1. Stelle in dem Nextcloud Webinterface unter `Administration-Settings -> Basic settings` die Background jobs auf `cron`
 
 2. Öffne den crontab auf dem Server mit folgendem Befehl: `sudo crontab -e`
 

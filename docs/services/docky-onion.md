@@ -2,12 +2,10 @@
 
 Um einen [tor hidden services](https://2019.www.torproject.org/docs/onion-services) mit docker zu verwenden, kann man
 [docky-onion](https://github.com/use-to/docky-onion) verwenden, um jeden Dienst in [tor](https://www.torproject.org/)
-erreichbar zu machen. Hier ein Beispiel: `docker-compose.yml` um [nginx](https://www.nginx.com/) 
+erreichbar zu machen. Hier ein Beispiel: `docker-compose.yml` um [nginx](https://www.nginx.com/)
 als hidden service auf port `80` und `8080` zur verfügung zustellen:
 
 ```yaml
-version: "3.9"
-
 services:
   docky-onion:
     image: useto/docky-onion

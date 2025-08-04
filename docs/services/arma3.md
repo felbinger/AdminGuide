@@ -1,15 +1,13 @@
 # Arma 3 Server
 
-Ein Arma 3 Gameserver ermöglicht es Arma 3 Spielern eine 
-gemeinsame Mission zu spielen. Das hier beschriebene Vorgehen 
-erweitert die Grundfunktionalität von LGSM (Linux Game Server 
+Ein Arma 3 Gameserver ermöglicht es Arma 3 Spielern eine
+gemeinsame Mission zu spielen. Das hier beschriebene Vorgehen
+erweitert die Grundfunktionalität von LGSM (Linux Game Server
 Manager) um die benötigten Paketen für extdb3.
 
 In diesem Beispiel wird ein Arma 3 Exile Mod Server aufgesetzt:
 
 ```yaml
-version: '3.9'
-
 services:
   arma3:
     image: ghcr.io/felbinger/arma3server
@@ -27,7 +25,7 @@ services:
       - '2306:2306/udp'    # BattleEye
     volumes:
       - '/srv/arma3:/home/linuxgsm'
-      
+
   mariadb:
     image: mariadb
     restart: always
@@ -46,7 +44,7 @@ mkdir /srv/arma3
 chown 1000:1000 /srv/arma3
 ```
 
-Anschließend können die Container gestartet werden (`docker compose up -d arma3`), 
+Anschließend können die Container gestartet werden (`docker compose up -d arma3`),
 wodurch die Installation angestoßen wird.
 
 Für Exile müssen nun einige Mods im Verzeichnis `/srv/arma3/serverfiles/` hinzugefügt werden:
@@ -56,8 +54,8 @@ cd /srv/arma3/serverfiles/
 # download and extract mods
 wget http://bravofoxtrotcompany.com/exile/@Exile-1.0.4.zip
 wget http://exilemod.com/ExileServer-1.0.4a.zip
-unzip @Exile-1.0.4.zip 
-unzip ExileServer-1.0.4a.zip 
+unzip @Exile-1.0.4.zip
+unzip ExileServer-1.0.4a.zip
 rm *.zip
 
 # move the extracted files into the correct locations
@@ -74,7 +72,7 @@ sed -i 's/^Password = /Password = S3cr3T/' /srv/arma3/serverfiles/@ExileServer/e
 
 # arma 3 server configs
 mv /srv/arma3/serverfiles/@ExileServer/basic.cfg /srv/arma3/serverfiles/cfg/arma3server.network.cfg
-mv /srv/arma3/serverfiles/@ExileServer/config.cfg /srv/arma3/serverfiles/cfg/arma3server.server.cfg 
+mv /srv/arma3/serverfiles/@ExileServer/config.cfg /srv/arma3/serverfiles/cfg/arma3server.server.cfg
 
 # add mods to server startup configuration
 cat <<_EOF > /srv/arma3/lgsm/config-lgsm/arma3server/arma3server.cfg
@@ -87,7 +85,7 @@ rm -r /srv/arma3/serverfiles/Arma\ 3\ Server/
 rm -r /srv/arma3/serverfiles/MySQL
 ```
 
-Nach einem Neustart der Container (`docker compose down && docker compose up -d`) 
+Nach einem Neustart der Container (`docker compose down && docker compose up -d`)
 sollten diese geladen werden, falls Probleme auftreten können diese dem Serverlog
 entnommen werden (`docker compose exec arma3 arma3server console`).
 

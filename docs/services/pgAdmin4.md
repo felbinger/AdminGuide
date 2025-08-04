@@ -3,8 +3,6 @@
 Eine webbasierte Datenbank Visualisierungs- und Bearbeitungssoftware.
 
 ```yaml
-version: '3.9'
-	
 services:
   pgadmin:
     image: dpage/pgadmin4
