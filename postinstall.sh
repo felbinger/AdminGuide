@@ -2,7 +2,7 @@
 
 ## CONFIGURATION ###
 ADM_NAME='admin'
-ADM_GID=997
+ADM_GID=1100
 ADM_HOME='/home/admin'
 ADM_USERS=()
 ### END of CONFIGURATION ###
