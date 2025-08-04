@@ -4,5 +4,5 @@
 # git config blame.ignoreRevsFile .git-blame-ignore-revs
 
 
-# remove version from docker-compose, fix whitespaces
-3dcc6a9383cd155de6b0de7aefcf31cbdbcd68fb
+# remove version from docker-compose, fix whitespaces (#121)
+281e8c0759d1596ca7d43d48a94d8b3c38dd421d
