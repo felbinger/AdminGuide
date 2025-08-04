@@ -4,8 +4,6 @@ Guacamole ist ein Webanwendungsdienst, welcher es ermöglicht, über einen Webbr
 zuzugreifen, ohne dass spezielle Client-Software installiert werden muss.
 
 ```yaml
-version: '3.9'
-
 services:
   postgres:
     image: postgres

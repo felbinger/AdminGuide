@@ -3,8 +3,6 @@
 Bookstack ist eine einfache Wiki- / KnowledgeBase Software.
 
 ```yaml
-version: '3.9'
-
 services:
   mariadb:
     image: mariadb

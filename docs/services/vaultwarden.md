@@ -4,8 +4,6 @@ Vaultwarden ist eine Open-Source-Serveranwendung für das sichere Speichern und 
 vertraulichen Informationen in einem persönlichen Tresor.
 
 ```yaml
-version: '3.9'
-
 services:
   postgres:
     image: postgres:15

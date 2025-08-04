@@ -73,8 +73,8 @@ Passen Sie die `.env` Datei nach Ihren Wünschen an und richten die Port-Weiterl
     ```
 
 ## Jitsi Konfiguration
-Da bei jedem Start des Containers die Datei `/srv/jitsi/web/config.js` 
-von den Umgebungsvariablen (`.env`) generiert wird, sind Änderungen 
+Da bei jedem Start des Containers die Datei `/srv/jitsi/web/config.js`
+von den Umgebungsvariablen (`.env`) generiert wird, sind Änderungen
 an dieser Datei nicht Zielführend. Die Datei `/srv/jitsi/web/interface_config.js`
 kann angepasst werden, um Beispielsweise das Wasserzeichen von Jitsi zu entfernen.
 

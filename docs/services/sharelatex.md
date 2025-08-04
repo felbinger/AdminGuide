@@ -1,13 +1,11 @@
 # ShareLaTeX
 
-Eine selbst gehostete Version von [Overleaf](https://overleaf.com) 
+Eine selbst gehostete Version von [Overleaf](https://overleaf.com)
 
 ```yaml
-version: '3.9'
-
 services:
   sharelatex:
-    # use latest tag for setup, use your own image (tag: with-texlive-full) after installation 
+    # use latest tag for setup, use your own image (tag: with-texlive-full) after installation
     image: sharelatex/sharelatex
     restart: always
     env_file: .sharelatex.env
@@ -121,7 +119,7 @@ services:
     Wenn du den Container mit docker-compose startest, wird das Image mit allen environment Variablen und Labels gestartet.
 
 1. Install `texlive-full`
-   
+
     !!! warning ""
         Das Ausführen des Commands wird einige Stunden dauern (variierend auf der Internetleitung des Server 2 - 4h),
         empfehle ich es in einem screen auszuführen

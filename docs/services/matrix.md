@@ -3,8 +3,6 @@
 Ein Server für einen dezentralen Messenger Dienst.
 
 ```yaml
-version: '3.9'
-
 services:
   postgres:
     image: postgres
@@ -37,7 +35,7 @@ services:
 #  signald:
 #    image: docker.io/signald/signald
 #    restart: always
-#    volumes: 
+#    volumes:
 #      - "/srv/matrix/signald:/signald"
 
 #  mautrix-telegram:
@@ -112,8 +110,8 @@ POSTGRES_PASSWORD=S3cr3T
     }
     ```
 
-    Die beiden Dateien `server` und `client` im Verzeichnis `.well-known/matrix` 
-    müssen auf der Homeserver Domain (hier `domain.de`) hinterlegt sein, damit 
+    Die beiden Dateien `server` und `client` im Verzeichnis `.well-known/matrix`
+    müssen auf der Homeserver Domain (hier `domain.de`) hinterlegt sein, damit
     die Matrix Federation funktioniert und Clients details zum Homeserver erhalten.
 
     ```nginx
@@ -207,7 +205,7 @@ sudo docker compose exec synapse register_new_matrix_user \
 
 ### Passwort zurücksetzen
 
-Zurücksetzen lassen sich die Passwörter lediglich über die Datenbank. 
+Zurücksetzen lassen sich die Passwörter lediglich über die Datenbank.
 Zunächst wird ein neuer hash generiert, anschließend wird dieser
 in der Datenbank für den jeweiligen Nutzer als Passwort ersetzt.
 
@@ -283,8 +281,8 @@ Synapse kann ohne Probleme mit mehreren Benutzern genutzt werden, bei der WhatsA
 einem Homeserver mit zwei Nutzern einige "Unschönheiten" feststellen.
 
 !!! info "Beispiel: WhatsApp Status Broadcasts"
-    Nutzer A hat die Nummer von Nutzer B in seinen Kontakten eingespeichert.  
-    Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.  
+    Nutzer A hat die Nummer von Nutzer B in seinen Kontakten eingespeichert.
+    Nutzer A erstellt einen WhatsApp Status in der App, und fügt Nutzer B zu den Empfängern hinzu.
     Die Bridge von Nutzer B empfängt den Status Broadcast und fügt Nutzer B in den Status Broadcast
     Chatroom von Nutzer A hinzu, wodurch Nutzer B alle alten und zukünftigen (sofern Nutzer A
     Nutzer B nicht wieder rauswirft) Status Nachrichten von Kontakten von Nutzer A sieht.
@@ -367,8 +365,8 @@ Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix
 ```yaml
 homeserver:
   # Hier muss angegeben werden, wie der mautrix-telegram
-  # Container den synapse homeserver innerhalb des matrix 
-  # docker netzwerks erreichen kann. Dies geschieht über 
+  # Container den synapse homeserver innerhalb des matrix
+  # docker netzwerks erreichen kann. Dies geschieht über
   # den Hostname des Containers und dem entsprechenden Port
   address: http://synapse:8008
   # Hier muss die domain des Homeservers angegeben werden
@@ -388,7 +386,7 @@ appservice:
 ```
 
 Unter dem Abschnitt `bridge:` befinden sich viele Konfigurationen, welche nur das Bridgen an sich betreffen. Diese müssen
-nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die Bridges nicht 
+nach den persönlichen vorlieben eingestellt werden. Wir empfehlen aus den oben genannten Gründen die Bridges nicht
 jedem Nutzer auf dem Homeserver zur Verfügung zu stellen, deswegen sollte man folgende Einstellung vornehmen.
 
 ```yaml
@@ -427,7 +425,7 @@ Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Brid
 
 
 #### `mautrix-signal` (Signal Bridge)
-Nachdem die Kommentarzeichen des `mautrix-signal` und des `signald` Containers in der `docker-compose.yml` entfernt 
+Nachdem die Kommentarzeichen des `mautrix-signal` und des `signald` Containers in der `docker-compose.yml` entfernt
 wurden und der Container neu gestartet wurde, muss noch eine eigene Datenbank angelegt und die Konfiguration der Bridge
 angepasst werden.
 
@@ -441,8 +439,8 @@ Anschließend sollten zumindest folgende Werte in der Datei `/srv/matrix/mautrix
 ```yaml
 homeserver:
   # Hier muss angegeben werden, wie der mautrix-signal
-  # Container den synapse homeserver innerhalb des matrix 
-  # docker netzwerks erreichen kann. Dies geschieht über 
+  # Container den synapse homeserver innerhalb des matrix
+  # docker netzwerks erreichen kann. Dies geschieht über
   # den Hostname des Containers und dem entsprechenden Port
   address: http://synapse:8008
   # Hier muss die domain des Homeservers angegeben werden

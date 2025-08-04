@@ -6,7 +6,7 @@ Während meiner Zeit als Administrator für Linux Systeme habe ich einige Skript
 [DBM](https://github.com/felbinger/dbm)). Mittlerweile verwende ich für dateibasierte Sicherungen
 hauptsächlich [borg backup](https://borgbackup.readthedocs.io/en/stable/).
 
-Im Backup des Servers sollten zumindest die Containerdefinitionen `/home/admin` 
+Im Backup des Servers sollten zumindest die Containerdefinitionen `/home/admin`
 sowie Daten der Container (`/srv`) enthalten sein. Sofern nginx als Reverse
 Proxy genutzt wird, ist auch eine Sicherung von `/etc/nginx/sites-availabe/` sinnvoll.
 

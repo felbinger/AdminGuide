@@ -4,8 +4,6 @@ Keycloak ist eine Software zur Verwaltung von Benutzer-Authentifizierung und Aut
 Single-Sign-On und Social-Login, für Anwendungen und Services.
 
 ```yaml
-version: '3.9'
-
 services:
   postgres:
     image: postgres
@@ -52,9 +50,9 @@ KC_ADMIN_PASSWORD=S3cr3T
           - "[::1]:8000:8080"
     ```
 
-    Das Administrative Webinterface zur Verwaltung der Realms möchte man 
-    für gewöhnlich nicht aus dem Internet erreichbar haben. Daher erstellen 
-    wir zwei Virtual Hosts, einen für Administrative Zwecke und einen für 
+    Das Administrative Webinterface zur Verwaltung der Realms möchte man
+    für gewöhnlich nicht aus dem Internet erreichbar haben. Daher erstellen
+    wir zwei Virtual Hosts, einen für Administrative Zwecke und einen für
     die normale Anmeldung, der auch aus dem Internet erreichbar ist.
 
     ```nginx

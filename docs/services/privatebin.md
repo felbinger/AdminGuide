@@ -4,8 +4,6 @@ PrivateBin ist eine Open-Source-Webanwendung, welche die sichere gemeinsame Nutz
 indem sie diese verschlüsselt und nur für autorisierte Benutzer zugänglich macht.
 
 ```yaml
-version: '3.9'
-
 services:
   privatebin:
     image: privatebin/nginx-fpm-alpine

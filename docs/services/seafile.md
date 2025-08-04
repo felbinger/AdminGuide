@@ -4,11 +4,9 @@ Seafile ist eine sichere, Open-Source-Plattform für die Synchronisation, Freiga
 sowohl eine On-Premises- als auch eine Cloud-basierte Bereitstellungsoption bietet.
 
 ```yaml
-version: '3.9'
-
 services:
   mariadb:
-    image: mariadb   
+    image: mariadb
     restart: always
     env_file: .mariadb.env
     volumes:
@@ -20,7 +18,7 @@ services:
     entrypoint: memcached -m 256
 
   seafile:
-    image: seafileltd/seafile-mc  
+    image: seafileltd/seafile-mc
     restart: always
     env_file: .seafile.env
     environment:

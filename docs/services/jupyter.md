@@ -4,8 +4,6 @@ Jupyter Notebook ist eine interaktive Entwicklungsumgebung, die es Benutzern erm
 auszuführen, um interaktive Datenanalysen und Visualisierungen durchzuführen.
 
 ```yaml
-version: '3.9'
-
 services:
   jupyter:
     image: jupyter/scipy-notebook

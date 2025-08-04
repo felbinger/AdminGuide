@@ -4,8 +4,6 @@ Paperless-NGX ist ein Open-Source-Dokumentenmanagementsystem, das darauf abzielt
 durch die Digitalisierung und Automatisierung von Geschäftsprozessen zu verbessern.
 
 ```yaml
-version: '3.9'
-	
 services:
   broker:
     image: docker.io/library/redis:7

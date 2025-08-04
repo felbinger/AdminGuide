@@ -3,8 +3,6 @@
 TeamSpeak ist eine Voice-over-IP-Software, die es Benutzern ermöglicht, über das Internet miteinander zu kommunizieren.
 
 ```yaml
-version: '3.9'
-
 services:
   mariadb:
     image: mariadb
@@ -16,7 +14,7 @@ services:
       - "MYSQL_USER=teamspeak"
     volumes:
       - "/srv/teamspeak3/mariadb:/var/lib/mysql"
-  
+
   teamspeak3:
     image: teamspeak
     restart: always
@@ -116,7 +114,7 @@ Nach dem ersten Containerstart werden in den Logs des Containers,
 ausgegeben. Wir empfehlen die Daten an einem sicheren Ort zu speichern.
 
 ### Server Query Zugangsdaten zurücksetzen
-Sofern Sie die TeamSpeak Server Query Zugangsdaten vergessen haben, 
+Sofern Sie die TeamSpeak Server Query Zugangsdaten vergessen haben,
 können Sie diese mithilfe des folgenden Befehls zurücksetzen:
 
 ```shell
@@ -125,8 +123,8 @@ sudo docker compose run --rm teamspeak3 ts3server \
   serveradmin_password=NEW_PASSWORD
 ```
 
-Anschließend kann man sich innerhalb des ts3server Containers 
-mit dem Server Query Interface verbinden und dort einen neuen 
+Anschließend kann man sich innerhalb des ts3server Containers
+mit dem Server Query Interface verbinden und dort einen neuen
 Berechtigungstoken erstellen:
 ```sh
 sudo docker compose run --rm teamspeak3 nc localhost 10011

@@ -3,8 +3,6 @@
 Ein CMS (Content-Management-System) zum einfachen Verwalten und erstellen von Websites.
 
 ```yaml
-version: '3.9'
-
 services:
   mysql:
     image: mysql

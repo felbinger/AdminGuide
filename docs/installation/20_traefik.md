@@ -2,9 +2,7 @@
 
 Zunächst wird die Containerdefinition im Verzeichnis `/home/admin/traefik/docker-compose.yml` angelegt:
 ```yaml
-version: "3.9"
-
-service:
+services:
   traefik:
     image: traefik:v2.9
     restart: always
@@ -94,5 +92,3 @@ networks:
 {% include-markdown "../../includes/installation/traefik/docker-network.md" %}
 
 {% include-markdown "../../includes/installation/traefik/new.md" %}
-
-
