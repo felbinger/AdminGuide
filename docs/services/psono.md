@@ -42,8 +42,8 @@ POSTGRES_PASSWORD=S3cr3t
 
     ```nginx
     # /etc/nginx/sites-available/psono.domain.de
-    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
-     
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
+
     server {
         server_name psono.domain.de;
         listen 0.0.0.0:443 ssl http2
@@ -70,15 +70,15 @@ POSTGRES_PASSWORD=S3cr3t
         add_header X-Frame-Options DENY;
         add_header X-Content-Type-Options nosniff;
         add_header X-XSS-Protection "1; mode=block";
-    
+
         # If you have the fileserver too, then you have to add your fileserver URL e.g. https://fs01.example.com as connect-src too:
         add_header Content-Security-Policy "default-src 'none';  manifest-src 'self'; connect-src 'self' https://static.psono.com https://api.pwnedpasswords.com https://storage.googleapis.com https://*.digitaloceanspaces.com https://*.blob.core.windows.net https://*.s3.amazonaws.com; font-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self'; child-src 'self'";
-    
+
         client_max_body_size 256m;
-    
+
         gzip on;
         gzip_disable "msie6";
-    
+
         gzip_vary on;
         gzip_proxied any;
         gzip_comp_level 6;
@@ -96,9 +96,9 @@ POSTGRES_PASSWORD=S3cr3t
            proxy_set_header Connection "Upgrade";
            proxy_set_header Upgrade $http_upgrade;
            proxy_set_header X-Nginx-Proxy true;
-           proxy_set_header X-Forwarded-Proto $scheme;      
+           proxy_set_header X-Forwarded-Proto $scheme;
         }
-        
+
         location ~* \.(?:ico|css|js|gif|jpe?g|png|eot|woff|woff2|ttf|svg|otf)$ {
             proxy_pass http://[::1]:8000;
             expires 30d;
@@ -217,7 +217,7 @@ Für weitere Informationen und Optionen für die `settings.yaml` siehe [Offiziel
   "saml_provider": []
 }
 ```
-Einzelne Attribute können gemäß persönlichen Präferenzen angepasst werden. Ansonsten kann die config nach Änderung der 
+Einzelne Attribute können gemäß persönlichen Präferenzen angepasst werden. Ansonsten kann die config nach Änderung der
 Domains so ohne Probleme verwendet werden und jederzeit auch noch später angepasst werden.
 
 ### Cronjob erstellen

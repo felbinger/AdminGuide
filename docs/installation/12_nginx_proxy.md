@@ -1,16 +1,16 @@
 # nginx mit eigenem Proxy
 
-Wenn nginx mit einem eigenen transparenten Proxy für IPv4 Anfragen eingesetzt werden soll, 
+Wenn nginx mit einem eigenen transparenten Proxy für IPv4 Anfragen eingesetzt werden soll,
 benötigt man TLS Zertifikate, die im Browser validiert werden können.
 
 {% include-markdown "../../includes/installation/nginx_base.md" %}
 
 ### nginx Virtual-Host konfigurieren und aktivieren
 Anschließend wird die Virtual Host Konfiguration unter dem Pfad
-`/etc/nginx/sites-available/domain` angelegt. Dabei müssen hauptsächlich die 
+`/etc/nginx/sites-available/domain` angelegt. Dabei müssen hauptsächlich die
 mit Pfeil markierten Zeilen beachtet werden.
 ```nginx
-# https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+# https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
 server {
     server_name service.domain.de;               # <---
     listen [::]:80 http2;                        # <---

@@ -1,16 +1,16 @@
 # nginx ohne Proxy
 
-Wenn nginx ohne vorgeschalteten Proxy eingesetzt werden soll, benötigt man TLS Zertifikate, welche im 
-Browser validiert werden können. 
+Wenn nginx ohne vorgeschalteten Proxy eingesetzt werden soll, benötigt man TLS Zertifikate, welche im
+Browser validiert werden können.
 
 {% include-markdown "../../includes/installation/nginx_base.md" %}
 
 ### nginx Virtual-Host konfigurieren und aktivieren
 Anschließend wird die Virtual Host Konfiguration unter dem Pfad
-`/etc/nginx/sites-available/domain` angelegt. Dabei müssen hauptsächlich die 
+`/etc/nginx/sites-available/domain` angelegt. Dabei müssen hauptsächlich die
 mit Pfeil markierten Zeilen beachtet werden.
 ```nginx
-# https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+# https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
 server {
     server_name service.domain.de;               # <---
     listen 0.0.0.0:80 http2;
@@ -23,7 +23,7 @@ server {
 
 server {
     server_name service.domain.de;               # <---
-    listen 0.0.0.0:443 ssl http2; 
+    listen 0.0.0.0:443 ssl http2;
     listen [::]:443 ssl http2;                   # <---
 
     ssl_certificate /root/.acme.sh/service.domain.de_ecc/fullchain.cer;

@@ -48,7 +48,7 @@ DATABASE_URL=postgresql://vaultwarden:S3cr3T@postgres/vaultwarden
 
     ```nginx
     # /etc/nginx/sites-available/vaultwarden.domain.de
-    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
         server_name vaultwarden.domain.de;
         listen 0.0.0.0:443 ssl http2;

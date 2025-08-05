@@ -57,7 +57,7 @@ KC_ADMIN_PASSWORD=S3cr3T
 
     ```nginx
     # /etc/nginx/sites-available/id.domain.de
-    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
         server_name id.domain.de;
         listen 0.0.0.0:443 ssl http2;
@@ -106,7 +106,7 @@ KC_ADMIN_PASSWORD=S3cr3T
 
     ```nginx
     # /etc/nginx/sites-available/keycloak.domain.de
-    # https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
         server_name keycloak.domain.de;
         listen 0.0.0.0:443 ssl http2;

@@ -36,7 +36,7 @@ In jedem nginx Virtual-Host müssen dafür folgende Zeilen zum Server Block hinz
 ```nginx
 server {
     # ...
-    
+
     # only allow cloudflare to connect to your nginx
     ssl_client_certificate /etc/ssl/cloudflare_ca.crt;
     ssl_verify_client on;
@@ -87,7 +87,7 @@ Anschließend wird die Virtual Host Konfiguration unter dem Pfad
 mit Pfeil markierten Zeilen beachtet werden.
 
 ```nginx
-# https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=modern&openssl=1.1.1d&guideline=5.6
+# https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
 server {
     server_name service.domain.de;               # <---
     listen [::]:443 ssl http2;                   # <---
