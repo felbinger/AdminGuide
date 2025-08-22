@@ -13,8 +13,10 @@ diese in nginx verwendet werden kann.
         # ipv6 address of the host
         address 2001:db8:1234:5678::1/64
         gateway 2001:db8::1
+
         # service.domain.de
-        post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev eth0
+        post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev $IFACE
+        pre-down ip -6 a del 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev $IFACE
     ```
 
 === "Ubuntu"
