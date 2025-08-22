@@ -36,3 +36,4 @@ Contribution Guidelines:
     - "default"
     - "database"
   ```
+* All domain examples should end in `domain.de`

@@ -70,7 +70,7 @@ POSTGRES_PASSWORD=S3cr3t
         add_header X-Content-Type-Options nosniff;
         add_header X-XSS-Protection "1; mode=block";
 
-        # If you have the fileserver too, then you have to add your fileserver URL e.g. https://fs01.example.com as connect-src too:
+        # If you have the fileserver too, then you have to add your fileserver URL e.g. https://fs01.domain.de as connect-src too:
         add_header Content-Security-Policy "default-src 'none';  manifest-src 'self'; connect-src 'self' https://static.psono.com https://api.pwnedpasswords.com https://storage.googleapis.com https://*.digitaloceanspaces.com https://*.blob.core.windows.net https://*.s3.amazonaws.com; font-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self'; child-src 'self'";
 
         client_max_body_size 256m;
@@ -151,7 +151,7 @@ HOST_URL: 'https://psono.domain.de/server'
 
 # The email used to send emails, e.g. for activation (Nice, but not necessary)
 EMAIL_FROM: 'the-mail-for-for-example-useraccount-activations@test.com'
-EMAIL_HOST: 'smtp.example.com'
+EMAIL_HOST: 'smtp.domain.de'
 EMAIL_HOST_USER: ''
 EMAIL_HOST_PASSWORD : ''
 EMAIL_PORT: 25

@@ -14,7 +14,7 @@ services:
       - "SHARELATEX_REDIS_HOST=redis"
       - "REDIS_HOST=redis"
       - "SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex"
-      #- "SHARELATEX_EMAIL_SMTP_HOST=smtp.mydomain.com"
+      #- "SHARELATEX_EMAIL_SMTP_HOST=smtp.domain.de"
       #- "SHARELATEX_EMAIL_SMTP_PORT=587"
       #- "SHARELATEX_EMAIL_SMTP_SECURE=false"
       #- "SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true"
