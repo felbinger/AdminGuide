@@ -42,6 +42,7 @@ Script in einem Screen auszuführen, da je nach Dateigröße das intiale Backup 
     Mit sudo ausführen!
 
 ```shell
+### backup.sh
 declare -A map=(
   ["admin"]="/home/admin"
   ["srv"]="/srv"
@@ -53,4 +54,13 @@ for name in ${!map[@]}; do
   paths="${map[${name}]}"
   borg2 -r /home/backups create "${name}" "${paths}"
 done
+```
+
+
+Hinweis: Wenn man das Script als root User ausführt und das Script in folgender Reihenfolge ausführt, braucht man nicht
+für jedes Verzeichnis den Key neu eingeben
+
+```shell
+sudo -s
+BORG_PASSPHRASE=Die_eindeutige_passphrase bash backup.sh
 ```

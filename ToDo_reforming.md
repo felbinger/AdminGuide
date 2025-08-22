@@ -10,14 +10,14 @@
 		- [ ] warum ipv4 -> v6 proxy
 			- [ ] virtualisierung und wenig ipv4 adressen
 			- [ ] ipv6 only server
-		- [x] Vergleich der Möglichkeiten -> Grafik anpassen (In das use case Kapitel)
+		- [x] Vergleich der Möglichkeiten -> Grafik anpassen
 
 
 #### Installation
 - [ ] Basisinstallation
 	- [x] Admin Gruppe
 	- [x] Docker
-	- [ ] backup
+	- [x] Backup
 	- [ ] monitoring (will be fixed in further versions)
 - [ ] nginx als Reverse Proxy
 	- [ ] Aktuelle nginx ohne Proxy erklärung übernehmen und Anpassen (siehe unten)
