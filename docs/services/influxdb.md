@@ -18,15 +18,15 @@ services:
 
 Bevor du InfluxDB verwenden kannst, musst du ein paar Dateien aus dem Container kopieren:
 ```shell
-sudo mkdir -p /srv/main/influxdb
+sudo mkdir -p /srv/influxdb
 
 sudo docker compose up -d influxdb
 
 sudo docker cp influxdb-influxdb-1:/var/lib/influxdb \
-  /srv/main/influxdb/lib
+  /srv/influxdb/lib
 
 sudo docker cp influxdb-influxdb-1:/etc/influxdb/influxdb.conf \
-  /srv/main/influxdb/influxdb.conf
+  /srv/influxdb/influxdb.conf
 ```
 
 Nachdem du die Dateien kopiert hast, kannst du die Kommentare von den Volumes entfernen und den Container starten.

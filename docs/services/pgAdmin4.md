@@ -76,5 +76,5 @@ PGADMIN_DEFAULT_PASSWORD=S3cr3T
     ```
 
 ### Automatic Login
-*Du musst die `.pgpass` Datei in `/srv/main/pgadmin/storage/admin_domain.tld/.pgpass` hinzufügen.*
-Nicht vergessen die Berechtigungen zu ändern: `chown -R 5050:5050 /srv/main/pgadmin/`
+*Du musst die `.pgpass` Datei in `/srv/pgadmin/storage/admin_domain.tld/.pgpass` hinzufügen.*
+Nicht vergessen die Berechtigungen zu ändern: `chown -R 5050:5050 /srv/pgadmin/`

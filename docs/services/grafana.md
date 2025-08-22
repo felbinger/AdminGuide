@@ -101,7 +101,7 @@ Dashboards (z. B. [Node Exporter Full](https://grafana.com/grafana/dashboards/18
 Plugins angegeben werden, welche für die Grafana Instanz aktiviert werden.
 
 ### LDAP Auth
-Du kannst den ldap auth in `/srv/main/grafana/etc/grafana.ini` und `/srv/main/grafana/etc/ldap.toml` konfigurieren:
+Du kannst den ldap auth in `/srv/grafana/etc/grafana.ini` und `/srv/grafana/etc/ldap.toml` konfigurieren:
 ```ini
 #################################### Auth LDAP ##########################
 [auth.ldap]

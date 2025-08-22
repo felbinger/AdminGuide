@@ -23,7 +23,6 @@ services:
     command: sh -c "sleep 5 && /bin/sh /root/configs/docker/cmd.sh"
     volumes:
       - /srv/psono/data/settings.yaml:/root/.psono_server/settings.yaml
-      - /srv/psono/client/config.json:/usr/share/nginx/html/config.json
       - /srv/psono/client/config.json:/usr/share/nginx/html/portal/config.json
     sysctls:
       - net.core.somaxconn=65535

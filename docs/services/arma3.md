@@ -92,9 +92,9 @@ entnommen werden (`docker compose exec arma3 arma3server console`).
 ### Wichtige Pfade
 ```shell
 # things that need to be done to start the server (e. g. mods)
-/srv/games/arma3/lgsm/config-lgsm/arma3server/arma3server.cfg
+/srv/arma3/lgsm/config-lgsm/arma3server/arma3server.cfg
 
 # arma 3 server / network config
-/srv/games/arma3/serverfiles/cfg/arma3server.server.cfg
-/srv/games/arma3/serverfiles/cfg/arma3server.network.cfg
+/srv/arma3/serverfiles/cfg/arma3server.server.cfg
+/srv/arma3/serverfiles/cfg/arma3server.network.cfg
 ```
