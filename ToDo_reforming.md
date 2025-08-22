@@ -26,8 +26,9 @@
 		- [ ] ipv6 gen script
 - [ ] traefik als Reverse Proxy
 	- [ ] aktuelle Traefik ohne Proxy übernehmen??
-- [ ] IPv4 -> IPv6 Proxy
-	- [ ] nginx file
+- [x] IPv4 -> IPv6 Proxy
+    - [ ] nginx file austeste
+    - [ ] Schaubilder IPv4->IPv6 Proxy Möglichkeiten Vergleich
 
 - [x] Alles mit Cloudflare raus
 - [x] Basisinstallation  -> Grafik anpassen (xml in jpg drinne)

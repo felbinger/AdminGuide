@@ -3,11 +3,44 @@
 ## Anwendungsbereiche für Teilempfehlungenen
 
 ### IPv6 Adresse für jeden Service einzeln
-- layer 3 Protokoll "Security" für jeden Service
+Wenn man jeden Server mit einer separaten Adresse (in unserem Fall IPv6, da wir kein IPv4 Netz besitzen) versorgt, so kann man direkt auf OSI Layer 3 Schicht nachvollziehen auf welchem Service die Request kam. Falls diese Request eine bösartige ist, kann man sehr gut einen Service gezielt ausschalten bzw. schnell die IP Adresse für diesen Service ändern.
+Wenn man für alle Services eine IP Adresse verwenden würde, so könnte man frühestens auf Layer 5 (TLS/SNI) nachvollziehen auf welcher Applikation die Request kam. Alternativ auch auf Layer 7, aber dies sollte nicht der Anspruch sein und wäre auch zu viel Aufwand alle Application Logs nach einer IP Adresse zu durchsuchen.
+
+
 
 ### Wofür benötigt man einen IPv4 -> IPv6 Proxy?
-- Virtualisierungsumgebung und wenig IPv4 Adressen
-- IPv6 Only Server
+#### Use Case 1 - Virtualisierung mit nur einer IPv4 Adresse
+Wenn man sich jetzt vorstellt, dass wir einen Server haben, auf dem zwei virtuelle Maschinen laufen auf welche jeweils ein Webserver laufen soll, muss man sich fragen wie man damit umgeht.
+1. Wir können uns für einen der Webserver entscheiden
+2. Aufsetzen eines zentralen reverse Proxies
+3. IPv4 -> IPv6 Proxy
+
+=== "Für einen Webserver entscheiden"
+    - Keine Option, da man beide Webserver verwenden will
+
+=== "Aufsetzen eines zentralen reverse Proxies"
+    - Pro:
+        - Beide VMs können exposed werden
+        - zentralisierter Aufruf auf einen reverse Proxy
+    - Cons:
+        - langsamere Laufzeit durch mehre Proxys (Die Proxys auf den VMs brauchen wir ja immer noch)
+        - SPOF (Single point of failure) - Wenn der erste reverse Proxy nicht mehr funktioniert, kann auf kein Service mehr zugegriffen werden
+        - Vermehrter Debugging Aufwand durch mehrere Verbindungsstellen
+        - Aufwendigere Konfiguration (spezifische Header Einstellungen (Real-IP Forwarded-For))
+
+=== "IPv4 -> IPv6 Proxy"
+    - Pro:
+        - Für IPv6 geringere Laufzeit (veraltetes IPv4 Protokoll)
+        - Reverse Proxies der VMs sind direkt im Internet
+            - dadurch keine Header Konfiguration nötig
+        - Falls der zentrale IPv4 Proxy ist der Service immer noch erreichbar
+    - Contra
+        - Uns keine bekannt, falls euch welche einfallen, bitten wir um einen Pull Request
+
+
+#### Use Case 2 - IPv6 only Server
+Man stelle sich vor, dass man ganz viele Server hat. Um Kosten zu sparen gibt man jedem Server nur ein IPv6 Netz und keine IPv4 Adresse. So braucht man nur einen zentralen IPv4->IPv6 Proxy um die Erreichbarkeit der Server über IPv4 sicher zu stellen.
+
 
 
 ### IPv4-to-IPv6 Proxy
