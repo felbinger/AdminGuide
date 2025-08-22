@@ -1,13 +1,25 @@
-# Internal Networks
+# 5. Internal Networks
 
-Die im AdminGuide aufgeführten Services erhalten grundsätzlich alle ihre eigene Datenbank. Dies erfordert zum einen mehr
+Die in diesem Guide aufgeführten Services erhalten grundsätzlich alle ihre eigene Datenbank. Dies erfordert zum einen mehr
 Ressourcen, als eine zentrale Datenbank, zum anderen erfordert es beim Exportieren der Datenbanken für ein Backup die
 Behandlung mehrerer Datenbankserver.
 
 Wenn man eine Datenbank für alle Dienste nutzen möchte so sollte dieser als eigener Service definiert werden und über ein
 docker-internes Netzwerk mit den anderen Diensten kommunizieren.
 
-![Schematic with internal networks](img/internal_networks.png){: loading=lazy }
+```mermaid
+flowchart LR
+  Internet@{ shape: cloud, label: Internet }
+  Web@{ shape: diamond, label: "Reverse Proxy" }
+  A[HedgeDoc]
+  B[Nextcloud]
+  DB@{ shape: cyl, label: MariaDB }
+
+  Internet <-- "[::]:443" --> Web
+  Web <-- "[::1]:8000" --> A
+  Web <-- "[::1]:8001" --> B
+  A & B <--> DB
+```
 
 Das interne Netzwerk kann mit dem folgenden Befehl erstellt werden:
 ```shell
