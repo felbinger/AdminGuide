@@ -27,7 +27,7 @@
 - [ ] traefik als Reverse Proxy
 	- [ ] aktuelle Traefik ohne Proxy übernehmen??
 - [x] IPv4 -> IPv6 Proxy
-    - [ ] nginx file austeste
+    - [ ] nginx file austesten
     - [ ] Schaubilder IPv4->IPv6 Proxy Möglichkeiten Vergleich
 
 - [x] Alles mit Cloudflare raus
