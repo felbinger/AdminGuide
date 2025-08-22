@@ -18,7 +18,7 @@
 	- [x] Admin Gruppe
 	- [x] Docker
 	- [ ] backup
-	- [ ] monitoring
+	- [ ] monitoring (will be fixed in further versions)
 - [ ] nginx als Reverse Proxy
 	- [ ] Aktuelle nginx ohne Proxy erklärung übernehmen und Anpassen (siehe unten)
 	- [ ] usefull scripts 
@@ -55,6 +55,12 @@
 - [ ] hinzufügen ```
 	- [ ] ssl_ecdh_curve X25519:prime256v1:secp384r1;
 	- [ ] http2 on;
+
+#### Backup
+- [ ] write automation script
+  - [ ] refresh all backups
+  - [ ] create new archives for every not registered folder in /srv
+
 
 #### interfaces
 - [ ] change interface to $interface

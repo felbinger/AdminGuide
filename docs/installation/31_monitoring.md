@@ -174,7 +174,7 @@ modules:
 docker compose cp grafana:/var/lib/grafana /srv/monitoring/grafana/lib
 docker compose cp grafana:/etc/grafana /srv/monitoring/grafana/etc
 
-sudo chown -R 472:0 /srv/monitoring/grafana
+sudo chown -R 472 /srv/monitoring/grafana
 
 
 ```
