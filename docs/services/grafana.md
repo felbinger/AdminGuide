@@ -18,15 +18,9 @@ Da der Container die, in den Volumes liegenden Daten, nicht kopiert müssen wir 
 
 ```shell
 sudo mkdir -p /srv/grafana
-
 sudo docker compose up -d grafana
-
-sudo docker cp grafana-grafana-1:/var/lib/grafana \
-  /srv/grafana/lib
-
-sudo docker cp grafana-grafana-1:/etc/grafana \
-  /srv/grafana/etc
-
+sudo docker compose cp grafana:/var/lib/grafana /srv/grafana/lib
+sudo docker compose cp grafana:/etc/grafana /srv/grafana/etc
 sudo chown -R 472:472 /srv/grafana/
 ```
 
