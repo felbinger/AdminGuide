@@ -44,6 +44,9 @@
 		- [ ] add del line beneath every ipv6
 	- [ ] nginx service datei: erster Server Block löschen
 
+#### docker-compose files
+- [x] parse all docker-compose to docker compose
+
 
 #### Nginx files:
 - [ ] http2 im listener testen ob benötigt wenn http2 = on
@@ -53,3 +56,5 @@
 	- [ ] ssl_ecdh_curve X25519:prime256v1:secp384r1;
 	- [ ] http2 on;
 
+#### interfaces
+- [ ] change interface to $interface

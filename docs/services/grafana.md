@@ -21,7 +21,7 @@ sudo mkdir -p /srv/grafana
 
 sudo docker compose up -d grafana
 
-sudo docker cp grafana-grafana-1:/var/lib/grafana \
+sudo docker-compose cp grafana-grafana-1:/var/lib/grafana \
   /srv/grafana/lib
 
 sudo docker cp grafana-grafana-1:/etc/grafana \

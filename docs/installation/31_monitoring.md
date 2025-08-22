@@ -31,7 +31,7 @@ services:
       - "[::1]:8000:3000"
 
   prometheus:
-    image: quay.io/prometheus/prometheus
+    image: prom/prometheus
     restart: always
     volumes:
       - "/srv/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
@@ -40,19 +40,19 @@ services:
       - "[::1]:9090:9090"
 
   alertmanager:
-    image: quay.io/prometheus/alertmanager
+    image: prom/alertmanager
     restart: always
     ports:
       - "[::1]:9093:9093"
 
   pushgateway:
-    image: quay.io/prometheus/pushgateway
+    image: prom/pushgateway
     restart: always
     ports:
       - "[::1]:9091:9091"
 
   node_exporter:
-    image: quay.io/prometheus/node-exporter
+    image: prom/node-exporter
     restart: always
     volumes:
       - "/proc:/host/proc:ro"
@@ -66,7 +66,7 @@ services:
       - "--collector.filesystem.ignored-fs-types='^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$'"
 
   blackbox_exporter:
-    image: quay.io/prometheus/blackbox-exporter
+    image: prom/blackbox-exporter
     restart: always
     command: "--config.file=/config/config.yaml"
     volumes:
@@ -87,7 +87,7 @@ services:
 ```
 
 ```yaml
-# /srv/monitoring/prometheus/prometheus.yaml
+# /srv/monitoring/prometheus/prometheus.yml
 global:
   scrape_interval: 30s
   evaluation_interval: 30s
@@ -156,7 +156,7 @@ scrape_configs:
 ```
 
 ```yaml
-# /srv/monitoring/blackbox_exporter/config.yaml
+# /srv/monitoring/blackbox_exporter/config.yml
 modules:
   http_2xx:
     prober: http
@@ -166,4 +166,15 @@ modules:
     prober: icmp
     icmp:
       preferred_ip_protocol: "ip4"  # defaults to "ip6"
+```
+
+
+### Ordnerberechtigungen ändern und Ordner 
+```bash
+docker compose cp grafana:/var/lib/grafana /srv/monitoring/grafana/lib
+docker compose cp grafana:/etc/grafana /srv/monitoring/grafana/etc
+
+sudo chown -R 472:0 /srv/monitoring/grafana
+
+
 ```
