@@ -5,7 +5,7 @@ Zeitreihendaten optimiert ist.
 
 ```yaml
 services:
-  # shell: docker-compose exec influxdb influx -precision rfc3339
+  # shell: docker compose exec influxdb influx -precision rfc3339
   influxdb:
     image: influxdb
     restart: always

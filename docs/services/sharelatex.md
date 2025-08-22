@@ -116,7 +116,7 @@ services:
 
 ### Installation von texlive-full
 !!! warning ""
-    Wenn du den Container mit docker-compose startest, wird das Image mit allen environment Variablen und Labels gestartet.
+    Wenn du den Container mit docker compose startest, wird das Image mit allen environment Variablen und Labels gestartet.
 
 1. Install `texlive-full`
 
@@ -128,13 +128,13 @@ services:
         Das Image wird nach der Installation aller Packages um die 8 Gigabyte groß sein.
 
     ```sh
-    screen -AmdS latex-installation "docker-compose exec sharelatex tlmgr update --self; tlmgr install scheme-full"
+    screen -AmdS latex-installation "docker compose exec sharelatex tlmgr update --self; tlmgr install scheme-full"
     ```
 
 2. Speicher das aktuelle Dateisystem des Containers in einem Image mit dem Tag: `with-texlive-full`
 
     ```shell
-    docker commit -m "installing all latex packages" $(docker-compose ps -q sharelatex) sharelatex/sharelatex:with-texlive-full
+    docker commit -m "installing all latex packages" $(docker compose ps -q sharelatex) sharelatex/sharelatex:with-texlive-full
     ```
 
 3. Ersetze den Image Tag in deiner `docker-compose.yml` von `latest` zu `with-texlive-full`
@@ -144,7 +144,7 @@ services:
 Um einen Admin User zu erstellen, gibt es folgenden Befehl:
 
 ```shell
-docker-compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:create-admin --email=my@email.address"
+docker compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:create-admin --email=my@email.address"
 ```
 
 Ersetze `my@email.address` mit deiner E-Mail-Adresse. Du wirst jetzt einen Passwort-Reset Link bekommen, mit welchem du
@@ -156,7 +156,7 @@ Benutzer können mit folgendem Befehl gelöscht werden, aber die Projekte des Be
 etwas vorsichtig mit dem Befehl.
 
 ```shell
-docker-compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:delete --email=my@email.address"
+docker compose exec sharelatex /bin/bash -c "cd /var/www/sharelatex; grunt user:delete --email=my@email.address"
 ```
 
 Ersetze die `my@email.address` mit der E-Mail-Adresse von dem Benutzer, welcher gelöscht werden soll.
