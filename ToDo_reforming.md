@@ -32,8 +32,8 @@
 - [x] Alles mit Cloudflare raus
 - [x] Basisinstallation  -> Grafik anpassen (xml in jpg drinne)
 
-- [ ] Backup:
-	- [ ] Ordner mit SSL Zertifikaten speichern (/root/acme.sh oder /etc/ssl)
+- [x] Backup:
+	- [x] Ordner mit SSL Zertifikaten speichern (/root/acme.sh oder /etc/ssl)
 - [ ] nginx ohne Proxy
 	- [ ] Bilder
 	- ![[Pasted image 20250805224551.png]]
