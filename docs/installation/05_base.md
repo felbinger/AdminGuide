@@ -137,7 +137,7 @@ eingehängt ist.
 
 !!! note ""
     In komplexeren Server-Infrastrukturen kann es sinnvoll sein, jedem Virtual Host eine
-    eigene dedizierte IPv6 Adresse zuzuweisen. Dies hat den großen Vorteil, das man z. B.
+    eigene dedizierte IPv6 Adresse zuzuweisen. Dies hat den großen Vorteil, dass man z. B.
     die Firewall Logs auf Layer 3 auswerten kann, statt den [TLS SNI Header](
     https://en.wikipedia.org/wiki/Server_Name_Indication) zu betrachten, um den beteiligten
     Webserver in Erfahrung zu bringen.  
