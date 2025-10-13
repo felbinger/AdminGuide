@@ -102,7 +102,8 @@ stream {
 
 ### Vergleich der Proxy Möglichkeiten
 
-![Schaubild](../img/schaubild_cloudflare-vs-transparent-proxy.png){: loading=lazy }
+# TODO: Is this Diagram needed?
+# ![Schaubild](../img/schaubild_cloudflare-vs-transparent-proxy.png){: loading=lazy }
 
 Aus meiner Sicht ergibt die Verwendung eines eigenen vorgeschaltenen Proxies nur Sinn, wenn mehr als ein 
 Server administriert wird und die Web-Server über IPv6 Adressen exposiert bereitstellt werden.
