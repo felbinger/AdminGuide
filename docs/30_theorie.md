@@ -3,15 +3,18 @@
 ## Anwendungsbereiche für Teilempfehlungenen
 
 ### IPv6 Adresse für jeden Service einzeln
-Wenn man jeden Server mit einer separaten Adresse (in unserem Fall IPv6, da wir kein IPv4 Netz besitzen) versorgt, so kann man direkt auf OSI Layer 3 Schicht nachvollziehen auf welchem Service die Request kam. Falls diese Request eine bösartige ist, kann man sehr gut einen Service gezielt ausschalten bzw. schnell die IP Adresse für diesen Service ändern.
-Wenn man für alle Services eine IP Adresse verwenden würde, so könnte man frühestens auf Layer 5 (TLS/SNI) nachvollziehen auf welcher Applikation die Request kam. Alternativ auch auf Layer 7, aber dies sollte nicht der Anspruch sein und wäre auch zu viel Aufwand alle Application Logs nach einer IP Adresse zu durchsuchen.
-
-
+Wenn man jeden Nginx reverse Proxy mit einer separaten Adresse (in unserem Fall IPv6, da wir kein IPv4 Netz besitzen)
+versorgt, so kann man direkt auf OSI Layer 3 nachvollziehen auf welchem Service die Request kam. Wenn man für alle
+Services eine IP-Adresse verwenden würde, so könnte man frühestens auf Layer 5 (TLS/SNI) nachvollziehen auf welcher
+Applikation die Request kam. Alternativ auch auf Layer 7, aber dies sollte nicht der Anspruch sein und wäre auch zu viel
+Aufwand alle Application Logs nach einer IP-Adresse zu durchsuchen.
 
 ### Wofür benötigt man einen IPv4 -> IPv6 Proxy?
 #### Use Case 1 - Virtualisierung mit nur einer IPv4 Adresse
-Wenn man sich jetzt vorstellt, dass wir einen Server haben, auf dem zwei virtuelle Maschinen laufen auf welche jeweils ein Webserver laufen soll, muss man sich fragen wie man damit umgeht.
-1. Wir können uns für einen der Webserver entscheiden
+Wenn man sich jetzt vorstellt, dass man einen Server hat, welcher zwei virtuelle Maschinen betreibt auf denen jeweils
+zwei Webserver laufen, so muss man sich fragen wie man damit umgeht.
+
+1. Entscheiden für einen Webserver
 2. Aufsetzen eines zentralen reverse Proxies
 3. IPv4 -> IPv6 Proxy
 
@@ -21,9 +24,9 @@ Wenn man sich jetzt vorstellt, dass wir einen Server haben, auf dem zwei virtuel
 === "Aufsetzen eines zentralen reverse Proxies"
     - Pro:
         - Beide VMs können exposed werden
-        - zentralisierter Aufruf auf einen reverse Proxy
-    - Cons:
-        - langsamere Laufzeit durch mehre Proxys (Die Proxys auf den VMs brauchen wir ja immer noch)
+        - Zentralisierter Aufruf auf einen reverse Proxy
+    - Contra:
+        - langsamere Laufzeit durch mehre Proxys (Die Proxys auf den VMs brauchen man ja dennoch)
         - SPOF (Single point of failure) - Wenn der erste reverse Proxy nicht mehr funktioniert, kann auf kein Service mehr zugegriffen werden
         - Vermehrter Debugging Aufwand durch mehrere Verbindungsstellen
         - Aufwendigere Konfiguration (spezifische Header Einstellungen (Real-IP Forwarded-For))
@@ -33,8 +36,8 @@ Wenn man sich jetzt vorstellt, dass wir einen Server haben, auf dem zwei virtuel
         - Für IPv6 geringere Laufzeit (veraltetes IPv4 Protokoll)
         - Reverse Proxies der VMs sind direkt im Internet
             - dadurch keine Header Konfiguration nötig
-        - Falls der zentrale IPv4 Proxy ist der Service immer noch erreichbar
-    - Contra
+        - Falls der zentrale IPv4 Proxy nicht mehr funktioniert, so ist der Service immer noch über IPv6 erreichbar
+    - Contra:
         - Uns keine bekannt, falls euch welche einfallen, bitten wir um einen Pull Request
 
 
@@ -49,7 +52,7 @@ Dieser einfache IPv4-to-IPv6 Proxy unterstützt in seiner ersten Version ledigli
 Verbindungen auf Port 443. Eine Anpassung dieser Konfiguration um einige anderen Protokolle (SMTPs, IMAPs, POP3s) welche
 TLS verwenden zu unterstützten ist denkbar.
 
-Aus Gründen der Vollständigkeit hier einmal die nginx Konfiguration für den Proxy für Alpine Linux. Die Einrichtung ist
+Aus Gründen der Vollständigkeit hier einmal die Nginx Konfiguration für den Proxy für Alpine Linux. Die Einrichtung ist
 denkbar einfach: nginx installieren, die untenstehende Konfiguration kopieren und den Proxy starten:
 
 ```nginx
@@ -102,31 +105,35 @@ stream {
 
 ### Vergleich der Proxy Möglichkeiten
 
-# TODO: Is this Diagram needed?
-# ![Schaubild](../img/schaubild_cloudflare-vs-transparent-proxy.png){: loading=lazy }
+![Schaubild](../img/schaubild_cloudflare-vs-transparent-proxy.png){: loading=lazy }
 
-Aus meiner Sicht ergibt die Verwendung eines eigenen vorgeschaltenen Proxies nur Sinn, wenn mehr als ein 
-Server administriert wird und die Web-Server über IPv6 Adressen exposiert bereitstellt werden.
+Aus unserer Sicht ergibt die Verwendung eines eigenen vorgeschalteten Proxies nur Sinn, wenn mehr als ein Server 
+administriert wird und die Web-Server über IPv6 Adressen nach außen bereitstellt werden.
 
-Wird lediglich ein System betreut (wie z.B. der oben erwähnte Cloudserver), kann die zugewiesene IPv4 
-Adresse natürlich ebenfalls auf den Ports 80 und 443 verwendet werden und dann auf den Reverse Proxy 
-zeigen. Dadurch entfällt die Abhängigkeit zu anderen Systemen.
+Wird lediglich ein System betreut (wie z.B. der oben erwähnte Cloudserver), kann die zugewiesene IPv4 Adresse natürlich 
+ebenfalls auf den Ports 80 und 443 verwendet werden und dann auf den Reverse Proxy zeigen. Dadurch entfällt die 
+Abhängigkeit zu anderen Systemen.
 
-Sofern der Cloudserver über keine eigene IPv4 Adresse oder keine
-eigenen IPv6 Adressen verfügt, sollte ein Proxy vorgeschaltet werden,
-um den Nutzern, die keine IPv4/IPv6 Adresse verfügen den Zugriff zu
-ermöglichen.
+Sofern der Cloudserver über keine eigene IPv4 Adresse oder keine eigenen IPv6 Adressen verfügt, sollte ein Proxy 
+vorgeschaltet werden, um den Nutzern, die keine IPv4/IPv6 Adresse verfügen, den Zugriff zu ermöglichen.
 
-Wird Cloudflare Proxy verwendet erkauft man sich neben der Erreichbarkeit
-diverse Vorteile (DDoS Protection,
-[Web Application Firewall](https://developers.cloudflare.com/waf/managed-rules/),
-[Page Rules](https://www.cloudflare.com/features-page-rules/)).
+[//]: # (TODO: Cloudflare soll raus, oder?!)
+[//]: # ()
+[//]: # (Wird Cloudflare Proxy verwendet erkauft man sich neben der Erreichbarkeit diverse Vorteile &#40;DDoS Protection,)
 
-Jedoch sollte man einige Details beachten, bevor man sich auf Cloudflare festlegt.
-Der Datenverkehr der Nutzer liegt bei Cloudflare unverschlüsselt vor, da diese die
-TLS Pakete terminieren. In der kostenfreien Version von Cloudflare Proxy können
-des Weiteren keine gestackten Subdomains (`sub.sub.domain.de`) eingerichtet werden,
-da dafür kein TLS Zertifikat angefordert werden kann.
+[//]: # ([Web Application Firewall]&#40;https://developers.cloudflare.com/waf/managed-rules/&#41;,)
+
+[//]: # ([Page Rules]&#40;https://www.cloudflare.com/features-page-rules/&#41;&#41;.)
+
+[//]: # (Jedoch sollte man einige Details beachten, bevor man sich auf Cloudflare festlegt.)
+
+[//]: # (Der Datenverkehr der Nutzer liegt bei Cloudflare unverschlüsselt vor, da diese die)
+
+[//]: # (TLS Pakete terminieren. In der kostenfreien Version von Cloudflare Proxy können)
+
+[//]: # (des Weiteren keine gestackten Subdomains &#40;`sub.sub.domain.de`&#41; eingerichtet werden,)
+
+[//]: # (da dafür kein TLS Zertifikat angefordert werden kann.)
 
 
 
