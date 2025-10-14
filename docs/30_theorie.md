@@ -5,7 +5,7 @@
 ### IPv6 Adresse für jeden Service einzeln
 Wenn man jeden Nginx reverse Proxy mit einer separaten Adresse (in unserem Fall IPv6, da wir kein IPv4 Netz besitzen)
 versorgt, so kann man direkt auf OSI Layer 3 nachvollziehen auf welchem Service die Request kam. Wenn man für alle
-Services eine IP-Adresse verwenden würde, so könnte man frühestens auf Layer 5 (TLS/SNI) nachvollziehen auf welcher
+Services nur eine IP-Adresse verwenden würde, so könnte man frühestens auf Layer 5 (TLS/SNI) nachvollziehen auf welcher
 Applikation die Request kam. Alternativ auch auf Layer 7, aber dies sollte nicht der Anspruch sein und wäre auch zu viel
 Aufwand alle Application Logs nach einer IP-Adresse zu durchsuchen.
 
@@ -42,12 +42,12 @@ zwei Webserver laufen, so muss man sich fragen wie man damit umgeht.
 
 
 #### Use Case 2 - IPv6 only Server
-Man stelle sich vor, dass man ganz viele Server hat. Um Kosten zu sparen gibt man jedem Server nur ein IPv6 Netz und keine IPv4 Adresse. So braucht man nur einen zentralen IPv4->IPv6 Proxy um die Erreichbarkeit der Server über IPv4 sicher zu stellen.
-
+Man stelle sich vor, dass man ganz viele Server hat. Um Kosten zu sparen gibt man jedem Server nur ein IPv6 Netz
+und keine IPv4 Adresse. So braucht man nur einen zentralen IPv4->IPv6 Proxy um die Erreichbarkeit der Server über IPv4
+sicher zu stellen.
 
 
 ### IPv4-to-IPv6 Proxy
-
 Dieser einfache IPv4-to-IPv6 Proxy unterstützt in seiner ersten Version lediglich HTTP Verbindungen auf Port 80 und TLS
 Verbindungen auf Port 443. Eine Anpassung dieser Konfiguration um einige anderen Protokolle (SMTPs, IMAPs, POP3s) welche
 TLS verwenden zu unterstützten ist denkbar.
@@ -116,25 +116,6 @@ Abhängigkeit zu anderen Systemen.
 
 Sofern der Cloudserver über keine eigene IPv4 Adresse oder keine eigenen IPv6 Adressen verfügt, sollte ein Proxy 
 vorgeschaltet werden, um den Nutzern, die keine IPv4/IPv6 Adresse verfügen, den Zugriff zu ermöglichen.
-
-[//]: # (TODO: Cloudflare soll raus, oder?!)
-[//]: # ()
-[//]: # (Wird Cloudflare Proxy verwendet erkauft man sich neben der Erreichbarkeit diverse Vorteile &#40;DDoS Protection,)
-
-[//]: # ([Web Application Firewall]&#40;https://developers.cloudflare.com/waf/managed-rules/&#41;,)
-
-[//]: # ([Page Rules]&#40;https://www.cloudflare.com/features-page-rules/&#41;&#41;.)
-
-[//]: # (Jedoch sollte man einige Details beachten, bevor man sich auf Cloudflare festlegt.)
-
-[//]: # (Der Datenverkehr der Nutzer liegt bei Cloudflare unverschlüsselt vor, da diese die)
-
-[//]: # (TLS Pakete terminieren. In der kostenfreien Version von Cloudflare Proxy können)
-
-[//]: # (des Weiteren keine gestackten Subdomains &#40;`sub.sub.domain.de`&#41; eingerichtet werden,)
-
-[//]: # (da dafür kein TLS Zertifikat angefordert werden kann.)
-
 
 
 ## Vergleich nginx / traefik
