@@ -72,11 +72,11 @@ IPv4-zu-IPv6-Proxy sichergestellt werden. Dieser Proxy fungiert als gemeinsame E
 IPv4-Anfragen und leitet sie intern über IPv6 an die jeweiligen Zielsysteme weiter – effizient, kostensparend
 und ohne die Notwendigkeit zusätzlicher IPv4-Ressourcen.
 
-### IPv4-to-IPv6 Proxy
-Im folgenden wird eine einfache nginx Konfiguration vorgestellt, welche als IPv4-to-IPv6 Proxy eingesetzt
-werden kann. In seiner aktuellen Version unterstützt er ausschließlich HTTP- und HTTPs-Verbindungen. Mit
-geringfügigen Anpassungen der Konfiguration lässt sich der Proxy jedoch auch für andere TLS-gesicherte
-Protokolle wie SMTPs, IMAPs oder POP3s einsetzen.
+## IPv4-to-IPv6 Proxy
+Zur Vereinfachung der vorgestellten Sonderfälle kann folgende einfache nginx Konfiguration verwendet werden.
+Diese implementiert einen IPv4-to-IPv6 Proxy, der zwar in dieser Version lediglich HTTP- und HTTPs-Verbindungen
+unterstützt, jedoch mit geringfügigen Anpassungen auch für andere TLS-gesicherte Protokolle wie SMTPs, IMAPs
+oder POP3s verwendet werden kann.
 
 ```nginx
 user nginx;
