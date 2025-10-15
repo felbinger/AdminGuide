@@ -9,7 +9,7 @@ sudo apt install borgbackup2
 
 ### Backup Verzeichnis
 In diesem Guide stellen wir die lokale Speicherung des Backups vor, da diese jeder mit einem Server verwenden kann.
-Dennoch empfehlen dass Sichern des Backups auf einem dedizierten Gerät (StorageBox, anderer Server, NAS, ...).
+Dennoch empfehlen wir das Sichern des Backups auf einem dedizierten Gerät (StorageBox, anderer Server, NAS, ...).
 
 #### Erstellung des Backup Verzeichnisses
 Zu der lokalen Sicherung des Backups verwenden wir einen Ordner im `/home` Verzeichniss und geben ihm die selben Rechte
