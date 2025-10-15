@@ -41,8 +41,8 @@ server {
 ```
 
 ### IPv6 Adresse pro Virtual-Host
-Sofern geplant ist, jedem Virtual Host eine eigene IPv6 Adresse zu geben (siehe Theoretische
-Grundlagen) empfielt sich den nginx systemd-Service um einige Sekunden zu verzögern, sodass
+Sofern geplant ist, jedem Virtual Host eine eigene IPv6 Adresse zu geben (siehe [Theoretische
+Grundlagen](../30_theorie.md)) empfiehlt sich den nginx systemd-Service um einige Sekunden zu verzögern, sodass
 sichergestellt werden kann, dass das System die IPv6 Adressen der Netzwerkschnittstelle bereits
 hinzugefügt hat.
 
@@ -67,7 +67,7 @@ Folgende Schritte sind notwendig, um ein neues HTTP Routing zu konfigurieren:
 6. Konfiguration testen und nginx neu laden.
 
 ### Dienst aufsetzen
-...
+Eine Übersicht der möglichen Dienste - welche wir hier erklären - findet man [hier](../10_overview.md).
 
 ### Port-Binding von Dienst auf IPv6 Localhost (`::1`) des Hosts
 Die Containerdefinition muss einen entsprechenden Eintrag erhalten, sodass der Port
@@ -81,8 +81,7 @@ Dabei darf natürlich nur die linke Seite (hier 8081) verändert werden.
 ### TLS Zertifkat über acme.sh anfordern
 
 Für acme.sh müssen die erforderlichen Umgebungsvariablen für die gewünschte
-[ACME Challenge](https://letsencrypt.org/docs/challenge-types/) gesetzt
-sein. Für die DNS API's der Anbieter empfielt sich ein Blick in
+[ACME Challenge](https://letsencrypt.org/docs/challenge-types/) gesetzt sein. Für die DNS API's der Anbieter empfielt sich ein Blick in
 [diese Tabelle](https://github.com/acmesh-official/acme.sh/wiki/dnsapi).
 
 ```shell
@@ -91,6 +90,7 @@ export CF_Token=
 acme.sh --issue --keylength ec-384 --dns dns_cf -d service.domain.de
 ```
 
+[//]: # (TODO: Usefull Script HIER hinzufügen)
 ### Optional: Eigene IPv6 Adresse für Virtual Host konfigurieren
 Sofern eine eigene IPv6 Adresse für diesen Dienst verwendet werden soll,
 wird diese der entsprechenden Netzwerkschnittstelle hinzugefügt, sodass

@@ -3,7 +3,7 @@
 ## Wahl des Reverse Proxies
 Im Rahmen dieses Guides werden nginx auf dem Host sowie Traefik als Container vorgestellt.
 
-Nginx ist ein leistungsstarker und weit verbreiteter Webserver und Reverse Proxy, der sich
+Nginx ist ein leistungsstarker und weit verbreiteter Webserver und Reverse Proxy, welcher sich
 durch hohe Stabilität, Effizienz und Flexibilität in klassischen Serverumgebungen auszeichnet.
 
 Traefik hingegen ist speziell auf containerisierte Umgebungen ausgelegt und integriert sich
