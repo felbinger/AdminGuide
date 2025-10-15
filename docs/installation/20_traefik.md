@@ -164,7 +164,7 @@ Außerdem müssen die Docker Labels für das HTTP Routing gesetzt werden:
 ```
 
 !!! warning
-    Hierbei sollte umbedingt darauf geachtet werden, dass weder service (Präfix `srv_`),
+    Hierbei sollte unbedingt darauf geachtet werden, dass weder service (Präfix `srv_`),
     noch router-Bezeichnungen (Präfix `r_`) doppelt verwendet werden, da dies zu schwer
     bemerkbaren Fehlern führen kann.
 
