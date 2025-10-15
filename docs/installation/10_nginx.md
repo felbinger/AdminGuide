@@ -26,6 +26,20 @@ acme.sh --install-cronjob
 acme.sh --server "https://acme-v02.api.letsencrypt.org/directory" --set-default-ca
 ```
 
+Anschließend kann die Datei `/etc/nginx/sites-available/default` durch folgenden Codeblock ersetzt werden.
+Diese Server Direktive regelt, dass der Server lediglich TLS Verschlüsselte Anfragen verarbeitet.
+```nginx
+server {
+    listen 0.0.0.0:80;
+    listen [::]:80;
+    http2 on;
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+```
+
 ### IPv6 Adresse pro Virtual-Host
 Sofern geplant ist, jedem Virtual Host eine eigene IPv6 Adresse zu geben (siehe Theoretische
 Grundlagen) empfielt sich den nginx systemd-Service um einige Sekunden zu verzögern, sodass
@@ -151,17 +165,6 @@ Anschließend wird die Virtual Host Konfiguration unter dem Pfad
 
 ```nginx
 # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
-server {
-    server_name service.domain.de;               # <---
-    listen 0.0.0.0:80;
-    listen [::]:80;
-    http2 on;
-
-    location / {
-        return 301 https://$host$request_uri;
-    }
-}
-
 server {
     server_name service.domain.de;               # <---
     listen 0.0.0.0:443 ssl;
