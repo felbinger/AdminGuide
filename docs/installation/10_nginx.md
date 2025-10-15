@@ -50,7 +50,7 @@ hinzugefügt hat.
 
 Dazu muss in der Datei `/lib/systemd/system/nginx.service` vor der ersten `ExecStartPre` Zeile folgendes hinzugefügt werden:
 ```shell
-# make sure the additional ipv6 addresses (which have been added with post-up)
+# Make sure the additional ipv6 addresses (which have been added with post-up)
 # are already on the interface (only required for enabled nginx service on system boot)
 ExecStartPre=/bin/sleep 5
 ```
