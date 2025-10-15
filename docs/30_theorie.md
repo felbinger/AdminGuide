@@ -1,59 +1,82 @@
-# Theorie (Namen werden noch überarbeitet)
+# Theoretische Grundlagen
 
-## Anwendungsbereiche für Teilempfehlungenen
+## Wahl des Reverse Proxies
+Im Rahmen dieses Guides werden nginx auf dem Host sowie Traefik als Container vorgestellt.
 
-### IPv6 Adresse für jeden Service einzeln
-Wenn man jeden Nginx reverse Proxy mit einer separaten Adresse (in unserem Fall IPv6, da wir kein IPv4 Netz besitzen)
-versorgt, so kann man direkt auf OSI Layer 3 nachvollziehen auf welchem Service die Request kam. Wenn man für alle
-Services nur eine IP-Adresse verwenden würde, so könnte man frühestens auf Layer 5 (TLS/SNI) nachvollziehen auf welcher
-Applikation die Request kam. Alternativ auch auf Layer 7, aber dies sollte nicht der Anspruch sein und wäre auch zu viel
-Aufwand alle Application Logs nach einer IP-Adresse zu durchsuchen.
+Nginx ist ein leistungsstarker und weit verbreiteter Webserver und Reverse Proxy, der sich
+durch hohe Stabilität, Effizienz und Flexibilität in klassischen Serverumgebungen auszeichnet.
 
-### Wofür benötigt man einen IPv4 -> IPv6 Proxy?
-#### Use Case 1 - Virtualisierung mit nur einer IPv4 Adresse
-Wenn man sich jetzt vorstellt, dass man einen Server hat, welcher zwei virtuelle Maschinen betreibt auf denen jeweils
-zwei Webserver laufen, so muss man sich fragen wie man damit umgeht.
+Traefik hingegen ist speziell auf containerisierte Umgebungen ausgelegt und integriert sich
+nahtlos mit Plattformen wie Docker oder Kubernetes. Es erkennt neue Services automatisch und
+konfiguriert Routing-Regeln dynamisch, was es besonders für moderne, dynamische Deployments
+attraktiv macht.
 
-1. Entscheiden für einen Webserver
-2. Aufsetzen eines zentralen reverse Proxies
-3. IPv4 -> IPv6 Proxy
+## Eine IPv6 Adresse pro Service
 
-=== "Für einen Webserver entscheiden"
-    - Keine Option, da man beide Webserver verwenden will
+!!! note
+    Die meisten Hosting-Provider weisen jedem Server ein /64-IPv6-Präfix zu,
+    was einem Adressraum von $2^{64}$ Adressen entspricht – eine Zahl, die in
+    der Praxis quasi unerschöpflich ist.
 
-=== "Aufsetzen eines zentralen reverse Proxies"
-    - Pro:
-        - Beide VMs können exposed werden
-        - Zentralisierter Aufruf auf einen reverse Proxy
-    - Contra:
-        - langsamere Laufzeit durch mehre Proxys (Die Proxys auf den VMs brauchen man ja dennoch)
-        - SPOF (Single point of failure) - Wenn der erste reverse Proxy nicht mehr funktioniert, kann auf kein Service mehr zugegriffen werden
-        - Vermehrter Debugging Aufwand durch mehrere Verbindungsstellen
-        - Aufwendigere Konfiguration (spezifische Header Einstellungen (Real-IP Forwarded-For))
+    Ausnahmen gibt es beispielsweise bei Strato, siehe dieses
+    [Video](https://www.youtube.com/shorts/oSvU4HXZ_Wc).
 
-=== "IPv4 -> IPv6 Proxy"
-    - Pro:
-        - Für IPv6 geringere Laufzeit (veraltetes IPv4 Protokoll)
-        - Reverse Proxies der VMs sind direkt im Internet
-            - dadurch keine Header Konfiguration nötig
-        - Falls der zentrale IPv4 Proxy nicht mehr funktioniert, so ist der Service immer noch über IPv6 erreichbar
-    - Contra:
-        - Uns keine bekannt, falls euch welche einfallen, bitten wir um einen Pull Request
+Wird jedem nginx Reverse Proxy eine eigene IPv6-Adresse zugewiesen, kann bereits auf OSI-Layer 3
+nachvollzogen werden, an welchen Webservice eine Anfrage gerichtet war. Würde hingegen für alle
+Dienste nur eine gemeinsame Adresse verwendet, wäre eine eindeutige Zuordnung frühestens auf
+Layer 5 (durch Auswertung des TLS SNI Headers) möglich; ohne ein spezielles Analysewerkzeug sogar
+erst auf Layer 7, etwa über die Logdaten des Webservers.
 
+Der Webserver nginx bietet mit der Direktive `listen` die Möglichkeit, virtuelle Hosts an spezifische
+IPv4- oder IPv6-Adressen zu binden. Diese Technik erlaubt eine frühzeitige Trennung und Zuordnung des
+eingehenden Traffics zu den einzelnen Anwendungen. Soll ein Dienst abgeschaltet oder vorübergehend
+blockiert werden, kann dessen zugewiesene Adresse zudem sehr einfach über die Firewall – oder sogar
+direkt beim Provider – gesperrt werden, ohne dass Änderungen an der Servicekonfiguration selbst
+erforderlich sind.
 
-#### Use Case 2 - IPv6 only Server
-Man stelle sich vor, dass man ganz viele Server hat. Um Kosten zu sparen gibt man jedem Server nur ein IPv6 Netz
-und keine IPv4 Adresse. So braucht man nur einen zentralen IPv4->IPv6 Proxy um die Erreichbarkeit der Server über IPv4
-sicher zu stellen.
+## Sonderfälle
+### Virtualisierungsserver
+Zwar richtet sich dieser Guide in erster Linie an Administratoren einfacher vServer, doch kann es
+schnell vorkommen, dass aufgrund steigender Leistungsanforderungen auf einen dedizierten Server
+gewechselt wird.
 
+Nehmen wir an, ein solcher Server verfügt über eine IPv4-Adresse und ein /64-IPv6-Präfix, auf dem
+mehrere virtuelle Maschinen betrieben werden sollen. Das Hostsystem, das direkt auf der physischen
+Hardware installiert ist, kann in diesem Szenario als Router fungieren. Über NAT und Port Address
+Translation (PAT) lassen sich dabei gezielt einzelne Ports an die virtualisierten Systeme weiterleiten.
+
+Dank des zugewiesenen IPv6-Präfixes kann jedoch jeder virtuellen Maschine eine eigene öffentliche
+IPv6-Adresse zugeordnet werden, wodurch sie direkt aus dem Internet erreichbar ist – ganz ohne NAT.
+
+In diesem Zusammenhang kann der Einsatz eines IPv4-zu-IPv6-Proxys sinnvoll sein. Ein solcher Proxy
+nimmt Anfragen über IPv4 entgegen und leitet sie intern per IPv6 an den Zielserver weiter. Auf diese
+Weise bleibt die Erreichbarkeit auch für IPv4-Clients gewährleistet, selbst wenn die eigentliche
+Infrastruktur ausschließlich auf IPv6 basiert.
+
+### IPv6-only Server
+Angenommen, es steht eine größere Anzahl von Servern zur Verfügung. Um Kosten und Verwaltungsaufwand
+zu reduzieren, wird dabei bewusst auf individuelle IPv4-Adressen verzichtet und jedem System ausschließlich
+ein IPv6-Netz zugewiesen.
+
+!!! warning
+    Dieses Setup impliziert, dass die Systeme selbst keine ausgehende IPv4-Verbindung aufbauen können.
+    Das kann die Administration erschweren – beispielsweise, wenn Repositories von GitHub, Docker Hub oder
+    anderen ausschließlich über IPv4 erreichbaren Diensten bezogen werden sollen. In solchen Fällen ist
+    entweder ein IPv6-fähiger Mirror oder ein NAT64-Gateway erforderlich, um den Zugriff zu ermöglichen.
+
+    Die wenigsten Anbieter stellen derzeit NAT64 Gateways zur Verfügung, weshalb zum derzeitigen Zeitpunkt
+    von dieser Systemarchitektur abzuraten ist.
+
+Die Erreichbarkeit dieser Server aus dem IPv4-Internet kann in einem solchen Szenario über einen zentralen
+IPv4-zu-IPv6-Proxy sichergestellt werden. Dieser Proxy fungiert als gemeinsame Eingangsstelle für alle
+IPv4-Anfragen und leitet sie intern über IPv6 an die jeweiligen Zielsysteme weiter – effizient, kostensparend
+und ohne die Notwendigkeit zusätzlicher IPv4-Ressourcen.
 
 ### IPv4-to-IPv6 Proxy
-Dieser einfache IPv4-to-IPv6 Proxy unterstützt in seiner ersten Version lediglich HTTP Verbindungen auf Port 80 und TLS
-Verbindungen auf Port 443. Eine Anpassung dieser Konfiguration um einige anderen Protokolle (SMTPs, IMAPs, POP3s) welche
-TLS verwenden zu unterstützten ist denkbar.
-
-Aus Gründen der Vollständigkeit hier einmal die Nginx Konfiguration für den Proxy für Alpine Linux. Die Einrichtung ist
-denkbar einfach: nginx installieren, die untenstehende Konfiguration kopieren und den Proxy starten:
+Im folgenden wird eine einfache nginx Konfiguration vorgestellt, welche als IPv4-to-IPv6 Proxy eingesetzt
+werden kann. In seiner aktuellen Version unterstützt er ausschließlich HTTP- und HTTPs-Verbindungen. Mit
+geringfügigen Anpassungen der Konfiguration lässt sich der Proxy jedoch auch für andere TLS-gesicherte
+Protokolle wie SMTPs, IMAPs oder POP3s einsetzen.
 
 ```nginx
 user nginx;
@@ -61,7 +84,6 @@ worker_processes auto;
 
 error_log /var/log/nginx/error.log notice;
 pid /var/run/nginx.pid;
-
 
 events {
     worker_connections 1024;
@@ -88,7 +110,6 @@ http {
 }
 
 stream {
-    # https://gist.github.com/kekru/c09dbab5e78bf76402966b13fa72b9d2#non-terminating-tls-pass-through
     server {
         listen 443;
 
@@ -102,20 +123,3 @@ stream {
     }
 }
 ```
-
-### Vergleich der Proxy Möglichkeiten
-
-![Schaubild](../img/schaubild_cloudflare-vs-transparent-proxy.png){: loading=lazy }
-
-Aus unserer Sicht ergibt die Verwendung eines eigenen vorgeschalteten Proxies nur Sinn, wenn mehr als ein Server 
-administriert wird und die Web-Server über IPv6 Adressen nach außen bereitstellt werden.
-
-Wird lediglich ein System betreut (wie z.B. der oben erwähnte Cloudserver), kann die zugewiesene IPv4 Adresse natürlich 
-ebenfalls auf den Ports 80 und 443 verwendet werden und dann auf den Reverse Proxy zeigen. Dadurch entfällt die 
-Abhängigkeit zu anderen Systemen.
-
-Sofern der Cloudserver über keine eigene IPv4 Adresse oder keine eigenen IPv6 Adressen verfügt, sollte ein Proxy 
-vorgeschaltet werden, um den Nutzern, die keine IPv4/IPv6 Adresse verfügen, den Zugriff zu ermöglichen.
-
-
-## Vergleich nginx / traefik

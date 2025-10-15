@@ -1,23 +1,35 @@
 # Basisinstallation
 
-Jeder, der diese Informationssammlung nutzt, sollte in der Lage sein, seinen
-Linux Server grundlegend einzurichten und abzusichern. Daher verzichte ich hier
-auf Standardanleitungen und stelle lediglich die spezifischen Konzepte vor.
+!!! note
+    Jeder, der diese Informationssammlung nutzt, sollte in der Lage sein, seinen
+    Linux Server grundlegend einzurichten und abzusichern. Daher verzichte ich hier
+    auf Standardanleitungen und stelle lediglich die spezifischen Konzepte vor.
 
 ## Admin Gruppe
+Ich gehe grundsätzlich davon aus, dass ich auf keinem System der alleinige Administrator
+bin. Auf all meinen Systemen existiert daher eine eigene Admin-Gruppe, die Zugriff auf das
+Verzeichnis `/home/admin` besitzt. Diese Gruppe dient als zentraler Ablageort für
+Container-Definitionen, Umgebungsvariablen-Dateien und Skripte.
 
-Ich gehe grundsätzlich davon aus, dass ich auf keinem System der alleinige
-Administrator bin, weshalb auf allen Systemen eine Admin-Gruppe existiert,
-die Rechte auf das Verzeichnis `/home/admin` hat.
+!!! warning "`admin` vs. `adm`"
+    In vielen Linux-Distributionen – unter anderem auch in Debian – existiert
+    standardmäßig die Gruppe `adm`. Sie ist für Aufgaben der Systemüberwachung
+    vorgesehen und gewährt ihren Mitgliedern erweiterte Leserechte auf zahlreiche
+    Logdateien im Verzeichnis /var/log.
+
+    Für den hier beschriebenen Anwendungsfall ist die Nutzung dieser Gruppe jedoch
+    ausdrücklich nicht vorgesehen, da sie administrative Berechtigungen über den
+    eigentlichen Bedarf hinaus gewährt und somit ein potenzielles Sicherheitsrisiko
+    darstellen kann.
 
 ```shell
 groupadd -g 1100 admin
-mkdir -m 775 /home/admin
+mkdir -m 770 /home/admin
 chown root:admin /home/admin
 ```
 
-Die personalisierten Accounts der Systemadministratoren erhalten neben der `sudo`
-Gruppenmitgliedschaft auch die Gruppe `admin`:
+Die personalisierten Benutzerkonten der Systemadministratoren werden zusätzlich
+zur Mitgliedschaft in der Gruppe `sudo` auch der Gruppe `admin` hinzugefügt.
 
 ```shell
 adduser nicof2000
@@ -25,15 +37,15 @@ usermod -aG sudo,admin nicof2000
 ```
 
 ## Docker
-
-Die Installation von Docker ist in der offiziellen [Dokumentation](https://docs.docker.com/engine/install/debian/) 
-bereits sehr gut beschrieben. Zusätzlich richten wir einen Alias ein,
-um uns die wiederholte Eingabe von sudo docker compose zu ersparen.
+Die Installation von Docker ist in der offiziellen [Dokumentation](https://docs.docker.com/engine/install/debian/)
+bereits sehr gut beschrieben. Zusätzlich richten wir einen Alias ein, um uns die wiederholte
+Eingabe von `sudo docker compose` zu ersparen.
 ```shell
 curl -fsSL https://get.docker.com | sudo bash
 echo 'alias dc="sudo docker compose "' >> ~/.bashrc
 ```
 
+<!--
 ## Proxy und Reverse Proxy
 
 In den folgenden Kapiteln werden die sechs möglichen Kombinationen vorgestellt.
@@ -60,8 +72,8 @@ Maschine notwendig.
 
 Zu einem späteren Zeitpunkt erhielten weitere Administratoren für eigene virtuelle Maschinen Zugriff auf diesen
 dedizierten Server. Da ich diesen den Zugriff auf den Reverse Proxy, welcher das Routing zu den virtuellen Maschinen
-verwehren wollte, verwendete ich zunächst nur auf IPv6 exposierte Web-Server in Verbindung mit Cloudflare Proxy, um 
-die IPv4 Erreichbarkeit zu sichern und zusätzlich weitere Schutzmaßnahmen (z. B. Denial of Service Schutz) für diesen 
+verwehren wollte, verwendete ich zunächst nur auf IPv6 exposierte Web-Server in Verbindung mit Cloudflare Proxy, um
+die IPv4 Erreichbarkeit zu sichern und zusätzlich weitere Schutzmaßnahmen (z. B. Denial of Service Schutz) für diesen
 dedizierten Server in Anspruch zu nehmen.
 
 Spätestens seit Zensus
@@ -118,21 +130,21 @@ eingehängt ist.
     Die "Virtual-Host" Konfigurationsdateien liegen im Verzeichnis `/etc/nginx/sites-available/`
     unter der Domain, die Sie erreichbar machen.
 
-    TLS Zertifikate beziehe ich mithilfe des Shellskriptes [`acme.sh`](https://github.com/acmesh-official/acme.sh), 
-    welches ich unter dem root-Nutzer laufen lasse. Die resultierenden privaten Schlüssel 
-    und Zertifkate werden im Verzeichnis `/root/.acme.sh/` gespeichert und direkt von 
+    TLS Zertifikate beziehe ich mithilfe des Shellskriptes [`acme.sh`](https://github.com/acmesh-official/acme.sh),
+    welches ich unter dem root-Nutzer laufen lasse. Die resultierenden privaten Schlüssel
+    und Zertifkate werden im Verzeichnis `/root/.acme.sh/` gespeichert und direkt von
     dort in der nginx Virtual-Host Konfiguration eingebunden.
 
 === "Traefik"
     Da Traefik als Docker Container bereitgestellt wird, gilt die oben genannte Verzeichnisstruktur:
 
-    * Containerdefinition: `/home/admin/traefik/docker-compose.yml`  
-    * Env-Vars (hier DNS API Token): `/home/admin/traefik/.traefik.env`  
-    * Daten (z.B. TLS Zertifikate): `/srv/traefik`  
+    * Containerdefinition: `/home/admin/traefik/docker-compose.yml`
+    * Env-Vars (hier DNS API Token): `/home/admin/traefik/.traefik.env`
+    * Daten (z.B. TLS Zertifikate): `/srv/traefik`
 
-    Traefik verwendet als ACME Client [Lego](https://go-acme.github.io/lego/). Die Konfiguration dieses 
+    Traefik verwendet als ACME Client [Lego](https://go-acme.github.io/lego/). Die Konfiguration dieses
     kann der [Traefik Dokumentation](https://doc.traefik.io/traefik/https/acme/) entnommen werden.
-    Die angeforderten Zertifikate und Privaten Schlüssel werden im `/srv/traefik` Volume des Traefik 
+    Die angeforderten Zertifikate und Privaten Schlüssel werden im `/srv/traefik` Volume des Traefik
     Containers gespeichert.
 
 !!! note ""
@@ -140,7 +152,7 @@ eingehängt ist.
     eigene dedizierte IPv6 Adresse zuzuweisen. Dies hat den großen Vorteil, dass man z. B.
     die Firewall Logs auf Layer 3 auswerten kann, statt den [TLS SNI Header](
     https://en.wikipedia.org/wiki/Server_Name_Indication) zu betrachten, um den beteiligten
-    Webserver in Erfahrung zu bringen.  
+    Webserver in Erfahrung zu bringen.
     Da ich in diesen Netzwerken bisher immer auf nginx gesetzt habe,
     habe ich nie geprüft, ob Traefik dieses Feature (jedem HTTP Router
     eine eigene IPv6 Adresse zuzuweisen) ebenfalls unterstützt.
@@ -149,3 +161,4 @@ Prinzipiell ist die genutzte [ACME Challenge](https://letsencrypt.org/docs/chall
 auch interne Dienste betreibe, die nicht aus dem Internet erreichbar sind, verwende ich prinzipiell die ACME-DNS-01
 Challenge. Sowohl [Traefik / Lego](https://doc.traefik.io/traefik/https/acme/#providers) als auch
 [`acme.sh`](https://github.com/acmesh-official/acme.sh/wiki/dnsapi) unterstützten eine Vielzahl an DNS API's
+-->
