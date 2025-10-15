@@ -12,8 +12,8 @@ In diesem Guide stellen wir die lokale Speicherung des Backups vor, da diese jed
 Dennoch empfehlen wir das Sichern des Backups auf einem dedizierten Gerät (StorageBox, anderer Server, NAS, ...).
 
 #### Erstellung des Backup Verzeichnisses
-Zu der lokalen Sicherung des Backups verwenden wir einen Ordner im `/home` Verzeichniss und geben ihm die selben Rechte
-wie dem `/home/admin` Verzeichniss, damit alle Administrator des Servers auf dieses Backup zugreifen können.
+Zu der lokalen Sicherung des Backups verwenden wir einen Ordner im `/home` Verzeichnis und geben ihm die selben Rechte
+wie dem `/home/admin` Verzeichnis, damit alle Administrator des Servers auf dieses Backup zugreifen können.
 
 ```shell
 sudo mkdir -m 770 /home/backups
