@@ -57,7 +57,6 @@ plugins:
   #- git-revision-date-localized
   - search:
       lang: de
-  - include-markdown
 
 extra_javascript:
   - js/config.js

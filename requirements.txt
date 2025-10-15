@@ -3,4 +3,3 @@ mkdocs-material
 mkdocs-git-revision-date-plugin
 mkdocs-git-revision-date-localized-plugin
 jinja2==3.1.6
-mkdocs-include-markdown-plugin
