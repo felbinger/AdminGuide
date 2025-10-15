@@ -16,6 +16,10 @@ services:
 
 Da der Container die, in den Volumes liegenden Daten, nicht kopiert müssen wir das zuvor manuell erledigen:
 
+!!! note
+    Standardmäßig läuft Grafana mit dem Nutzer `grafana` (UID 472).
+    Daher müssen die Verzeichnisse entsprechend diesem Nutzer gehören.
+
 ```shell
 sudo mkdir -p /srv/grafana
 sudo docker compose up -d grafana
