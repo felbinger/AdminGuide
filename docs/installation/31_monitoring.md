@@ -169,12 +169,10 @@ modules:
 ```
 
 
-### Ordnerberechtigungen ändern und Ordner 
+### Ordner kopieren und Ordnerberechtigungen anpassen
 ```bash
 docker compose cp grafana:/var/lib/grafana /srv/monitoring/grafana/lib
 docker compose cp grafana:/etc/grafana /srv/monitoring/grafana/etc
 
 sudo chown -R 472 /srv/monitoring/grafana
-
-
 ```

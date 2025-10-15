@@ -18,8 +18,10 @@ attraktiv macht.
     was einem Adressraum von $2^{64}$ Adressen entspricht – eine Zahl, die in
     der Praxis quasi unerschöpflich ist.
 
-    Ausnahmen gibt es beispielsweise bei Strato, siehe dieses
-    [Video](https://www.youtube.com/shorts/oSvU4HXZ_Wc).
+    Ausnahmen gibt es beispielsweise bei Strato: Dort wird nicht ein ganzes /64-IPv6-Präfix,
+    sondern lediglich eine einzelne IPv6-Adresse pro Server zugewiesen. Dadurch ist es nicht
+    möglich, jedem Dienst eine eigene IPv6-Adresse zu geben
+    ([siehe YouTube Short](https://www.youtube.com/shorts/oSvU4HXZ_Wc)).
 
 Wird jedem nginx Reverse Proxy eine eigene IPv6-Adresse zugewiesen, kann bereits auf OSI-Layer 3
 nachvollzogen werden, an welchen Webservice eine Anfrage gerichtet war. Würde hingegen für alle
