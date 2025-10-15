@@ -13,6 +13,7 @@ an den Container weitergeleitet, der den Dienst bereitstellt.
 
 ## Verzeichnisstruktur
 Jeder bereitgestellte Dienst erhält zwei Verzeichnisse:
+
 1. Im Verzeichnis `/home/admin/<service>` liegt die Container-Definition (`docker-compose.yml`),
 2. die Daten des Dienstes werden im Verzeichnis `/srv/<service>` gespeichert.
 
