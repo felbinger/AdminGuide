@@ -1,6 +1,6 @@
 # Internal Networks
 
-Die im AdminGuide aufgeführten Services erhalten grundsätzlich alle ihre eigene Datenbank. Dies erfordert zum einen mehr
+Die in diesem Guide aufgeführten Services erhalten grundsätzlich alle ihre eigene Datenbank. Dies erfordert zum einen mehr
 Ressourcen, als eine zentrale Datenbank, zum anderen erfordert es beim Exportieren der Datenbanken für ein Backup die
 Behandlung mehrerer Datenbankserver.
 

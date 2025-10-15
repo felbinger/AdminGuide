@@ -1,8 +1,6 @@
 # Backup
 
-Für das Backup des Server verwenden wir [BorgBackup2](https://borgbackup.readthedocs.io/en/master/index.html).
-Wir empfehlen in dieser Anleitung das Sichern verschiedenster in diesem Guide angelegten und regelmäßig verwendeten
-Verzeichnisse. Gerne darf man mehr Verzeichnisse speichern, denn "kein Backup, kein Mitleid!".
+Für das Backup des Server kann [BorgBackup2](https://borgbackup.readthedocs.io/en/master/index.html) verwendet werden.
 
 ### Installation
 ```shell
@@ -36,15 +34,19 @@ Der Aufbau des Sicherungsbefehl ist folgender:
 borg2 -r /backup/verzeichnis create name_des_archives_in_borg /zu/sicherndes/verzeichnis
 ```
 
-
 Um nicht jedes Verzeichnis einzeln auszuführen, haben wir uns dafür ein kleines Script geschrieben. Wir empfehlen dieses
-Script in einem Screen auszuführen, da je nach Dateigröße das intiale Backup bis zu mehreren Stunden dauern kann
+Script in einem Screen auszuführen, da je nach Dateigröße das intiale Backup bis zu mehreren Stunden dauern kann.
 
-!!! info ""
-    Mit sudo ausführen!
+Hierbei sollte beachtet werden, dass das Script zwangsläufig unter dem root-Nutzer ausgeführt werden muss, sodass voller
+Zugriff auf alle Pfade besteht.
+
+!!! note
+    Die folgenden Verzeichnisse sind jene, die im Rahmen dieses Guides aktiv verwendet werden.
+
+    Selbstverständlich können auch zusätzliche Pfade in das Backup aufgenommen werden – denn: „Kein Backup, kein Mitleid!“
 
 ```shell
-### backup.sh
+# backup.sh
 declare -A map=(
   ["admin"]="/home/admin"
   ["srv"]="/srv"
@@ -52,7 +54,7 @@ declare -A map=(
   ["network"]="/etc/network/"
   ["certificates"]="/root/.acme"
 )
-for name in ${!map[@]}; do 
+for name in ${!map[@]}; do
   paths="${map[${name}]}"
   borg2 -r /home/backups create "${name}" "${paths}"
 done
@@ -64,5 +66,5 @@ für jedes Verzeichnis den Key neu eingeben
 
 ```shell
 sudo -s
-BORG_PASSPHRASE=Die_eindeutige_passphrase bash backup.sh
+BORG_PASSPHRASE=s3cr3t-s3cur3-p4ssw0rd bash backup.sh
 ```
