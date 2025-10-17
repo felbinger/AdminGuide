@@ -1,3 +1,9 @@
+---
+tags:
+  - "Password Manager"
+hide:
+  - tags
+---
 # Psono
 
 Psono ist ein self-hosted open source passwort manager. Er auf einfache User Erfahrung optimiert und ist sehr simpel

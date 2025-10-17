@@ -1,3 +1,9 @@
+---
+tags:
+  - "Password Manager"
+hide:
+  - tags
+---
 # passbolt
 
 Passbolt ist ein self-hosted open source Passwortmanager, welcher sehr gut für Teams geeignet ist, durch die Funktion,

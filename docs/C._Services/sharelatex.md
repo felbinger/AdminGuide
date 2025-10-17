@@ -1,3 +1,9 @@
+---
+tags:
+  - Zusammenarbeit
+hide:
+  - tags
+---
 # ShareLaTeX
 
 Eine selbst gehostete Version von [Overleaf](https://overleaf.com)

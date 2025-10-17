@@ -1,3 +1,9 @@
+---
+tags:
+  - Cloud
+hide:
+  - tags
+---
 # Nextcloud
 
 Nextcloud ist eine vielseitige Cloud, welche mit zahlreichen Add-ons um Funktionen erweitert werden kann.

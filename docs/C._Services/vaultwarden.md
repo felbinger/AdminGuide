@@ -1,3 +1,9 @@
+---
+tags:
+  - "Password Manager"
+hide:
+  - tags
+---
 # Vaultwarden
 
 Vaultwarden ist eine Open-Source-Serveranwendung für das sichere Speichern und Verwalten von Passwörtern und anderen

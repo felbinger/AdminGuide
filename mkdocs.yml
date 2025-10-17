@@ -61,6 +61,7 @@ plugins:
   #- git-revision-date-localized
   - search:
       lang: de
+  - tags
 
 extra_javascript:
   - js/config.js

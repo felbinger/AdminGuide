@@ -1,3 +1,9 @@
+---
+tags:
+  - CMS
+hide:
+  - tags
+---
 # WordPress
 
 Ein CMS (Content-Management-System) zum einfachen Verwalten und erstellen von Websites.

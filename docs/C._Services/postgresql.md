@@ -1,3 +1,9 @@
+---
+tags:
+  - Database
+hide:
+  - tags
+---
 # PostgreSQL
 
 Eine SQL basierte relationale Datenbank.

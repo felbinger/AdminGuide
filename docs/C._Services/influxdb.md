@@ -1,3 +1,9 @@
+---
+tags:
+  - Database
+hide:
+  - tags
+---
 # InfluxDB
 
 InfluxDB ist eine Open-Source-Zeitreihendatenbank, die speziell für die Speicherung, Abfrage und Visualisierung von

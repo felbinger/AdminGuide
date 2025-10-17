@@ -1,3 +1,9 @@
+---
+tags:
+  - "Serververwaltung und Netzwerk"
+hide:
+  - tags
+---
 # docky-onion
 
 Um einen [tor hidden services](https://2019.www.torproject.org/docs/onion-services) mit docker zu verwenden, kann man

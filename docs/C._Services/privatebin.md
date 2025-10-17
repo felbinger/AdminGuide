@@ -1,3 +1,9 @@
+---
+tags:
+  - Zusammenarbeit
+hide:
+  - tags
+---
 # Privatebin
 
 PrivateBin ist eine Open-Source-Webanwendung, welche die sichere gemeinsame Nutzung von Text- und Dateiinhalten ermöglicht,

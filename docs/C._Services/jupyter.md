@@ -1,3 +1,9 @@
+---
+tags:
+  - IDE
+hide:
+  - tags
+---
 # Jupyter
 
 Jupyter Notebook ist eine interaktive Entwicklungsumgebung, die es Benutzern ermöglicht, Code zu schreiben und

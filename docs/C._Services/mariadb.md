@@ -1,3 +1,9 @@
+---
+tags:
+  - Database
+hide:
+  - tags
+---
 # MariaDB
 
 Einfache SQL basierte Datenbank. Nachfolger von MySQL.

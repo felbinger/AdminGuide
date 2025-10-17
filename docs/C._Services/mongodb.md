@@ -1,3 +1,9 @@
+---
+tags:
+  - Database
+hide:
+  - tags
+---
 # MongoDB
 
 MongoDB ist eine dokumentenorientierte NoSQL-Datenbank, die eine flexible und skalierbare Speicherlösung für

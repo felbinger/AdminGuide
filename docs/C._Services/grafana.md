@@ -1,3 +1,9 @@
+---
+tags:
+  - "Datenverwaltung / Datenvisualisierung"
+hide:
+  - tags
+---
 # Grafana
 
 Grafana ist ein Dienst, welcher zur Datenvisualisierung und Überwachung verwendet wird.

@@ -1,3 +1,9 @@
+---
+tags:
+  - Communication
+hide:
+  - tags
+---
 # Jitsi
 
 Der [Self-Hosting Guide](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker) von Jitsi ist eigentlich selbsterklärend.

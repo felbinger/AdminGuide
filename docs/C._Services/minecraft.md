@@ -1,3 +1,9 @@
+---
+tags:
+  - Gaming
+hide:
+  - tags
+---
 # Minecraft Server
 
 Ein Spigot Server, welcher auch den Zugriff auf Mods erlaubt.

@@ -1,3 +1,9 @@
+---
+tags:
+  - Zusammenarbeit
+hide:
+  - tags
+---
 # HedgeDoc
 
 HedgeDoc ist eine Open-Source-Plattform für die kollaborative Bearbeitung von Dokumenten in Echtzeit, ähnlich wie Google

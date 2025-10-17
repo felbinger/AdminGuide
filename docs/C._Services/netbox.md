@@ -1,3 +1,9 @@
+---
+tags:
+  - "Serververwaltung und Netzwerk"
+hide:
+  - tags
+---
 # NetBox
 
 NetBox ist eine Open-Source-Software zur Verwaltung von Netzwerkinfrastrukturen. Es bietet eine

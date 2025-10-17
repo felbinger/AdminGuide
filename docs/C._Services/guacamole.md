@@ -1,3 +1,9 @@
+---
+tags:
+  - Zusammenarbeit
+hide:
+  - tags
+---
 # Guacamole
 
 Guacamole ist ein Webanwendungsdienst, welcher es ermöglicht, über einen Webbrowser auf entfernte Computer oder Server

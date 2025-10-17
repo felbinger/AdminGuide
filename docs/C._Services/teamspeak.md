@@ -1,3 +1,9 @@
+---
+tags:
+  - Communication
+hide:
+  - tags
+---
 # TeamSpeak
 
 TeamSpeak ist eine Voice-over-IP-Software, die es Benutzern ermöglicht, über das Internet miteinander zu kommunizieren.

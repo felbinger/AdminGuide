@@ -1,3 +1,9 @@
+---
+tags:
+  - "Datenverwaltung / Datenvisualisierung"
+hide:
+  - tags
+---
 # GitLab
 
 GitLab ist eine Software für Code-Management und Versionierung. Außerdem bietet es eine Vielzahl an Tools für die

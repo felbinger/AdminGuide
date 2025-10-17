@@ -1,3 +1,9 @@
+---
+tags:
+  - Database
+hide:
+  - tags
+---
 # pgAdmin 4
 
 Eine webbasierte Datenbank Visualisierungs- und Bearbeitungssoftware.

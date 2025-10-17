@@ -1,3 +1,9 @@
+---
+tags:
+  - "Serververwaltung und Netzwerk"
+hide:
+  - tags
+---
 # OpenVPN
 
 Einfacher und selbst gehosteter OpenSource VPN Dienst.

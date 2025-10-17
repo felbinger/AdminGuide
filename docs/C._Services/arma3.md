@@ -1,3 +1,9 @@
+---
+tags:
+  - Gaming
+hide:
+  - tags
+---
 # Arma 3 Server
 
 Ein Arma 3 Gameserver ermöglicht es Arma 3 Spielern eine gemeinsame Mission zu spielen.

@@ -1,3 +1,9 @@
+---
+tags:
+  - Cloud
+hide:
+  - tags
+---
 # Seafile
 
 Seafile ist eine sichere, Open-Source-Plattform für die Synchronisation, Freigabe und Zusammenarbeit von Dateien, die

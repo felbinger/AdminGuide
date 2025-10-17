@@ -1,3 +1,9 @@
+---
+tags:
+  - "Datenverwaltung / Datenvisualisierung"
+hide:
+  - tags
+---
 # Syncthing
 
 Software zum Synchronisieren und Versionieren von Dateien.

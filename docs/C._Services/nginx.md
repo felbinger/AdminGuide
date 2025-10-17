@@ -1,3 +1,9 @@
+---
+tags:
+  - "Serververwaltung und Netzwerk"
+hide:
+  - tags
+---
 # nginx
 
 Wird ein einfacher Webserver z. B. für eine statische Homepage benötigt, kann ein nginx Container verwendet werden.

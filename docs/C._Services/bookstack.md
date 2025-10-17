@@ -1,3 +1,9 @@
+---
+tags:
+  - CMS
+hide:
+  - tags
+---
 # Bookstack
 
 Bookstack ist eine einfache Wiki- / KnowledgeBase Software.
