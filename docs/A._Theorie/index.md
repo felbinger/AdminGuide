@@ -1,7 +1,7 @@
 # TL;DR
 
 ## Wahl des Reverse Proxies
-Docker Container bringen oft keine Möglichkeit mit verschlüsselte Anfragen zu verarbeiten.
+Docker Images bringen oft keine Möglichkeit verschlüsselte Anfragen zu verarbeiten.
 Des Weiteren könnten wir jeden Port nur einmal auf jeder IPv4 / IPv6 Adresse verwenden.
 
 Abhilfe schafft dabei ein Reverse Proxy, der die externen Anfragen verarbeitet und an den
