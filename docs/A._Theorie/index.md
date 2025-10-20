@@ -22,7 +22,7 @@ Homelab) nutzbar ist.
 
 ## Eine IPv6 Adresse pro Service
 Die meisten Server erhalten vom Provider ein öffentliches /64er IPv6 Präfix.
-Das sind in der Praxis einer unerschöpflichen Anzahl an Adressen,
+Das ist in der Praxis eine unerschöpfliche Anzahl an Adressen,
 daher erhält jeder Service eine eigene Adresse für eingehende Anfragen.
 
 Dies ermöglicht beispielsweise das blockieren eines Services über die
