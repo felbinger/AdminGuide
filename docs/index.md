@@ -2,9 +2,8 @@
 
 Diese Informationssammlung beschreibt ein mögliches Verfahren zum Aufsetzen eines
 Linux Servers mit Anwendungen in Docker Containern. Die meisten hier vorgestellten
-Anwendungen sind webbasiert und werden über einen Reverse Proxy ([Traefik](https://traefik.io/)
-als Docker Container, oder [nginx](https://www.nginx.com/) auf dem
-Host) aus dem Internet erreichbar gemacht.
+Anwendungen sind webbasiert und werden über einen Reverse Proxy aus dem Internet
+erreichbar gemacht.
 
 ## Lokales HTTP Routing
 Nachdem die Anfragen den Reverse Proxy auf unserem eigenen Host erreicht haben, werden
@@ -21,7 +20,7 @@ Jeder bereitgestellte Dienst erhält zwei Verzeichnisse:
 Schützenswerte Umgebungsvariablen (Passwörter, API Tokens, ...) werden nicht in der
 Containerdefinition abgelegt, sondern in einer separaten `env`-Datei, um die Gefahr einer
 Offenlegung dieser (z. B. beim Teilen des Bildschirms) zu reduzieren. Diese werden entsprechend
-des Container-Namen im docker-compose Kontext benannt.
+des Container-Namen im docker compose Kontext benannt.
 
 Im folgenden Beispiel-Dienst (`service: example`, `service_name: example_srv`) würde die
 `env`-Datei unter dem Pfad `/home/admin/example/.example_srv.env` angelegt werden.
