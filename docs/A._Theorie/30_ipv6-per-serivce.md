@@ -22,3 +22,17 @@ eingehenden Traffics zu den einzelnen Anwendungen. Soll ein Dienst abgeschaltet 
 blockiert werden, kann dessen zugewiesene Adresse zudem sehr einfach über die Firewall – oder sogar
 direkt beim Provider – gesperrt werden, ohne dass Änderungen an der Servicekonfiguration selbst
 erforderlich sind.
+
+## Useful Script
+Das erstellen einer neuen IPv6 Adresse aus dem /64 Präfix des Servers kann mit folgendem simplen
+Skript automatisiert werden:
+
+```bash
+#!/bin/bash
+
+v=$(cat /dev/urandom | tr -dc a-f0-9 | fold -w16 | head -n1)
+echo  your:first:four:blocks:${v:0:4}:${v:4:4}:${v:8:4}:${v:12}
+```
+
+Die ersten vier Blöcke der IPv6-Adresse (`your:first:four:blocks`) müssen dabei durch das
+jeweilige /64-Präfix des Servers ersetzt werden (Bsp.: `2001:0db8:85a3:0053`).
