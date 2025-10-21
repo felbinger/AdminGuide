@@ -200,7 +200,16 @@
     Durch dieses wird der Port aus dem Container an das Hostsystem exposiert wird und lokal angesprochen werden kann.
     Dabei darf natürlich nur die linke Seite (hier 8081) verändert werden.
 
-    Freie Ports lassen sich mit dem Tool (@Luis TODO hier einfügen) ermitteln.
+    !!! tipp 
+        Schon verwendete Ports lassen sich mit folgendem Befehl ermitteln: `grep -oP "(?<=proxy_pass)[^;]*" /etc/nginx/sites-enabled/* | sed "s/ /\t/" | expand -t 30 | grep ${1:-.}`
+        
+        Wenn man diesen Befehl in eine Funktion schreibt und diese in die `.bashrc` einfügt, dann könnte es wie folgt aussehen:
+        ```bash
+        function searchport {
+            grep -oP "(?<=proxy_pass)[^;]*" /etc/nginx/sites-enabled/* | sed "s/ /\t/" | expand -t 30 | grep ${1:-.}
+        }
+        ```
+        Dies ermöglicht die Suche nach einem bestimmten Port, z. B. `searchport 8081`.
 
     In der `docker-compose.yaml` des jeweiligen Dienstes muss demnach folgendes hinzugefügt werden:
     ```yaml
