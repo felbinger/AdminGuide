@@ -15,7 +15,7 @@ attraktiv macht.
 
 !!! note
     Die meisten Hosting-Provider weisen jedem Server ein /64-IPv6-Präfix zu,
-    was einem Adressraum von $2^{64}$ Adressen entspricht – eine Zahl, die in
+    was einem Adressraum von $2^{64}$ Adressen entspricht – eine Menge, die in
     der Praxis quasi unerschöpflich ist.
 
     Ausnahmen gibt es beispielsweise bei Strato: Dort wird nicht ein ganzes /64-IPv6-Präfix,
