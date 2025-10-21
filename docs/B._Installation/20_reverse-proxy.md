@@ -200,21 +200,24 @@
     Durch dieses wird der Port aus dem Container an das Hostsystem exposiert wird und lokal angesprochen werden kann.
     Dabei darf natürlich nur die linke Seite (hier 8081) verändert werden.
 
-    !!! tipp 
-        Schon verwendete Ports lassen sich mit folgendem Befehl ermitteln: `grep -oP "(?<=proxy_pass)[^;]*" /etc/nginx/sites-enabled/* | sed "s/ /\t/" | expand -t 30 | grep ${1:-.}`
-        
-        Wenn man diesen Befehl in eine Funktion schreibt und diese in die `.bashrc` einfügt, dann könnte es wie folgt aussehen:
+    !!! tipp
+        Schon verwendete Ports lassen sich mit folgendem Befehl ermitteln:
+        ```sh
+        grep -oP "(?<=proxy_pass)[^;]*" /etc/nginx/sites-enabled/* | sed "s/ /\t/" | expand -t 30
+        ```
+
+        Zur leichteren Verwendung empfielt sich das hinzufügen folgender Funktion in der Datei `~/.bashrc`:
         ```bash
         function searchport {
             grep -oP "(?<=proxy_pass)[^;]*" /etc/nginx/sites-enabled/* | sed "s/ /\t/" | expand -t 30 | grep ${1:-.}
         }
         ```
-        Dies ermöglicht die Suche nach einem bestimmten Port, z. B. `searchport 8081`.
+        Neben der Möglichkeit alle Ports mit `searchport` aufzulisten, ergibt sich die Möglichkeit den ersetzen Parameter zu setzen (`searchport 8081`) um den zu einem Port gehörenden Domainnamen anzuzeigen.
 
     In der `docker-compose.yaml` des jeweiligen Dienstes muss demnach folgendes hinzugefügt werden:
     ```yaml
         ports:
-        - "[::1]:8081:80"
+          - "[::1]:8081:80"
     ```
 
     Anschließend muss ein TLS Zertifikat für die gewünschte Domain auf der, der Dienst erreichbar sein soll
