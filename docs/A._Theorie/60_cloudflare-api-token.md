@@ -1,8 +1,8 @@
 # 6. Cloudflare API Token erstellen
 
-Um die DNS-01 Challenge für die SSL-Zertifikate lösen zu können, benötigen wir einen API Token von Cloudflare.
+Um die ACME DNS-01 Challenge für die TLS-Zertifikate nutzen zu können, wird ein API Token von Cloudflare benötigt.
 
-Zum erstellen des API Tokens meldet man sich bei Cloudflare an und befolgt folgende Schritte:
+Zum Erstellen des API Tokens meldet man sich bei Cloudflare an und befolgt folgende Schritte:
 
 
 ## Navigiere zu "My Profile" und öffne den Reiter "API Tokens"
@@ -17,10 +17,9 @@ Zum erstellen des API Tokens meldet man sich bei Cloudflare an und befolgt folge
 
 ## Token konfigurieren
 
-[//]: # (TODO Frage: Namensgebung des Tokens vorschläge geben?)
-1. In der ersten roten Markierung den Namen für das Token vergeben.
-2. In der zweiten roten Markierung die Zone auswählen, für welche der Token gültig sein soll (können auch mehrere sein).
-3. In der dritten roten Markierung die IP Adressen des Server eintragen, welche den Token verwenden dürfen.
+1. Den Namen für das Token vergeben (Bsp.: Servername eintragen).
+2. Die Zone auswählen, für welche der Token gültig sein soll (können auch mehrere sein).
+3. Die IP Adressen des Server eintragen, welche den Token verwenden dürfen.
 -> Dort bietet sich an einerseits das IPv6 Subnet und andererseits die IPv4 Adresse einzutragen.
 
 ![Cloudflare Configure API Token](../img/cloudflare/create_token_window.png)
