@@ -34,10 +34,10 @@ Der Aufbau des Sicherungsbefehl ist folgender:
 borg2 -r /backup/verzeichnis create name_des_archives_in_borg /zu/sicherndes/verzeichnis
 ```
 
-Um nicht jedes Verzeichnis einzeln auszuführen, haben wir uns dafür ein kleines Script geschrieben. Wir empfehlen dieses
-Script in einem Screen auszuführen, da je nach Dateigröße das intiale Backup bis zu mehreren Stunden dauern kann.
+Um nicht jedes Verzeichnis einzeln auszuführen, haben wir uns dafür ein kleines Skript geschrieben. Wir empfehlen dieses
+Skript in einem Screen auszuführen, da je nach Dateigröße das intiale Backup bis zu mehreren Stunden dauern kann.
 
-Hierbei sollte beachtet werden, dass das Script zwangsläufig unter dem root-Nutzer ausgeführt werden muss, sodass voller
+Hierbei sollte beachtet werden, dass das Skript zwangsläufig unter dem root-Nutzer ausgeführt werden muss, sodass voller
 Zugriff auf alle Pfade besteht.
 
 !!! note
@@ -60,9 +60,12 @@ for name in ${!map[@]}; do
 done
 ```
 
+!!! note
+    Die Umgebungsvariable BORG_PASSPHRASE kann beim Aufruf des Skripts verwendet werden,
+    um das gleiche Passwort für jedes Verzeichnis zu verwenden.
 
-Hinweis: Wenn man das Script als root User ausführt und das Script in folgender Reihenfolge ausführt, braucht man nicht
-für jedes Verzeichnis den Key neu eingeben
+    Hierbei ist zu beachten, dass das Skript als root Nutzer ausgeführt werden muss,
+    da sonst erforderliche Privilegien zur Durchführung des Backups fehlen.
 
 ```shell
 sudo -s

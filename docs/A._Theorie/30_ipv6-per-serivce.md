@@ -24,40 +24,21 @@ direkt beim Provider – gesperrt werden, ohne dass Änderungen an der Serviceko
 erforderlich sind.
 
 
-## Useful Scripts
+!!! info "Nützliche Skripte: IPv6 Adresse generieren"
 
-### IPv6 Adresse generieren
-!!! note
-    Dieses Skript erzeugt jediglich eine neue IPv6-Adresse! Diese wird nicht automatisch dem 
-    Netzwerkinterface hinzugefügt. Dies muss separat erfolgen!
+    Das erstellen einer neuen IPv6 Adresse aus dem /64 Präfix des Servers kann mit folgendem simplen
+    Skript automatisiert werden:
 
-Das erstellen einer neuen IPv6 Adresse aus dem /64 Präfix des Servers kann mit folgendem simplen
-Skript automatisiert werden:
+    !!! note
+        Dieses Skript erzeugt jediglich eine neue IPv6-Adresse! Diese wird nicht automatisch dem 
+        Netzwerkinterface hinzugefügt. Dies muss separat erfolgen!
 
-```bash
-#!/bin/bash
+    ```bash
+    #!/bin/bash
 
-v=$(cat /dev/urandom | tr -dc a-f0-9 | fold -w16 | head -n1)
-echo  your:first:four:blocks:${v:0:4}:${v:4:4}:${v:8:4}:${v:12}
-```
+    v=$(cat /dev/urandom | tr -dc a-f0-9 | fold -w16 | head -n1)
+    echo your:first:four:blocks:${v:0:4}:${v:4:4}:${v:8:4}:${v:12}
+    ```
 
-Die ersten vier Blöcke der IPv6-Adresse (`your:first:four:blocks`) müssen dabei durch das
-jeweilige /64-Präfix des Servers ersetzt werden (Bsp.: `2001:0db8:85a3:0053`).
-
-
-### Verwendete Ports auflisten
-Wenn man jedem Dienst eine eigene IPv6-Adresse zuweist, kann jeder Dienst nach Außen den gleichen
-Port verwenden (z. B. 443 für HTTPS). Auf dem Host müssen die Ports jedoch unterschiedlich sein.
-Um sich die verwendet Ports aller Dienste anzeigen zu lassen, kann folgender Befehl verwendet werden:
-`grep -oP "(?<=proxy_pass)[^;]*" /etc/nginx/sites-enabled/* | sed "s/ /\t/" | expand -t 30 | grep ${1:-.}`
-
-
-Wenn man diesen Befehl in eine Funktion schreibt und diese in die `.bashrc` einfügt, kann man nach
-der Verwendung eines genauen Ports suchen:
-```bash
-function searchport {
-  grep -oP "(?<=proxy_pass)[^;]*" /etc/nginx/sites-enabled/* | sed "s/ /\t/" | expand -t 30 | grep ${1:-.}
-}
-```
-
-Verwendung: `searchport 8080` -> Listet alle Dienste auf, die den Port 8080 verwenden.
+    Die ersten vier Blöcke der IPv6-Adresse (`your:first:four:blocks`) müssen dabei durch das
+    jeweilige /64-Präfix des Servers ersetzt werden (Bsp.: `2001:0db8:85a3:0053`).

@@ -3,7 +3,7 @@
 ## Installation
 
 === "nginx"
-    Zunächst wird nginx auf dem System installiert
+    Zunächst wird nginx auf dem System installiert.
     ```shell
     sudo apt install -y nginx-full
     ```
