@@ -60,12 +60,9 @@ for name in ${!map[@]}; do
 done
 ```
 
-!!! note
-    Die Umgebungsvariable BORG_PASSPHRASE kann beim Aufruf des Skripts verwendet werden,
-    um das gleiche Passwort für jedes Verzeichnis zu verwenden.
 
-    Hierbei ist zu beachten, dass das Skript als root Nutzer ausgeführt werden muss,
-    da sonst erforderliche Privilegien zur Durchführung des Backups fehlen.
+Hinweis: Wenn man das Script als root User ausführt und das Script in folgender Reihenfolge ausführt, braucht man nicht
+für jedes Verzeichnis den Key neu eingeben
 
 ```shell
 sudo -s
