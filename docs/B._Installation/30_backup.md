@@ -60,6 +60,7 @@ for name in ${!map[@]}; do
 done
 ```
 
+
 !!! note
     Die Umgebungsvariable BORG_PASSPHRASE kann beim Aufruf des Skripts verwendet werden,
     um das gleiche Passwort für jedes Verzeichnis zu verwenden.
