@@ -1,5 +1,5 @@
 # 1. Wahl des Reverse Proxies
-Im Rahmen dieses Guides werden [nginx](https://www.nginx.com/) auf dem Host sowie
+Im Rahmen dieses Guides werden [nginx](https://www.nginx.org/) auf dem Host sowie
 [Traefik](https://traefik.io/) als Container vorgestellt.
 
 Nginx ist ein leistungsstarker und weit verbreiteter Webserver und Reverse Proxy, welcher sich

@@ -5,7 +5,7 @@ Docker Images bringen oft keine Möglichkeit verschlüsselte Anfragen zu verarbe
 Des Weiteren könnten wir jeden Port nur einmal auf jeder IPv4 / IPv6 Adresse verwenden.
 
 Abhilfe schafft dabei ein Reverse Proxy, der die externen Anfragen verarbeitet und an den
-richtigen Container leitet. Als Reverse Proxy kann [nginx](https://www.nginx.com/) direkt
+richtigen Container leitet. Als Reverse Proxy kann [nginx](https://www.nginx.org/) direkt
 auf dem Host oder [Traefik](https://traefik.io/) als eigenständiger Container verwendet werden.
 
 ## TLS
