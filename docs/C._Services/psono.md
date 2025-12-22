@@ -232,7 +232,7 @@ Domains so ohne Probleme verwendet werden und jederzeit auch noch später angepa
 
 ### User erstellen
 ```shell
-docker compose exec python3 ./psono/manage.py createuser \
+docker compose exec psono-combo python3 ./psono/manage.py createuser \
                 username@example.com \
                 myPassword \
                 email@something.com
@@ -243,7 +243,7 @@ Jetzt kann der User sich unter https://psono.domain.de/ einloggen.
 
 ### User zum Admin erklären
 ```shell
-docker compose exec python3 ./psono/manage.py promoteuser username@example.com superuser
+docker compose exec psono-combo python3 ./psono/manage.py promoteuser username@example.com superuser
 ```
 
 Der Admin Login (mit einem Dashboard, Userverwaltung, etc.) befindet sich unter https://psono.domain.de/portal/

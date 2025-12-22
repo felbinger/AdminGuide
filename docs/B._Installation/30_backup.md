@@ -72,3 +72,4 @@ done
 sudo -s
 BORG_PASSPHRASE=s3cr3t-s3cur3-p4ssw0rd bash backup.sh
 ```
+
