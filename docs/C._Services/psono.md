@@ -14,7 +14,7 @@ aufzusetzen und zu konfigurieren.
 services:
   postgres:
     restart: always
-    image: postgres:13-alpine
+    image: postgres:18-alpine
     env_file: .postgres.env
     environment:
       POSTGRES_USER: psono
