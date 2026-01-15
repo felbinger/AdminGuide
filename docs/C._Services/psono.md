@@ -51,8 +51,9 @@ POSTGRES_PASSWORD=S3cr3t
 
     server {
         server_name psono.domain.de;
-        listen 0.0.0.0:443 ssl http2
-        listen [::]:443 ssl http2;
+        listen 0.0.0.0:443 ssl;
+        listen [::]:443 ssl;
+        http2 on;
 
         ssl_certificate /root/.acme.sh/passbolt.domain.de_ecc/fullchain.cer;
         ssl_certificate_key /root/.acme.sh/passbolt.domain.de_ecc/passbolt.domain.de.key;

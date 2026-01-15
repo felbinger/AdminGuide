@@ -57,8 +57,9 @@ DATABASE_URL=postgresql://vaultwarden:S3cr3T@postgres/vaultwarden
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
         server_name vaultwarden.domain.de;
-        listen 0.0.0.0:443 ssl http2;
-        listen [::]:443 ssl http2;
+        listen 0.0.0.0:443 ssl;
+        listen [::]:443 ssl;
+        http2 on;
 
         ssl_certificate /root/.acme.sh/vaultwarden.domain.de_ecc/fullchain.cer;
         ssl_certificate_key /root/.acme.sh/vaultwarden.domain.de_ecc/vaultwarden.domain.de.key;

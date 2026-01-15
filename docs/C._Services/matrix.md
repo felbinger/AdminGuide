@@ -74,8 +74,9 @@ POSTGRES_PASSWORD=S3cr3T
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
         server_name synapse.domain.de;
-        listen 0.0.0.0:443 ssl http2;
-        listen [::]:443 ssl http2;
+        listen 0.0.0.0:443 ssl;
+        listen [::]:443 ssl;
+        http2 on;
 
         ssl_certificate /root/.acme.sh/synapse.domain.de_ecc/fullchain.cer;
         ssl_certificate_key /root/.acme.sh/synapse.domain.de_ecc/synapse.domain.de.key;
@@ -125,8 +126,9 @@ POSTGRES_PASSWORD=S3cr3T
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
         server_name domain.de;
-        listen 0.0.0.0:443 ssl http2;
-        listen [::]:443 ssl http2;
+        listen 0.0.0.0:443 ssl;
+        listen [::]:443 ssl;
+        http2 on;
 
         ssl_certificate /root/.acme.sh/domain.de_ecc/fullchain.cer;
         ssl_certificate_key /root/.acme.sh/domain.de_ecc/domain.de.key;
