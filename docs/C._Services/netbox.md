@@ -63,6 +63,62 @@ _EOF
 
 Nach diesem Schritt kannst du dich einloggen mit `admin` / `AdminGuide!`.
 
+
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:80"
+    ```
+
+    ```nginx
+    # /etc/nginx/sites-available/netbox.domain.de
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
+    server {
+        server_name netbox.domain.de;
+        listen 0.0.0.0:443 ssl;
+        listen [::]:443 ssl;
+        http2 on;
+
+        ssl_certificate /root/.acme.sh/netbox.domain.de_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/netbox.domain.de_ecc/netbox.domain.de.key;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+        ssl_session_tickets off;
+
+        # modern configuration
+        ssl_protocols TLSv1.3;
+        ssl_prefer_server_ciphers off;
+
+        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+        add_header Strict-Transport-Security "max-age=63072000" always;
+
+        # OCSP stapling
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        location / {
+            proxy_pass http://[::1]:8000/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    }
+    ```
+
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_netbox.loadbalancer.server.port=80"
+          - "traefik.http.routers.r_netbox.rule=Host(`netbox.domain.de`)"
+          - "traefik.http.routers.r_netbox.entrypoints=websecure"
+    ```
+
 ## E-Mail
 
 `/home/admin/netbox/env/netbox.env`:
