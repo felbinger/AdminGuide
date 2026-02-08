@@ -129,7 +129,7 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: blackbox-exporter:9115
+        replacement: blackbox_exporter:9115
 
   - job_name: 'blackbox_exporter_icmp'
     metrics_path: '/probe'
@@ -144,12 +144,12 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: blackbox-exporter:9115
+        replacement: blackbox_exporter:9115
 
   - job_name: 'blackbox_exporter'
     static_configs:
       - targets:
-        - blackbox-exporter:9115
+        - blackbox_exporter:9115
 
   - job_name: 'node_exporter'
     static_configs:
