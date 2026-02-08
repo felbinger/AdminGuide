@@ -3,8 +3,7 @@
 !!! info ""
     Work in progress - not finished yet!
 
-Als Monitoring verwenden wir den Prometheus Stack (
-  [Prometheus](https://github.com/prometheus/prometheus)
+Als Monitoring verwenden wir den Prometheus Stack ([Prometheus](https://github.com/prometheus/prometheus)
   + [Alertmanager](https://github.com/prometheus/alertmanager)
   + [Pushgateway](https://github.com/prometheus/pushgateway)) mit
   [Grafana](https://grafana.com/) zur Visualisierung.
