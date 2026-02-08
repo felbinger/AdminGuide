@@ -256,5 +256,5 @@ Dadurch dass in dem docker container ein Prometheus Service ist, können wir Pro
 Den Namen der Datenquelle könnt ihr frei wählen. Als URL brauchen wir hier `http://prometheus:9090`.
 
 Am Ende sollte die Konfiguration wie folgt aussehen:
-![Cloudflare Create API Token](../img/monitoring/configuration_prometheus.png)
+![Prometheus configuration](../img/monitoring/configuration_prometheus.png)
 
