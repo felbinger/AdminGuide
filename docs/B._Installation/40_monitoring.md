@@ -223,7 +223,7 @@ sudo chown -R 472 /srv/monitoring/grafana
         ssl_stapling_verify on;
 
         location / {
-            proxy_pass http://[::1]:8000/;
+            proxy_pass http://[::1]:3000/;
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection 'upgrade';
@@ -244,6 +244,9 @@ sudo chown -R 472 /srv/monitoring/grafana
           - "traefik.http.routers.r_monitoring.rule=Host(`monitoring.domain.de`)"
           - "traefik.http.routers.r_monitoring.entrypoints=websecure"
     ```
+
+
+Dieser Webendpoint ist der welcher auf jeden Fall benötigt wird um die Daten darzustellen. Prometheus und Alertmanager haben auch eigene Web Interfaces welche man auch noch mit einem Endpoint versehen könnte. Dies ist aber keine Pflicht.
 
 
 ### Erster Login
