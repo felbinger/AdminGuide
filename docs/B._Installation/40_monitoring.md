@@ -27,8 +27,20 @@ services:
     volumes:
       - "/srv/monitoring/grafana/lib:/var/lib/grafana"
       - "/srv/monitoring/grafana/etc:/etc/grafana"
+    environment:
+      GF_RENDERING_SERVER_URL: http://renderer:8081/render
+      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
     ports:
-      - "[::1]:8000:3000"
+      - "[::1]:3000:3000"
+
+  renderer:
+    image: grafana/grafana-image-renderer:latest
+    restart: always
+    environment:
+      ENABLE_METRICS: 'true'
+      RENDERING_MODE: 'clustered'
+      RENDERING_CLUSTERING_MODE: 'browser'
+      RENDERING_CLUSTERING_MAX_CONCURRENCY: '5'
 
   prometheus:
     image: prom/prometheus
@@ -63,12 +75,12 @@ services:
       - "--path.sysfs=/host/sys"
       - "--path.rootfs=/rootfs"
       - "--collector.filesystem.ignored-mount-points='^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)'"
-      - "--collector.filesystem.ignored-fs-types='^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$'"
+#      - "--collector.filesystem.ignored-fs-types='^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$'"
 
   blackbox_exporter:
     image: prom/blackbox-exporter
     restart: always
-    command: "--config.file=/config/config.yaml"
+    command: "--config.file=/config/config.yml"
     volumes:
       - "/srv/monitoring/blackbox_exporter/:/config/"
 
@@ -84,6 +96,7 @@ services:
       - "/sys:/sys:ro"
       - "/var/lib/docker:/var/lib/docker:ro"
       - "/cgroup:/cgroup:ro"
+
 ```
 
 ```yaml
@@ -176,3 +189,73 @@ docker compose cp grafana:/etc/grafana /srv/monitoring/grafana/etc
 
 sudo chown -R 472 /srv/monitoring/grafana
 ```
+
+
+### Reverse Proxy aufsetzen
+=== "nginx"
+    ```yaml
+        ports:
+          - "[::1]:8000:8083"
+    ```
+
+    ```nginx
+    # /etc/nginx/sites-available/monitoring.domain.de
+    # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
+    server {
+        server_name monitoring.domain.de;
+        listen 0.0.0.0:443 ssl http2;
+        listen [::]:443 ssl http2;
+
+        ssl_certificate /root/.acme.sh/monitoring.domain.de_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/monitoring.domain.de_ecc/monitoring.domain.de.key;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+        ssl_session_tickets off;
+
+        # modern configuration
+        ssl_protocols TLSv1.3;
+        ssl_prefer_server_ciphers off;
+
+        # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+        add_header Strict-Transport-Security "max-age=63072000" always;
+
+        # OCSP stapling
+        ssl_stapling on;
+        ssl_stapling_verify on;
+
+        location / {
+            proxy_pass http://[::1]:8000/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header X-Real-IP $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+    }
+    ```
+
+=== "Traefik"
+    ```yaml
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.services.srv_monitoring.loadbalancer.server.port=8083"
+          - "traefik.http.routers.r_monitoring.rule=Host(`monitoring.domain.de`)"
+          - "traefik.http.routers.r_monitoring.entrypoints=websecure"
+    ```
+
+
+### Erster Login
+Der erste Login ist mit den Zugangsdaten `admin:admin` möglich. Danach fragt Grafana nach einem neuen Passwort für den Admin User.
+
+
+### Erste data source
+Über https://monitoring.domain.de/connections/datasources/new kann man eine neue Datenquelle hinzufügen. 
+Dadurch dass in dem docker container ein Prometheus Service ist, können wir Prometheus als Datenquelle hinzufügen. Dies geschiet indem ihr Prometheus auswählt.
+Den Namen der Datenquelle könnt ihr frei wählen. Als URL brauchen wir hier `http://prometheus:9090`.
+
+Am Ende sollte die Konfiguration wie folgt aussehen:
+![Cloudflare Create API Token](../img/monitoring/configuration_prometheus.png)
+
