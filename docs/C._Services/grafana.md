@@ -43,16 +43,16 @@ Entfernen Sie anschließend die Kommentarzeichen vor den Volumes in der Containe
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/grafana.domain.de
+    # /etc/nginx/sites-available/grafana.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name grafana.domain.de;
+        server_name grafana.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/grafana.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/grafana.domain.de_ecc/grafana.domain.de.key;
+        ssl_certificate /root/.acme.sh/grafana.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/grafana.example.com_ecc/grafana.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -87,7 +87,7 @@ Entfernen Sie anschließend die Kommentarzeichen vor den Volumes in der Containe
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_grafana.loadbalancer.server.port=3000"
-          - "traefik.http.routers.r_grafana.rule=Host(`grafana.domain.de`)"
+          - "traefik.http.routers.r_grafana.rule=Host(`grafana.example.com`)"
           - "traefik.http.routers.r_grafana.entrypoints=websecure"
     ```
 

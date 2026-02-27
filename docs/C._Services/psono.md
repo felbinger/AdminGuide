@@ -46,17 +46,17 @@ POSTGRES_PASSWORD=S3cr3t
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/psono.domain.de
+    # /etc/nginx/sites-available/psono.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
 
     server {
-        server_name psono.domain.de;
+        server_name psono.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/passbolt.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/passbolt.domain.de_ecc/passbolt.domain.de.key;
+        ssl_certificate /root/.acme.sh/passbolt.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/passbolt.example.com_ecc/passbolt.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -77,7 +77,7 @@ POSTGRES_PASSWORD=S3cr3t
         add_header X-Content-Type-Options nosniff;
         add_header X-XSS-Protection "1; mode=block";
 
-        # If you have the fileserver too, then you have to add your fileserver URL e.g. https://fs01.domain.de as connect-src too:
+        # If you have the fileserver too, then you have to add your fileserver URL e.g. https://fs01.example.com as connect-src too:
         add_header Content-Security-Policy "default-src 'none';  manifest-src 'self'; connect-src 'self' https://static.psono.com https://api.pwnedpasswords.com https://storage.googleapis.com https://*.digitaloceanspaces.com https://*.blob.core.windows.net https://*.s3.amazonaws.com; font-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self'; child-src 'self'";
 
         client_max_body_size 256m;
@@ -150,15 +150,15 @@ DEBUG: False
 ALLOWED_HOSTS: ['*']
 
 # Should be your domain without "www.". Will be the last part of the username
-ALLOWED_DOMAINS: ['domain.de']
+ALLOWED_DOMAINS: ['example.com']
 
 # Should be the URL of the host under which the host is reachable
 # If you open the url and append /info/ to it you should have a text similar to {"info":"{\"version\": \"....}
-HOST_URL: 'https://psono.domain.de/server'
+HOST_URL: 'https://psono.example.com/server'
 
 # The email used to send emails, e.g. for activation (Nice, but not necessary)
 EMAIL_FROM: 'the-mail-for-for-example-useraccount-activations@test.com'
-EMAIL_HOST: 'smtp.domain.de'
+EMAIL_HOST: 'smtp.example.com'
 EMAIL_HOST_USER: ''
 EMAIL_HOST_PASSWORD : ''
 EMAIL_PORT: 25
@@ -210,9 +210,9 @@ Für weitere Informationen und Optionen für die `settings.yaml` siehe [Offiziel
 {
   "backend_servers": [{
     "title": "PSONO",
-    "url": "https://psono.domain.de/server"
+    "url": "https://psono.example.com/server"
   }],
-  "base_url": "https://psono.domain.de/",
+  "base_url": "https://psono.example.com/",
   "allow_custom_server": true,
   "allow_registration": true,
   "allow_lost_password": true,
@@ -239,7 +239,7 @@ docker compose exec psono-combo python3 ./psono/manage.py createuser \
                 email@something.com
 ```
 
-Jetzt kann der User sich unter https://psono.domain.de/ einloggen.
+Jetzt kann der User sich unter https://psono.example.com/ einloggen.
 
 
 ### User zum Admin erklären
@@ -247,7 +247,7 @@ Jetzt kann der User sich unter https://psono.domain.de/ einloggen.
 docker compose exec psono-combo python3 ./psono/manage.py promoteuser username@example.com superuser
 ```
 
-Der Admin Login (mit einem Dashboard, Userverwaltung, etc.) befindet sich unter https://psono.domain.de/portal/
+Der Admin Login (mit einem Dashboard, Userverwaltung, etc.) befindet sich unter https://psono.example.com/portal/
 
 
 Weiter Informationen: [Offizelle Dokumentation](https://doc.psono.com/admin/overview/summary.html)

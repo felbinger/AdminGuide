@@ -16,7 +16,7 @@ services:
     restart: always
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://git.domain.de'
+        external_url 'http://git.example.com'
         letsencrypt['enable'] = false
     ports:
       - "[::1]:8000:80"
@@ -33,16 +33,16 @@ services:
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/gitlab.domain.de
+    # /etc/nginx/sites-available/gitlab.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name gitlab.domain.de;
+        server_name gitlab.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/gitlab.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/gitlab.domain.de_ecc/gitlab.domain.de.key;
+        ssl_certificate /root/.acme.sh/gitlab.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/gitlab.example.com_ecc/gitlab.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -77,7 +77,7 @@ services:
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_gitlab.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_gitlab.rule=Host(`gitlab.domain.de`)"
+          - "traefik.http.routers.r_gitlab.rule=Host(`gitlab.example.com`)"
           - "traefik.http.routers.r_gitlab.entrypoints=websecure"
     ```
 
@@ -92,18 +92,18 @@ GITLAB_OMNIBUS_CONFIG Environment variable hinzufügen
 
 ```shell
         gitlab_rails['gitlab_email_enabled'] = true
-        gitlab_rails['gitlab_email_from'] = 'gitlab@domain.de'
-        gitlab_rails['gitlab_email_display_name'] = 'gitlab@domain.de'
-        gitlab_rails['gitlab_email_reply_to'] = 'gitlab@domain.de'
+        gitlab_rails['gitlab_email_from'] = 'gitlab@example.com'
+        gitlab_rails['gitlab_email_display_name'] = 'gitlab@example.com'
+        gitlab_rails['gitlab_email_reply_to'] = 'gitlab@example.com'
         gitlab_rails['smtp_enable'] = true
-        gitlab_rails['smtp_address'] = 'gitlab@domain.de'
+        gitlab_rails['smtp_address'] = 'gitlab@example.com'
         gitlab_rails['smtp_port'] = 587
-        gitlab_rails['smtp_user_name'] = 'gitlab@domain.de'
+        gitlab_rails['smtp_user_name'] = 'gitlab@example.com'
         gitlab_rails['smtp_password'] = 'S3cr3T'
-        gitlab_rails['smtp_domain'] = 'smtp.domain.de'
+        gitlab_rails['smtp_domain'] = 'smtp.example.com'
         gitlab_rails['smtp_authentication'] = 'login'
         gitlab_rails['smtp_enable_starttls_auto'] = true
-		gitlab_rails['gitlab_root_email'] = 'admin@domain.de'
+		gitlab_rails['gitlab_root_email'] = 'admin@example.com'
 ```
 
 ## OpenID / Keycloak
@@ -119,11 +119,11 @@ GITLAB_OMNIBUS_CONFIG environment Variable hinzufügen.
         gitlab_rails['omniauth_providers'] = [
           {
             "name" => "oauth2_generic",
-            "app_id" => "gitlab.domain.de",
+            "app_id" => "gitlab.example.com",
             "app_secret" => "",
             'args' => {
               client_options: {
-                'site' => 'https://id.domain.de',
+                'site' => 'https://id.example.com',
                 'user_info_url' => '/realms/main/protocol/openid-connect/userinfo',
                 'authorize_url' => '/realms/main/protocol/openid-connect/auth',
                 'token_url' => '/realms/main/protocol/openid-connect/token'
@@ -133,7 +133,7 @@ GITLAB_OMNIBUS_CONFIG environment Variable hinzufügen.
                  attributes: { username: 'username'}
               }
             },
-            'redirect_uri' =>  'https://gitlab.domain.de/users/auth/oauth2_generic/callback'
+            'redirect_uri' =>  'https://gitlab.example.com/users/auth/oauth2_generic/callback'
           }
         ]
         gitlab_rails['omniauth_allow_bypass_two_factor'] = ["oauth2_generic"]

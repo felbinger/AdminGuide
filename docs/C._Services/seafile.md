@@ -31,7 +31,7 @@ services:
       - "DB_HOST=mariadb"
       - "TIME_ZONE=Europe/Berlin"
       - "SEAFILE_SERVER_LETSENCRYPT=false"
-      - "SEAFILE_SERVER_HOSTNAME=seafile.domain.de"
+      - "SEAFILE_SERVER_HOSTNAME=seafile.example.com"
     volumes:
       - "/srv/seafile/data:/shared"
     ports:
@@ -46,7 +46,7 @@ MYSQL_ROOT_PASSWORD=S3cr3T
 ```shell
 # .seafile.env
 DB_ROOT_PASSWD=S3cr3T
-SEAFILE_ADMIN_EMAIL=admin@domain.de
+SEAFILE_ADMIN_EMAIL=admin@example.com
 SEAFILE_ADMIN_PASSWORD=S3cr3T
 ```
 
@@ -56,16 +56,16 @@ SEAFILE_ADMIN_PASSWORD=S3cr3T
       - "[::1]:8000:80"
     ```
     ```nginx
-    # /etc/nginx/sites-available/seafile.domain.de
+    # /etc/nginx/sites-available/seafile.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name seafile.domain.de;
+        server_name seafile.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/seafile.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/seafile.domain.de_ecc/seafile.domain.de.key;
+        ssl_certificate /root/.acme.sh/seafile.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/seafile.example.com_ecc/seafile.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -100,7 +100,7 @@ SEAFILE_ADMIN_PASSWORD=S3cr3T
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_seafile.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_seafile.rule=Host(`seafile.domain.de`)"
+      - "traefik.http.routers.r_seafile.rule=Host(`seafile.example.com`)"
       - "traefik.http.routers.r_seafile.entrypoints=websecure"
     ```
 

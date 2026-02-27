@@ -15,7 +15,7 @@
     ```
     ```shell
     # acme.sh installieren und default ca auf Let's Encrypt setzen
-    curl https://get.acme.sh | sh -s email=acme@domain.de
+    curl https://get.acme.sh | sh -s email=acme@example.com
     ln -s /root/.acme.sh/acme.sh /usr/bin/acme.sh
     acme.sh --install-cronjob
 
@@ -78,20 +78,20 @@
         #- "--entrypoints.websecure.http.middlewares=mw_hsts@file,mw_compress@file"
         - "--entryPoints.websecure.http.tls=true"
         - "--entryPoints.websecure.http.tls.certresolver=myresolver"
-        - "--entryPoints.websecure.http.tls.domains[0].main=domain.de"
-        - "--entryPoints.websecure.http.tls.domains[0].sans=*.domain.de"
+        - "--entryPoints.websecure.http.tls.domains[0].main=example.com"
+        - "--entryPoints.websecure.http.tls.domains[0].sans=*.example.com"
 
         - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
         - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
         - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
         - "--certificatesresolvers.myresolver.acme.dnschallenge.delayBeforeCheck=10"
-        - "--certificatesresolvers.myresolver.acme.email=admin@domain.de"
+        - "--certificatesresolvers.myresolver.acme.email=admin@example.com"
         - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
         #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
         labels:
         - "traefik.enable=true"
         - "traefik.http.services.srv_traefik.loadbalancer.server.port=8080"
-        - "traefik.http.routers.r_traefik.rule=Host(`traefik.domain.de`)"
+        - "traefik.http.routers.r_traefik.rule=Host(`traefik.example.com`)"
         - "traefik.http.routers.r_traefik.entrypoints=websecure"
         env_file: .traefik.env
         ports:
@@ -124,7 +124,7 @@
         - "traefik.http.middlewares.error30x.errors.query=/error/30x.html"
 
         # DOMAIN ROOT CONTENT
-        - "traefik.http.routers.r_static_root.rule=HostRegexp(`domain.de`, `{subdomain:[a-z0-9]+}.domain.de`)"
+        - "traefik.http.routers.r_static_root.rule=HostRegexp(`example.com`, `{subdomain:[a-z0-9]+}.example.com`)"
         - "traefik.http.routers.r_static_root.entrypoints=websecure"
         - "traefik.http.routers.r_static_root.priority=10"
         - "traefik.http.middlewares.mw_static_root.addprefix.prefix=/domain_root/"
@@ -225,7 +225,7 @@
 
     ```shell
     # Beispielkonfiguration für Cloudflare DNS API
-    CF_Token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX acme.sh --issue --keylength ec-384 --dns dns_cf -d service.domain.de
+    CF_Token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX acme.sh --issue --keylength ec-384 --dns dns_cf -d service.example.com
     ```
 
     Optional kann nun eine eigene IPv6 Adresse für diesen virtual Host konfiguriert werden:
@@ -241,7 +241,7 @@
             address 2001:db8:1234:5678::1/64
             gateway 2001:db8::1
 
-            # service.domain.de
+            # service.example.com
             post-up ip -6 a add 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev $IFACE
             pre-down ip -6 a del 2001:db8:1234:5678:5eca:dc9d:fd4e:6564/64 dev $IFACE
         ```
@@ -276,7 +276,7 @@
             - 2001:db8:4a:90a:d8d5:dbf4:fd80:8f80
         ```
 
-    Nun kann der V-Host unter dem Pfad `/etc/nginx/sites-available/service.domain.de` erstellt werden:
+    Nun kann der V-Host unter dem Pfad `/etc/nginx/sites-available/service.example.com` erstellt werden:
 
     !!! note
         Standardmäßig wird der nginx auf beiden Adressfamilien exposiert.
@@ -298,12 +298,12 @@
     ```nginx
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name service.domain.de;               # <---
+        server_name service.example.com;               # <---
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
 
-        ssl_certificate /root/.acme.sh/service.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/service.domain.de_ecc/service.domain.de.key;
+        ssl_certificate /root/.acme.sh/service.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/service.example.com_ecc/service.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -337,7 +337,7 @@
     Zum Abschluss kann die Konfiguration aktiviert, getestet und angewandt werden.
 
     ```shell
-    ln -s /etc/nginx/sites-available/service.domain.de \
+    ln -s /etc/nginx/sites-available/service.example.com \
         /etc/nginx/sites-enabled/
 
     nginx -t && systemctl reload nginx
@@ -362,7 +362,7 @@
         labels:
         - "traefik.enable=true"
         - "traefik.http.services.srv_service-name.loadbalancer.server.port=80"
-        - "traefik.http.routers.r_service-name.rule=Host(`service.domain.de`)"
+        - "traefik.http.routers.r_service-name.rule=Host(`service.example.com`)"
         - "traefik.http.routers.r_service-name.entrypoints=websecure"
     ```
 

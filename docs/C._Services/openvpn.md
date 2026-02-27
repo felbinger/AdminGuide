@@ -29,7 +29,7 @@ services:
 
 Zuerst muss man die Konfigurationsdateien und Zertifikate initialisieren:
 ```shell
-docker compose run --rm openvpn ovpn_genconfig -u udp://vpn.domain.de
+docker compose run --rm openvpn ovpn_genconfig -u udp://vpn.example.com
 docker compose run --rm openvpn ovpn_initpki
 ```
 

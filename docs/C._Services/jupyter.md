@@ -32,7 +32,7 @@ services:
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_jupyter.loadbalancer.server.port=8888"
-          - "traefik.http.routers.r_jupyter.rule=Host(`jupyter.domain.de`)"
+          - "traefik.http.routers.r_jupyter.rule=Host(`jupyter.example.com`)"
           - "traefik.http.routers.r_jupyter.entrypoints=websecure"
     ```
 

@@ -31,16 +31,16 @@ Passen Sie die `.env` Datei nach Ihren Wünschen an und richten die Port-Weiterl
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/jitsi.domain.de
+    # /etc/nginx/sites-available/jitsi.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name jitsi.domain.de;
+        server_name jitsi.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/jitsi.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/jitsi.domain.de_ecc/jitsi.domain.de.key;
+        ssl_certificate /root/.acme.sh/jitsi.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/jitsi.example.com_ecc/jitsi.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -75,7 +75,7 @@ Passen Sie die `.env` Datei nach Ihren Wünschen an und richten die Port-Weiterl
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_jitsi.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_jitsi.rule=Host(`jitsi.domain.de`)"
+          - "traefik.http.routers.r_jitsi.rule=Host(`jitsi.example.com`)"
           - "traefik.http.routers.r_jitsi.entrypoints=websecure"
     ```
 

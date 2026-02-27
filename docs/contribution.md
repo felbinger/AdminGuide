@@ -34,4 +34,4 @@ You can start the mkdocs development server by running `mkdocs serve`.
     - "default"
     - "database"
   ```
-- All domain examples should end in `domain.de`
+- All domain examples should end in `example.com`, to adhere to [RFC 2606](https://www.rfc-editor.org/rfc/rfc2606)

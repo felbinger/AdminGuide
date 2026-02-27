@@ -58,16 +58,16 @@ POSTGRESQL_PASSWORD=S3cr3T
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/guacamole.domain.de
+    # /etc/nginx/sites-available/guacamole.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name guacamole.domain.de;
+        server_name guacamole.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/guacamole.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/guacamole.domain.de_ecc/guacamole.domain.de.key;
+        ssl_certificate /root/.acme.sh/guacamole.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/guacamole.example.com_ecc/guacamole.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -102,7 +102,7 @@ POSTGRESQL_PASSWORD=S3cr3T
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_guacamole.loadbalancer.server.port=8080"
-          - "traefik.http.routers.r_guacamole.rule=Host(`guacamole.domain.de`)"
+          - "traefik.http.routers.r_guacamole.rule=Host(`guacamole.example.com`)"
           - "traefik.http.routers.r_guacamole.entrypoints=websecure"
 
           - "traefik.http.middlewares.guacprefix.addprefix.prefix=/guacamole"
@@ -112,11 +112,11 @@ POSTGRESQL_PASSWORD=S3cr3T
 ## OpenID Connect / Keycloak
 ```shell
 # extend .guacamole.env
-OPENID_AUTHORIZATION_ENDPOINT=https://id.domain.de/realms/<realm>/protocol/openid-connect/auth
-OPENID_JWKS_ENDPOINT=https://id.domain.de/realms/<realm>/protocol/openid-connect/certs
-OPENID_ISSUER=https://id.domain.de/realms/<realm>
-OPENID_CLIENT_ID=guacamole.domain.de
-OPENID_REDIRECT_URI=https://guacamole.domain.de/
+OPENID_AUTHORIZATION_ENDPOINT=https://id.example.com/realms/<realm>/protocol/openid-connect/auth
+OPENID_JWKS_ENDPOINT=https://id.example.com/realms/<realm>/protocol/openid-connect/certs
+OPENID_ISSUER=https://id.example.com/realms/<realm>
+OPENID_CLIENT_ID=guacamole.example.com
+OPENID_REDIRECT_URI=https://guacamole.example.com/
 OPENID_CLAIM_TYPE=sub
 OPENID_CLAIM_TYPE=preferred_username
 OPENID_SCOPE=openid profile

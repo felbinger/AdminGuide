@@ -20,7 +20,7 @@ git clone -b release https://github.com/netbox-community/netbox-docker.git /home
 cat <<_EOF > /home/admin/netbox/docker-compose.override.yml
 services:
   netbox:
-    hostname: netbox.domain.de
+    hostname: netbox.example.com
     ports:
       - "[::1]:8000:8080"
 
@@ -71,16 +71,16 @@ Nach diesem Schritt kannst du dich einloggen mit `admin` / `AdminGuide!`.
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/netbox.domain.de
+    # /etc/nginx/sites-available/netbox.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name netbox.domain.de;
+        server_name netbox.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/netbox.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/netbox.domain.de_ecc/netbox.domain.de.key;
+        ssl_certificate /root/.acme.sh/netbox.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/netbox.example.com_ecc/netbox.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -115,7 +115,7 @@ Nach diesem Schritt kannst du dich einloggen mit `admin` / `AdminGuide!`.
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_netbox.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_netbox.rule=Host(`netbox.domain.de`)"
+          - "traefik.http.routers.r_netbox.rule=Host(`netbox.example.com`)"
           - "traefik.http.routers.r_netbox.entrypoints=websecure"
     ```
 
@@ -123,14 +123,14 @@ Nach diesem Schritt kannst du dich einloggen mit `admin` / `AdminGuide!`.
 
 `/home/admin/netbox/env/netbox.env`:
 ```env
-EMAIL_FROM=noreply@domain.de
+EMAIL_FROM=noreply@example.com
 EMAIL_PASSWORD=S3cr3T
 EMAIL_PORT=587
-EMAIL_SERVER=mail.domain.de
+EMAIL_SERVER=mail.example.com
 EMAIL_SSL_CERTFILE=
 EMAIL_SSL_KEYFILE=
 EMAIL_TIMEOUT=5
-EMAIL_USERNAME=noreply@domain.de
+EMAIL_USERNAME=noreply@example.com
 # EMAIL_USE_SSL and EMAIL_USE_TLS are mutually exclusive, i.e. they can't both be `true`!
 EMAIL_USE_SSL=true
 EMAIL_USE_TLS=false
@@ -159,9 +159,9 @@ SOCIAL_AUTH_KEYCLOAK_SECRET = '<client secret>'
 SOCIAL_AUTH_KEYCLOAK_PUBLIC_KEY = \
   '<public key>'
 SOCIAL_AUTH_KEYCLOAK_AUTHORIZATION_URL = \
-  'https://id.domain.de/realms/main/protocol/openid-connect/auth'
+  'https://id.example.com/realms/main/protocol/openid-connect/auth'
 SOCIAL_AUTH_KEYCLOAK_ACCESS_TOKEN_URL = \
-  'https://id.domain.de/realms/main/protocol/openid-connect/token'
+  'https://id.example.com/realms/main/protocol/openid-connect/token'
 ```
 
 Der Public Key kann in den Keycloak Realm Einstellungen ausgelesen werden:

@@ -61,7 +61,7 @@ services:
       - "PAPERLESS_TIKA_ENDPOINT=http://tika:9998"
       - "PAPERLESS_TIME_ZONE=Europe/Berlin"
       - "PAPERLESS_OCR_LANGUAGE=deu"
-      - "PAPERLESS_URL=https://paperless.domain.de"
+      - "PAPERLESS_URL=https://paperless.example.com"
 ```
 
 ```shell
@@ -83,16 +83,16 @@ PAPERLESS_DBPASS=S3cr3t-P4ssw0rd
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/paperless.domain.de
+    # /etc/nginx/sites-available/paperless.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name paperless.domain.de;
+        server_name paperless.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/paperless.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/paperless.domain.de_ecc/paperless.domain.de.key;
+        ssl_certificate /root/.acme.sh/paperless.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/paperless.example.com_ecc/paperless.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -127,7 +127,7 @@ PAPERLESS_DBPASS=S3cr3t-P4ssw0rd
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_paperless.loadbalancer.server.port=8000"
-          - "traefik.http.routers.r_paperless.rule=Host(`paperless.domain.de`)"
+          - "traefik.http.routers.r_paperless.rule=Host(`paperless.example.com`)"
           - "traefik.http.routers.r_paperless.entrypoints=websecure"
     ```
 

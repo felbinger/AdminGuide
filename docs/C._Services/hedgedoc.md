@@ -26,7 +26,7 @@ services:
     restart: always
     env_file: .hedgedoc.env
     environment:
-      - "CMD_DOMAIN=hedgedoc.domain.de"
+      - "CMD_DOMAIN=hedgedoc.example.com"
       - "CMD_PROTOCOL_USESSL=true"
     ports:
       - "[::1]:8000:3000"
@@ -51,16 +51,16 @@ CMD_DB_URL=postgres://hedgedoc:S3cr3T@postgres/hedgedoc
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/hedgedoc.domain.de
+    # /etc/nginx/sites-available/hedgedoc.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name hedgedoc.domain.de;
+        server_name hedgedoc.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/hedgedoc.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/hedgedoc.domain.de_ecc/hedgedoc.domain.de.key;
+        ssl_certificate /root/.acme.sh/hedgedoc.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/hedgedoc.example.com_ecc/hedgedoc.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -95,6 +95,6 @@ CMD_DB_URL=postgres://hedgedoc:S3cr3T@postgres/hedgedoc
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_hedgedoc.loadbalancer.server.port=3000"
-          - "traefik.http.routers.r_hedgedoc.rule=Host(`hedgedoc.domain.de`)"
+          - "traefik.http.routers.r_hedgedoc.rule=Host(`hedgedoc.example.com`)"
           - "traefik.http.routers.r_hedgedoc.entrypoints=websecure"
     ```

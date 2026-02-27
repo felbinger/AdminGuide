@@ -30,16 +30,16 @@ services:
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/gitea.domain.de
+    # /etc/nginx/sites-available/gitea.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name gitea.domain.de;
+        server_name gitea.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/gitea.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/gitea.domain.de_ecc/gitea.domain.de.key;
+        ssl_certificate /root/.acme.sh/gitea.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/gitea.example.com_ecc/gitea.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -74,10 +74,10 @@ services:
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_gitea.loadbalancer.server.port=3000"
-          - "traefik.http.routers.r_gitea.rule=Host(`gitea.domain.de`)"
+          - "traefik.http.routers.r_gitea.rule=Host(`gitea.example.com`)"
           - "traefik.http.routers.r_gitea.entrypoints=websecure"
     ```
 
 ## OpenID/KeyCloak
 * Server Settings -> `Authentication Sources` -> OAuth2 -> OpenID-Connect
-* Discovery URL: `https://id.domain.de/auth/realms/<realm>/.well-known/openid-configuration`
+* Discovery URL: `https://id.example.com/auth/realms/<realm>/.well-known/openid-configuration`

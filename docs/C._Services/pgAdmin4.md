@@ -23,7 +23,7 @@ services:
 
 ```shell
 # .pgadmin.env
-PGADMIN_DEFAULT_EMAIL=admin@domain.de
+PGADMIN_DEFAULT_EMAIL=admin@example.com
 PGADMIN_DEFAULT_PASSWORD=S3cr3T
 ```
 
@@ -34,16 +34,16 @@ PGADMIN_DEFAULT_PASSWORD=S3cr3T
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/pgadmin.domain.de
+    # /etc/nginx/sites-available/pgadmin.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name pgadmin.domain.de;
+        server_name pgadmin.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/pgadmin.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/pgadmin.domain.de_ecc/pgadmin.domain.de.key;
+        ssl_certificate /root/.acme.sh/pgadmin.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/pgadmin.example.com_ecc/pgadmin.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -78,7 +78,7 @@ PGADMIN_DEFAULT_PASSWORD=S3cr3T
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_pgadmin.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_pgadmin.rule=Host(`pgadmin.domain.de`)"
+          - "traefik.http.routers.r_pgadmin.rule=Host(`pgadmin.example.com`)"
           - "traefik.http.routers.r_pgadmin.entrypoints=websecure"
     ```
 

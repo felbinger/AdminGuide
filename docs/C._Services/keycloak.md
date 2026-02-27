@@ -62,16 +62,16 @@ KC_ADMIN_PASSWORD=S3cr3T
     die normale Anmeldung, der auch aus dem Internet erreichbar ist.
 
     ```nginx
-    # /etc/nginx/sites-available/id.domain.de
+    # /etc/nginx/sites-available/id.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name id.domain.de;
+        server_name id.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/id.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/id.domain.de_ecc/id.domain.de.key;
+        ssl_certificate /root/.acme.sh/id.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/id.example.com_ecc/id.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -112,16 +112,16 @@ KC_ADMIN_PASSWORD=S3cr3T
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/keycloak.domain.de
+    # /etc/nginx/sites-available/keycloak.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name keycloak.domain.de;
+        server_name keycloak.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/keycloak.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/keycloak.domain.de_ecc/keycloak.domain.de.key;
+        ssl_certificate /root/.acme.sh/keycloak.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/keycloak.example.com_ecc/keycloak.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -151,7 +151,7 @@ KC_ADMIN_PASSWORD=S3cr3T
 
         # redirect to admin console
         location ~* ^(\/)$ {
-            return 301 https://keycloak.domain.de/admin/master/console/;
+            return 301 https://keycloak.example.com/admin/master/console/;
         }
     }
     ```
@@ -161,6 +161,6 @@ KC_ADMIN_PASSWORD=S3cr3T
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_keycloak.loadbalancer.server.port=8080"
-          - "traefik.http.routers.r_keycloak.rule=Host(`keycloak.domain.de`)"
+          - "traefik.http.routers.r_keycloak.rule=Host(`keycloak.example.com`)"
           - "traefik.http.routers.r_keycloak.entrypoints=websecure"
     ```

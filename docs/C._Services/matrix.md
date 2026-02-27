@@ -70,16 +70,16 @@ POSTGRES_PASSWORD=S3cr3T
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/synapse.domain.de.conf
+    # /etc/nginx/sites-available/synapse.example.com.conf
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name synapse.domain.de;
+        server_name synapse.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/synapse.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/synapse.domain.de_ecc/synapse.domain.de.key;
+        ssl_certificate /root/.acme.sh/synapse.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/synapse.example.com_ecc/synapse.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -118,20 +118,20 @@ POSTGRES_PASSWORD=S3cr3T
     ```
 
     Die beiden Dateien `server` und `client` im Verzeichnis `.well-known/matrix`
-    müssen auf der Homeserver Domain (hier `domain.de`) hinterlegt sein, damit
+    müssen auf der Homeserver Domain (hier `example.com`) hinterlegt sein, damit
     die Matrix Federation funktioniert und Clients details zum Homeserver erhalten.
 
     ```nginx
-    # /etc/nginx/sites-available/domain.de.conf
+    # /etc/nginx/sites-available/example.com.conf
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name domain.de;
+        server_name example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/domain.de_ecc/domain.de.key;
+        ssl_certificate /root/.acme.sh/example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/example.com_ecc/example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -152,7 +152,7 @@ POSTGRES_PASSWORD=S3cr3T
             add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
             add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
             add_header access-control-allow-origin *;
-            return 200 '{"m.server":"synapse.domain.de:443"}';
+            return 200 '{"m.server":"synapse.example.com:443"}';
         }
 
         location /.well-known/matrix/client {
@@ -160,7 +160,7 @@ POSTGRES_PASSWORD=S3cr3T
             add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
             add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
             add_header access-control-allow-origin *;
-            return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
+            return 200 '{"m.homeserver":{"base_url":"https://synapse.example.com"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
         }
     }
     ```
@@ -170,17 +170,17 @@ POSTGRES_PASSWORD=S3cr3T
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_synapse.loadbalancer.server.port=8008"
-          - "traefik.http.routers.r_synapse.rule=Host(`synapse.domain.de`)"
+          - "traefik.http.routers.r_synapse.rule=Host(`synapse.example.com`)"
           - "traefik.http.routers.r_synapse.entrypoints=websecure"
     ```
 
-    TODO `.well-known/matrix/{server,client}` auf `domain.de`
+    TODO `.well-known/matrix/{server,client}` auf `example.com`
 
 
 Als erstes, muss die homeserver-Konfiguration generiert werden. Dazu wird folgender Befehl ausgeführt:
 ```shell
 docker run -it --rm -v "/srv/matrix/synapse:/data" \
-  -e "SYNAPSE_SERVER_NAME=domain.de" \
+  -e "SYNAPSE_SERVER_NAME=example.com" \
   -e "SYNAPSE_REPORT_STATS=no" matrixdotorg/synapse generate
 ```
 
@@ -220,7 +220,7 @@ in der Datenbank für den jeweiligen Nutzer als Passwort ersetzt.
 ```shell
 new=$(sudo docker compose exec -u www-data synapse hash_password -c /data/homeserver.yaml -p PASSWORT)
 sudo docker compose exec postgres psql -U postgres -d synapse -c \
-  "UPDATE users SET password_hash='${new}' WHERE name='@test:domain.de';"
+  "UPDATE users SET password_hash='${new}' WHERE name='@test:example.com';"
 ```
 
 ### Federation
@@ -229,16 +229,16 @@ Eine Federation ermöglicht die Kommunikation zwischen Nutzern verschiedener Hom
 Wenn der Synapse Homeserver direkt auf der Domain aufgesetzt
 ist die im Homeserver eingerichtet ist, funktioniert dies out-of-the-box.
 
-Wird der Synapse Server (hier: `synapse.domain.de`) nicht auf
-der Domain des Homeservers (hier: `domain.de`) erreichbar gemacht,
+Wird der Synapse Server (hier: `synapse.example.com`) nicht auf
+der Domain des Homeservers (hier: `example.com`) erreichbar gemacht,
 gibt es zwei Möglichkeiten die Ferderation einzurichten.
 
 Der `_matrix` SRV DNS Record kann hierfür genutzt werden.
 Dies hat jedoch den Nachteil, das zwangsläufig die IP-Adresse des Matrixservers geleakt wird, selbst wenn ein
-Cloudflare Proxy verwendet wird, da synapse.domain.de
+Cloudflare Proxy verwendet wird, da synapse.example.com
 dann nicht geproxied werden kann.
 ```
-_matrix._tcp.domain.de. 1 IN SRV 10 5 443 synapse.domain.de.
+_matrix._tcp.example.com. 1 IN SRV 10 5 443 synapse.example.com.
 ```
 
 Die aus meiner Sicht bessere Alternative ist die Erstellung
@@ -248,14 +248,14 @@ der Homeserver Domain. Selbst wenn andere Dienste auf dieser Domain
 diese Dateien damit nicht in die Quere.
 
 Wird nginx als Reverse Proxy betrieben so müssen lediglich diese
-beiden locations in den V-Host für `domain.de` eingefügt werden.
+beiden locations in den V-Host für `example.com` eingefügt werden.
 ```nginx
 location /.well-known/matrix/server {
     add_header content-type application/json;
     add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
     add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
     add_header access-control-allow-origin *;
-    return 200 '{"m.server":"synapse.domain.de:443"}';
+    return 200 '{"m.server":"synapse.example.com:443"}';
 }
 
 location /.well-known/matrix/client {
@@ -263,7 +263,7 @@ location /.well-known/matrix/client {
     add_header access-control-allow-headers "Origin, X-Requested-With, Content-Type, Accept, Authorization";
     add_header access-control-allow-methods "GET, POST, PUT, DELETE, OPTIONS";
     add_header access-control-allow-origin *;
-    return 200 '{"m.homeserver":{"base_url":"https://synapse.domain.de"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
+    return 200 '{"m.homeserver":{"base_url":"https://synapse.example.com"},"m.identity_server":{"base_url":"https://vector.im"},"im.vector.riot.jitsi": {"preferredDomain": "meet.ffmuc.net"}}';
 }
 ```
 Die Dateien können auch manuell angelegt werden, falls die
@@ -355,7 +355,7 @@ app_service_config_files:
   - /data/whatsapp-registration.yaml
 ```
 
-Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@whatsappbot:domain.de`
+Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@whatsappbot:example.com`
 (sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
 Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.
 
@@ -378,7 +378,7 @@ homeserver:
   # den Hostname des Containers und dem entsprechenden Port
   address: http://synapse:8008
   # Hier muss die domain des Homeservers angegeben werden
-  domain: domain.de  # hier steht bei euch etwas anderes
+  domain: example.com  # hier steht bei euch etwas anderes
 
 appservice:
   # Hier muss angegeben werden, wie der synapse
@@ -427,7 +427,7 @@ app_service_config_files:
   - /data/telegram-registration.yaml
 ```
 
-Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@telegrambot:domain.de`
+Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@telegrambot:example.com`
 (sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
 Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.
 
@@ -452,7 +452,7 @@ homeserver:
   # den Hostname des Containers und dem entsprechenden Port
   address: http://synapse:8008
   # Hier muss die domain des Homeservers angegeben werden
-  domain: domain.de  # hier steht bei euch etwas anderes
+  domain: example.com  # hier steht bei euch etwas anderes
 
 appservice:
   # Hier muss angegeben werden, wie der synapse
@@ -491,6 +491,6 @@ app_service_config_files:
   - /data/signal-registration.yaml
 ```
 
-Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@signalbot:domain.de`
+Wenn der Container nun erneut neu gestartet wurde, kann man in seiner Matrix Instanz den Benutzer `@signalbot:example.com`
 (sofern der Name des Bots in der `config.yaml` nicht verändert wurde) anschreiben und mit der Nachricht `help` eine
 Hilfenachricht erhalten und dann den Login und Synchronisierungsprozess der Bridge beginnen.

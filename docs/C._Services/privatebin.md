@@ -27,16 +27,16 @@ services:
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/privatebin.domain.de
+    # /etc/nginx/sites-available/privatebin.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name privatebin.domain.de;
+        server_name privatebin.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/privatebin.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/privatebin.domain.de_ecc/privatebin.domain.de.key;
+        ssl_certificate /root/.acme.sh/privatebin.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/privatebin.example.com_ecc/privatebin.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -70,6 +70,6 @@ services:
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_privatebin.loadbalancer.server.port=8080"
-          - "traefik.http.routers.r_privatebin.rule=Host(`privatebin.domain.de`)"
+          - "traefik.http.routers.r_privatebin.rule=Host(`privatebin.example.com`)"
           - "traefik.http.routers.r_privatebin.entrypoints=websecure"
     ```

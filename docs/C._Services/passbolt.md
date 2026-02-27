@@ -27,11 +27,11 @@ services:
       - "::1:8000:80"
     env_file: .passbolt.env
     environment:
-      - "APP_FULL_BASE_URL=https://passbolt.domain.de"
+      - "APP_FULL_BASE_URL=https://passbolt.example.com"
       - "DATASOURCES_DEFAULT_DRIVER=Cake\\Database\\Driver\\Postgres"
       - "DATASOURCES_DEFAULT_ENCODING=utf8"
-      - "EMAIL_DEFAULT_FROM=passbolt@domain.de"
-      - "EMAIL_TRANSPORT_DEFAULT_HOST=mail.domain.de"
+      - "EMAIL_DEFAULT_FROM=passbolt@example.com"
+      - "EMAIL_TRANSPORT_DEFAULT_HOST=mail.example.com"
       - "EMAIL_TRANSPORT_DEFAULT_PORT=587"
     volumes:
       - "/srv/passbolt/gpg:/passbolt/gpg"
@@ -49,7 +49,7 @@ POSTGRES_PASSWORD=S3cr3t-P4ssw0rd
 ```shell
 # .passbolt.env
 DATASOURCES_DEFAULT_URL=postgres://passbolt:S3cr3t-P4ssw0rd@postgres:5432/passbolt?schema=passbolt
-EMAIL_TRANSPORT_DEFAULT_USERNAME=passbolt@domain.de
+EMAIL_TRANSPORT_DEFAULT_USERNAME=passbolt@example.com
 EMAIL_TRANSPORT_DEFAULT_PASSWORD=PASSWORD_FOR_EMAIL_SERVER
 EMAIL_TRANSPORT_DEFAULT_TLS=STARTTLS
 ```
@@ -61,16 +61,16 @@ EMAIL_TRANSPORT_DEFAULT_TLS=STARTTLS
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/passbolt.domain.de
+    # /etc/nginx/sites-available/passbolt.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name passbold.domain.de;
+        server_name passbold.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/passbolt.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/passbolt.domain.de_ecc/passbolt.domain.de.key;
+        ssl_certificate /root/.acme.sh/passbolt.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/passbolt.example.com_ecc/passbolt.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -105,7 +105,7 @@ EMAIL_TRANSPORT_DEFAULT_TLS=STARTTLS
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.srv_passbolt.loadbalancer.server.port=80"
-      - "traefik.http.routers.r_passbolt.rule=Host(`passbolt.domain.de`)"
+      - "traefik.http.routers.r_passbolt.rule=Host(`passbolt.example.com`)"
       - "traefik.http.routers.r_passbolt.entrypoints=websecure"
     ```
 

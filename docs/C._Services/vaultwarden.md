@@ -26,7 +26,7 @@ services:
     restart: always
     env_file: .vaultwarden.env
     environment:
-      - "DOMAIN=https://vaultwarden.domain.de"
+      - "DOMAIN=https://vaultwarden.example.com"
       - "SIGNUPS_ALLOWED=false"
       - "INVITATIONS_ALLOWED=false"
       - "SHOW_PASSWORD_HINT=false"
@@ -53,16 +53,16 @@ DATABASE_URL=postgresql://vaultwarden:S3cr3T@postgres/vaultwarden
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/vaultwarden.domain.de
+    # /etc/nginx/sites-available/vaultwarden.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name vaultwarden.domain.de;
+        server_name vaultwarden.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/vaultwarden.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/vaultwarden.domain.de_ecc/vaultwarden.domain.de.key;
+        ssl_certificate /root/.acme.sh/vaultwarden.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/vaultwarden.example.com_ecc/vaultwarden.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -97,6 +97,6 @@ DATABASE_URL=postgresql://vaultwarden:S3cr3T@postgres/vaultwarden
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_vaultwarden.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_vaultwarden.rule=Host(`vaultwarden.domain.de`)"
+          - "traefik.http.routers.r_vaultwarden.rule=Host(`vaultwarden.example.com`)"
           - "traefik.http.routers.r_vaultwarden.entrypoints=websecure"
     ```

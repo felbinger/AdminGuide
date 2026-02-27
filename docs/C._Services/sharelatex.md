@@ -20,7 +20,7 @@ services:
       - "SHARELATEX_REDIS_HOST=redis"
       - "REDIS_HOST=redis"
       - "SHARELATEX_MONGO_URL=mongodb://mongo/sharelatex"
-      #- "SHARELATEX_EMAIL_SMTP_HOST=smtp.domain.de"
+      #- "SHARELATEX_EMAIL_SMTP_HOST=smtp.example.com"
       #- "SHARELATEX_EMAIL_SMTP_PORT=587"
       #- "SHARELATEX_EMAIL_SMTP_SECURE=false"
       #- "SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH=true"
@@ -29,7 +29,7 @@ services:
       - "ENABLE_CONVERSIONS=true"
       - "EMAIL_CONFIRMATION_DISABLED=true"
       - "TEXMFVAR=/var/lib/sharelatex/tmp/texmf-var"
-      - "SHARELATEX_SITE_URL=https://overleaf.domain.de"
+      - "SHARELATEX_SITE_URL=https://overleaf.example.com"
       - "SHARELATEX_NAV_TITLE=ShareLaTeX"
       - "SHARELATEX_LEFT_FOOTER=[]"
       - "SHARELATEX_RIGHT_FOOTER=[]"
@@ -73,16 +73,16 @@ services:
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/sharelatex.domain.de
+    # /etc/nginx/sites-available/sharelatex.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name sharelatex.domain.de;
+        server_name sharelatex.example.com;
         listen 0.0.0.0:443 ssl;
         listen [::]:443 ssl;
         http2 on;
 
-        ssl_certificate /root/.acme.sh/sharelatex.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/sharelatex.domain.de_ecc/sharelatex.domain.de.key;
+        ssl_certificate /root/.acme.sh/sharelatex.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/sharelatex.example.com_ecc/sharelatex.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -117,7 +117,7 @@ services:
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_sharelatex.loadbalancer.server.port=80"
-          - "traefik.http.routers.r_sharelatex.rule=Host(`sharelatex.domain.de`)"
+          - "traefik.http.routers.r_sharelatex.rule=Host(`sharelatex.example.com`)"
           - "traefik.http.routers.r_sharelatex.entrypoints=websecure"
     ```
 
