@@ -122,16 +122,16 @@ services:
     ```
 
 ### Installation von texlive-full
-!!! warning ""
+!!! warning "Warnung"
     Wenn du den Container mit docker compose startest, wird das Image mit allen environment Variablen und Labels gestartet.
 
 1. Install `texlive-full`
 
-    !!! warning ""
+    !!! warning "Warnung"
         Das Ausführen des Commands wird einige Stunden dauern (variierend auf der Internetleitung des Server 2 - 4h),
         empfehle ich es in einem screen auszuführen
 
-    !!! warning ""
+    !!! warning "Warnung"
         Das Image wird nach der Installation aller Packages um die 8 Gigabyte groß sein.
 
     ```sh

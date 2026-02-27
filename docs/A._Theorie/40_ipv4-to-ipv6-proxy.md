@@ -24,7 +24,7 @@ Angenommen, es steht eine größere Anzahl von Servern zur Verfügung. Um Kosten
 zu reduzieren, wird dabei bewusst auf individuelle IPv4-Adressen verzichtet und jedem System ausschließlich
 ein IPv6-Netz zugewiesen.
 
-!!! warning
+!!! warning "Warnung"
     Dieses Setup impliziert, dass die Systeme selbst keine ausgehende IPv4-Verbindung aufbauen können.
     Das kann die Administration erschweren – beispielsweise, wenn Repositories von GitHub, Docker Hub oder
     anderen ausschließlich über IPv4 erreichbaren Diensten bezogen werden sollen. In solchen Fällen ist

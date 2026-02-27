@@ -366,7 +366,7 @@
         - "traefik.http.routers.r_service-name.entrypoints=websecure"
     ```
 
-    !!! warning
+    !!! warning "Warnung"
         Hierbei sollte unbedingt darauf geachtet werden, dass weder service (Präfix `srv_`),
         noch router-Bezeichnungen (Präfix `r_`) doppelt verwendet werden, da dies zu schwer
         bemerkbaren Fehlern führen kann.

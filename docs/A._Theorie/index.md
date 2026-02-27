@@ -14,7 +14,7 @@ Es werden kostenlose TLS Zertifikate von [Let's Encrypt](https://letsencrypt.org
 Als Zertifikatsverwaltungsoftware dient
 
 - [acme.sh](https://github.com/acmesh-official/acme.sh), sofern nginx als Reverse Proxy verwendet wird, und
-- [Lego](https://go-acme.github.io/lego/) wenn Wahl auf Traefik gefallen ist.
+- [Lego](https://go-acme.github.io/lego/) wenn die Wahl auf Traefik gefallen ist.
 
 Es wird die ACME-DNS-01 Challenge verwendet, da die Erreichbarkeit des Reverse Proxies
 aus dem Internet nicht erforderlich ist und somit auch für interne Dienste (z. B. ein
@@ -33,7 +33,7 @@ Firewall des Hosters, ohne dass der Server verändert werden muss
 Zu den möglichen Szenarien zählt beispielsweise der Betrieb eines dedizierten Servers, auf dem
 virtualisiert wird und somit mehrere virtuelle Maschinen über eine IPv4-Adresse mit dem Internet
 kommunizieren. Ebenso kann es vorkommen, dass mehrere Server genutzt werden, von denen einige aus
-Kostengründen ausschließlich über eine IPv6-Adresse verfügen.
+Kostengründen ausschließlich über IPv6-Adressen verfügen.
 
 Mit einem einfachen Proxy Server besteht die Möglichkeit Nutzer, welche sich über IPv4 mit dem 
 Dienst verbinden auf einen IPv6-only Server weiterzuleiten. Ein dedizierter Virtualisierungsserver

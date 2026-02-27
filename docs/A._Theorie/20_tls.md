@@ -21,9 +21,8 @@ Es gibt grundsätzlich drei Möglichkeiten, TLS-Zertifikate zu beziehen bzw. aus
 2. **Kostenlose Zertifikate**
 
     Let’s Encrypt wurde 2015 von der gemeinnützigen Organisation Internet Security Research Group (ISRG)
-    gegründet. Ziel war es, das Web durch die Bereitstellung kostenloser, automatisierter und durch offene
-    Zertifikate sicherer zu gestalten und so verschlüsselte Verbindungen (HTTPS) zum Standard im Internet
-    zu etablieren.
+    ins Leben gerufen. Ihr Ziel war es, das World Wide Web sicherer zu gestalten, indem kostenlose Zertifikate
+    angeboten werden, um verschlüsselte Verbindungen (HTTPS) zum Standard im Internet zu machen.
 
     Neben Let’s Encrypt existieren weitere Anbieter, die ähnliche kostenlose Zertifizierungsdienste anbieten,
     wie beispielsweise ZeroSSL und [Actalis](https://www.actalis.com/). Alle Anbieter unterstützen das
@@ -50,7 +49,7 @@ Es gibt grundsätzlich drei Möglichkeiten, TLS-Zertifikate zu beziehen bzw. aus
     das Root-Zertifikat nicht installiert haben und der Browser die Verbindung daher als nicht vertrauenswürdig
     einstufen würde.
 
-!!! warning
+!!! warning "Warnung"
     Von der Verwendung selbstsignierter Zertifikate und dem Ignorieren von Browserwarnungen ist dringend abzuraten.
 
     Wer sich daran gewöhnt, Sicherheitsmeldungen einfach „wegzuklicken“, entwickelt schnell ein riskantes Verhalten.

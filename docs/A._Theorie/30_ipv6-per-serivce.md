@@ -13,7 +13,7 @@
 Wird jedem nginx Reverse Proxy eine eigene IPv6-Adresse zugewiesen, kann bereits auf OSI-Layer 3
 nachvollzogen werden, an welchen Webservice eine Anfrage gerichtet war. Würde hingegen für alle
 Dienste nur eine gemeinsame Adresse verwendet, wäre eine eindeutige Zuordnung frühestens auf
-Layer 5 (durch Auswertung des TLS SNI Headers) möglich; ohne ein spezielles Analysewerkzeug sogar
+OSI Layer 5 (durch Auswertung des TLS SNI Headers) möglich; ohne ein spezielles Analysewerkzeug sogar
 erst auf Layer 7, etwa über die Logdaten des Webservers.
 
 Der Webserver nginx bietet mit der Direktive `listen` die Möglichkeit, virtuelle Hosts an spezifische
@@ -23,6 +23,10 @@ blockiert werden, kann dessen zugewiesene Adresse zudem sehr einfach über die F
 direkt beim Provider – gesperrt werden, ohne dass Änderungen an der Servicekonfiguration selbst
 erforderlich sind.
 
+!!! note
+    Wird der Webserver so konfiguriert, dass prinzipiell auch alle Anwendungen über IPv4 Verfügbar
+    sind entfällt der Vorteil der schnellen Abschaltbarkeit einer Applikation über die Firewallregeln
+    natürlich.
 
 !!! info "Nützliche Skripte: IPv6 Adresse generieren"
 
