@@ -41,4 +41,4 @@ erforderlich sind.
     ```
 
     Die ersten vier Blöcke der IPv6-Adresse (`your:first:four:blocks`) müssen dabei durch das
-    jeweilige /64-Präfix des Servers ersetzt werden (Bsp.: `2001:0db8:85a3:0053`).
+    jeweilige /64-Präfix des Servers ersetzt werden (Bsp.: `2001:db8:85a3:53`).
