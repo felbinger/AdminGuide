@@ -74,7 +74,6 @@ services:
       - "--path.sysfs=/host/sys"
       - "--path.rootfs=/rootfs"
       - "--collector.filesystem.ignored-mount-points='^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)'"
-#      - "--collector.filesystem.ignored-fs-types='^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$'"
 
   blackbox_exporter:
     image: prom/blackbox-exporter
@@ -198,15 +197,15 @@ sudo chown -R 472 /srv/monitoring/grafana
     ```
 
     ```nginx
-    # /etc/nginx/sites-available/monitoring.domain.de
+    # /etc/nginx/sites-available/monitoring.example.com
     # https://ssl-config.mozilla.org/#server=nginx&version=1.27.3&config=modern&openssl=3.4.0&ocsp=false&guideline=5.7
     server {
-        server_name monitoring.domain.de;
+        server_name monitoring.example.com;
         listen 0.0.0.0:443 ssl http2;
         listen [::]:443 ssl http2;
 
-        ssl_certificate /root/.acme.sh/monitoring.domain.de_ecc/fullchain.cer;
-        ssl_certificate_key /root/.acme.sh/monitoring.domain.de_ecc/monitoring.domain.de.key;
+        ssl_certificate /root/.acme.sh/monitoring.example.com_ecc/fullchain.cer;
+        ssl_certificate_key /root/.acme.sh/monitoring.example.com_ecc/monitoring.example.com.key;
         ssl_session_timeout 1d;
         ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
         ssl_session_tickets off;
@@ -241,7 +240,7 @@ sudo chown -R 472 /srv/monitoring/grafana
         labels:
           - "traefik.enable=true"
           - "traefik.http.services.srv_monitoring.loadbalancer.server.port=8083"
-          - "traefik.http.routers.r_monitoring.rule=Host(`monitoring.domain.de`)"
+          - "traefik.http.routers.r_monitoring.rule=Host(`monitoring.example.com`)"
           - "traefik.http.routers.r_monitoring.entrypoints=websecure"
     ```
 
@@ -254,7 +253,7 @@ Der erste Login ist mit den Zugangsdaten `admin:admin` möglich. Danach fragt Gr
 
 
 ### Erste data source
-Über https://monitoring.domain.de/connections/datasources/new kann man eine neue Datenquelle hinzufügen. 
+Über https://monitoring.example.com/connections/datasources/new kann man eine neue Datenquelle hinzufügen. 
 Dadurch dass in dem docker container ein Prometheus Service ist, können wir Prometheus als Datenquelle hinzufügen. Dies geschiet indem ihr Prometheus auswählt.
 Den Namen der Datenquelle könnt ihr frei wählen. Als URL brauchen wir hier `http://prometheus:9090`.
 
