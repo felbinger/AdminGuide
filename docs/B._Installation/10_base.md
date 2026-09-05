@@ -32,8 +32,8 @@ Die personalisierten Benutzerkonten der Systemadministratoren werden zusätzlich
 zur Mitgliedschaft in der Gruppe `sudo` auch der Gruppe `admin` hinzugefügt.
 
 ```shell
-adduser nicof2000
-usermod -aG sudo,admin nicof2000
+adduser youruser
+usermod -aG sudo,admin youruser
 ```
 
 ## Docker
